@@ -40,5 +40,13 @@ comp_data = comp_data.drop(columns=['PARENT_CHEMBL_ID', 'PARENT_INCHI',
                                     'REF_CHEMBL_ID','REFERENCE','PUBMED_ID',
                                     'GSK_REG_NO','MOLREGNO','Molecular Species','Targets'], axis=1)
 
+# Make a new column with the images:
+image_list = []
+for ID in comp_data['ChEMBL_ID']:
+    image_link = "https://www.ebi.ac.uk/chembl/api/data/image/"+ID+".svg?engine=indigo"
+    image_list.append(image_link)
+
+comp_data["image_link"] = image_list
+
 # Output to final CSV.
 comp_data.to_csv('raw_inhibitor_data_final.csv')
