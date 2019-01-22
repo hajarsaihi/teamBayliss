@@ -1,23 +1,20 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///final_data.db'
-db = SQLAlchemy(app)
+from app import db
 
 class Kinase_Information(db.Model):
-    __tablename__ = 'Kinase_Information'
-    kinase = db.Column('Kinase_Name', db.Unicode, primary_key = True)
-    family = db.Column('Family', db.Unicode)
-    subFamily = db.Column('SubFamily', db.Unicode)
-    entrez = db.Column('ENTREZ_GENEID', db.Unicode)
-    location = db.Column('Location', db.Unicode)
+    """"""
+    __tablename__ = "Kinase_Information"
+
+    kinase = db.Column('Kinase_Name', db.String, primary_key = True)
+    family = db.Column('Family', db.String)
+    subFamily = db.Column('SubFamily', db.String)
+    entrez = db.Column('ENTREZ_GENEID', db.String)
+    location = db.Column('Location', db.String)
 
 class Phosphosites(db.Model):
-    __tablename__ = 'Kinase_Phosphosite'
+    __tablename__ = "Kinase_Phosphosite"
     Phosphosite_ID = db.Column('Kinase_Name', db.Integer, primary_key = True)
-    gene = db.Column('Family', db.Unicode)
-    chr_loc = db.Column('HU_CHR_LOC', db.Unicode)
-    mod_res = db.Column('MOD_RSD', db.Unicode)
-    accession = db.Column('ACC_ID', db.Unicode)
-    site_seq = db.Column('SITE_SEQ', db.Unicode)
+    gene = db.Column('Family', db.String)
+    chr_loc = db.Column('HU_CHR_LOC', db.String)
+    mod_res = db.Column('MOD_RSD', db.String)
+    accession = db.Column('ACC_ID', db.String)
+    site_seq = db.Column('SITE_SEQ', db.String)

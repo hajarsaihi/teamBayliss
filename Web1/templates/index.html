@@ -1,25 +1,23 @@
-{% extends "layout.html" %}
-
-{% block content %}
-  <main class="hero-section">
-    <div class="container">
-      
-      <div class="section-content">
-        <h2>Protein Kinase and Inhibitor Database</h2>
-        <a href="{{ url_for('ProteinKinase') }}" class="btn-primary">Protein Kinase</a>
-        <a href="{{ url_for('Inhibitor') }}" class="btn-primary">Inhibitors</a>
-        <a href="{{ url_for('Phosphosite') }}" class="btn-primary">Phosphosite</a>
-        <a href="{{ url_for('Tool') }}" class="btn-primary">Tool</a>
-        <a href="{{ url_for('about') }}" class="btn-primary">About</a>
-
-      </div>
-
-      <div class="section-device">
-        <img src="static/img/bayliss.png">
-      </div>
-      
-      <div class="clearfix"></div>
-
-    </div>
-  </main>
-{% endblock %}
+<doctype html>
+<head>
+    <title>Flask Music Database</title>
+</head>
+<h2>Flask Music Database</h2>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{% from "_formhelpers.html" import render_field %}
+<form method=post>
+  <dl>
+    {{ render_field(form.select) }}
+    <p>
+    {{ render_field(form.search) }}
+  </dl>
+  <p><input type=submit value=Search>
+</form>
