@@ -7,9 +7,3 @@ Team Names:
 - Gabriel
 - Omer
 - Friha
-
-=======
-#teamBayliss
-
-GL: BaByliss?
-=======
