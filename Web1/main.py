@@ -25,13 +25,13 @@ def search_results(search):
 
     if search_string:
         if search.data['select'] == 'Kinase':
-            search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.contains(search_string))
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
             results = qry.all()
 
         elif search.data['select'] == 'Family':
             search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.family.contains(search_string))
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.family.ilike(search_string))
             results = qry.all()
 
         else:
