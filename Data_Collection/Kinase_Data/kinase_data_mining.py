@@ -1,18 +1,17 @@
-# Convert the kinase name to the uniprot iDs in order to get the location from uniprot. 
 import pandas
 import re
 
 kinase_df = pandas.read_csv("kinase_data.csv")
-uniprot_df = pandas.read_excel('uniprot_identifiers.xlsx')
+entrez_df = pandas.read_excel('entrez_to_uniprot.xlsx')
 
-name = kinase_df['Name'].values
-uniprot_name = uniprot_df['Gene'].values
+entrez_gene_list = kinase_df['Entrez_GeneID'].values
+entrez_ID = entrez_df['entrez_ID'].values
 
 uniprot_IDs = []
 
-for kinase in name:
-    if kinase in uniprot_name:
-        ID = uniprot_df.loc[uniprot_df['Gene'] == kinase,'Uniprot_id'].iloc[0]
+for kinase in entrez_gene_list:
+    if kinase in entrez_ID:
+        ID = entrez_df.loc[entrez_df['entrez_ID'] == kinase,'Entry_name'].iloc[0]
         uniprot_IDs.append(ID)
     else:
         ID = 'unknown'
@@ -25,12 +24,12 @@ location_list = []
 
 for kinase in kinase_list:
     kinase = str(kinase)
-    
+
     if kinase != 'unknown':
         loc = ''
         data = pandas.read_csv("http://www.uniprot.org/uniprot/?query="+kinase+"&sort=score&columns=id,comment(SUBCELLULAR%20LOCATION)&format=tab", sep="\t")
         location = data["Subcellular location [CC]"][0]
-        
+
         if isinstance(location, str):
             location = location.split('Note')[0]
             location = location.replace('SUBCELLULAR LOCATION: ', '')
@@ -51,6 +50,7 @@ kinase_df['location'] = location_list
 
 # Merge alias names for each kinase
 alias_names = pandas.read_csv("kinase_alias_names.csv")
+name = kinase_df['Name'].values
 genes = alias_names['Gene'].values
 alias_list = []
 
@@ -61,6 +61,6 @@ for value in name:
     else:
         final = value
         alias_list.append(final)
-        
+
 kinase_df['Alias'] = alias_list
 kinase_df.to_csv('kinase_df.csv')
