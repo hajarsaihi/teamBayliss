@@ -1,25 +1,23 @@
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug import generate_password_hash, check_password_hash
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///final_data.db'
+db = SQLAlchemy(app)
 
-db = SQLAlchemy()
+class Kinase_Information(db.Model):
+    __tablename__ = 'Kinase_Information'
+    kinase = db.Column('Kinase_Name', db.Unicode, primary_key = True)
+    family = db.Column('Family', db.Unicode)
+    subFamily = db.Column('SubFamily', db.Unicode)
+    entrez = db.Column('ENTREZ_GENEID', db.Unicode)
+    location = db.Column('Location', db.Unicode)
 
-class User(db.Model):
-  __tablename__ = 'users'
-  uid = db.Column(db.Integer, primary_key = True)
-  firstname = db.Column(db.String(100))
-  lastname = db.Column(db.String(100))
-  email = db.Column(db.String(120), unique=True)
-  pwdhash = db.Column(db.String(54))
-
-  def __init__(self, firstname, lastname, email, password):
-    self.firstname = firstname.title()
-    self.lastname = lastname.title()
-    self.email = email.lower()
-    self.set_password(password)
-     
-  def set_password(self, password):
-    self.pwdhash = generate_password_hash(password)
-
-  def check_password(self, password):
-    return check_password_hash(self.pwdhash, password)
+class Phosphosites(db.Model):
+    __tablename__ = 'Kinase_Phosphosite'
+    Phosphosite_ID = db.Column('Kinase_Name', db.Integer, primary_key = True)
+    gene = db.Column('Family', db.Unicode)
+    chr_loc = db.Column('HU_CHR_LOC', db.Unicode)
+    mod_res = db.Column('MOD_RSD', db.Unicode)
+    accession = db.Column('ACC_ID', db.Unicode)
+    site_seq = db.Column('SITE_SEQ', db.Unicode)
