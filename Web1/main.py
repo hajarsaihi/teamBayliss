@@ -1,16 +1,15 @@
 from flask import Flask, render_template, flash, render_template, request, redirect
-#from models import db
-
-app = Flask(__name__)
-app.secret_key = 'hard key'
-
 from forms import KinaseSearchForm
 from models import Kinase_Information
 from app import app
 from db_setup import init_db, db_session
 from tables import Results
+###############################################################################
 
+app = Flask(__name__)
+app.secret_key = 'ca/i4tishfkaSJSF'
 init_db()
+###############################################################################
 
 @app.route('/kinase', methods=['GET', 'POST'])
 def kinase():
@@ -24,7 +23,14 @@ def search_results(search):
     results = []
     search_string = search.data['search']
 
-    if search.data['search'] == '':
+    if search_string:
+        if search.data['select'] == 'Kinase':
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.contains(search_string))
+            results = qry.all()
+        else:
+            qry = db_session.query(Kinase_Information)
+            results = qry.all()
+    else:
         qry = db_session.query(Kinase_Information)
         results = qry.all()
 
