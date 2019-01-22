@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet'>
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <h1 class="title">Bayliss</h1>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
 
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="#home" class="w3-bar-item w3-button"><b>Bayliss</b>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+
+      <a href="{{ url_for('index') }}" class="w3-bar-item w3-button">Home</a>
+      <a href="{{ url_for('kinase') }}" class="w3-bar-item w3-button">Kinase</a>
+      <a href="{{ url_for('Inhibitor') }}" class="w3-bar-item w3-button">Inhibitors</a>
+      <a href="{{ url_for('Phosphosite') }}"class="w3-bar-item w3-button">Phosphosite</a>
+      <a href="{{ url_for('Tool') }}" class="w3-bar-item w3-button">Tool</a>
+      <a href="{{ url_for('about') }}" class="w3-bar-item w3-button">About</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <img class="w3-image" src="https://www.thestudyabroadportal.com/studyabroadblog/wp-content/uploads/2015/09/gu-banner-dna.jpg" alt="Architecture" width="1500" height="800">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-white w3-opacity-min"><b>Phospho</b></span> <span class="w3-hide-small w3-text-black">Kinase</span></h1>
       </div>
-    </header>
-    
+        </header>
+
     {% block content %}
     {% endblock %}
-    
+
   </body>
 </html>

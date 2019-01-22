@@ -16,7 +16,7 @@ def kinase():
     search = KinaseSearchForm(request.form)
     if request.method == 'POST':
         return search_results(search)
-    return render_template('index.html', form=search)
+    return render_template('kinase.html', form=search)
 
 @app.route('/results')
 def search_results(search):
@@ -53,7 +53,7 @@ def search_results(search):
 
 @app.route("/")
 def index():
-  return render_template("index_orig.html")
+  return render_template("index.html")
 
 @app.route("/ProteinKinase")
 def ProteinKinase():
