@@ -25,8 +25,15 @@ def search_results(search):
 
     if search_string:
         if search.data['select'] == 'Kinase':
+            search_string = search_string.upper()
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.contains(search_string))
             results = qry.all()
+
+        elif search.data['select'] == 'Family':
+            search_string = search_string.upper()
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.family.contains(search_string))
+            results = qry.all()
+
         else:
             qry = db_session.query(Kinase_Information)
             results = qry.all()

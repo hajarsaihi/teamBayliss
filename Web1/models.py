@@ -12,7 +12,7 @@ class Kinase_Information(db.Model):
 
 class Phosphosites(db.Model):
     __tablename__ = "Kinase_Phosphosite"
-    
+
     Phosphosite_ID = db.Column('Kinase_Name', db.Integer, primary_key = True)
     gene = db.Column('Family', db.String)
     chr_loc = db.Column('HU_CHR_LOC', db.String)
