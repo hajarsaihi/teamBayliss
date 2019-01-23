@@ -1,25 +1,29 @@
-from flask import Flask, render_template, flash, render_template, request, redirect
-from forms import KinaseSearchForm
-from models import Kinase_Information
 from app import app
+from flask import Flask, render_template, flash, render_template, request, redirect
+from forms import KinaseSearchForm, PhosphositeSearchForm, InhibitorSearchForm
+from models import Kinase_Information, Kinase_Phosphosite, inhibitor_information
 from db_setup import init_db, db_session
-from tables import Results
+from tables import KResults, IResults, PResults
 ###############################################################################
 
 app = Flask(__name__)
 app.secret_key = 'ca/i4tishfkaSJSF'
 init_db()
 ###############################################################################
+@app.route("/")
+def index():
+  return render_template("index.html")
 
+###### Kinase #################################################################
 @app.route('/kinase', methods=['GET', 'POST'])
 def kinase():
     search = KinaseSearchForm(request.form)
     if request.method == 'POST':
-        return search_results(search)
+        return k_search_results(search)
     return render_template('kinase.html', form=search)
 
-@app.route('/results')
-def search_results(search):
+@app.route('/Kinase results')
+def k_search_results(search):
     results = []
     search_string = search.data['search']
 
@@ -52,25 +56,82 @@ def search_results(search):
 
     else:
         # display results
-        table = Results(results)
+        table = KResults(results)
         table.border = True
-        return render_template('results.html', table=table)
+        return render_template('kinase_results.html', table=table)
 
-@app.route("/")
-def index():
-  return render_template("index.html")
-
-@app.route("/ProteinKinase")
-def ProteinKinase():
-  return render_template("ProteinKinase.html")
-
-@app.route("/Inhibitor")
+###### Inhbitor ###############################################################
+@app.route('/Inhibitor', methods=['GET', 'POST'])
 def Inhibitor():
-  return render_template("Inhibitor.html")
+    search = InhibitorSearchForm(request.form)
+    if request.method == 'POST':
+        return i_search_results(search)
+    return render_template('Inhibitor.html', form=search)
 
-@app.route("/Phosphosite")
+@app.route('/Inhibitor results')
+def i_search_results(search):
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'CHEMBL ID':
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
+            results = qry.all()
+
+        else:
+            qry = db_session.query(inhibitor_information)
+            results = qry.all()
+    else:
+        flash('Search Field Empty')
+        return redirect('/kinase')
+
+    if not results:
+        flash('No results found!')
+        return redirect('/kinase')
+
+    else:
+        # display results
+        table = IResults(results)
+        table.border = True
+        return render_template('inhib_results.html', table=table)
+
+###### Phosphosites ###############################################################
+@app.route('/Phosphosite', methods=['GET', 'POST'])
 def Phosphosite():
-  return render_template("Phosphosite.html")
+    search = PhosphositeSearchForm(request.form)
+    if request.method == 'POST':
+        return p_search_results(search)
+    return render_template('Phosphosite.html', form=search)
+
+@app.route('/Phosphosite results')
+def p_search_results(search):
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Kinase':
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.chembl_ID.ilike(search_string))
+            results = qry.all()
+
+        else:
+            qry = db_session.query(Kinase_Phosphosite)
+            results = qry.all()
+    else:
+        flash('Search Field Empty')
+        return redirect('/kinase')
+
+    if not results:
+        flash('No results found!')
+        return redirect('/kinase')
+
+    else:
+        # display results
+        table = IResults(results)
+        table.border = True
+        return render_template('inhib_results.html', table=table)
+###############################################################################
 
 @app.route("/Tool")
 def Tool():
