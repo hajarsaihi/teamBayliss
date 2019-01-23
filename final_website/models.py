@@ -4,11 +4,11 @@ class Kinase_Information(db.Model):
     """"""
     __tablename__ = "Kinase_Information"
 
-    kinase = db.Column('Kinase_Name', db.String, primary_key = True)
+    kinase = db.Column('Name', db.String, primary_key = True)
     family = db.Column('Family', db.String)
-    subFamily = db.Column('SubFamily', db.String)
-    entrez = db.Column('ENTREZ_GENEID', db.String)
-    location = db.Column('Location', db.String)
+    subFamily = db.Column('Subfamily', db.String)
+    entrez = db.Column('Entrez_GeneID', db.String)
+    location = db.Column('location', db.String)
 
 class Phosphosites(db.Model):
     __tablename__ = "Kinase_Phosphosite"
