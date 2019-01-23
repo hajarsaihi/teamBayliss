@@ -11,9 +11,12 @@ class Kinase_Information(db.Model):
     Alias = db.Column('Alias', db.String)
     location = db.Column('location', db.String)
 
-class Inhibitors(db.Model):
+class Inhibitor_Information(db.Model):
     """"""
-    __tablename__ = "Kinase_Phosphosite_1"
+    __tablename__ = "Inhibitor_Information"
 
-    Phosphosite_ID = db.Column('Kinase_Name', db.Integer, primary_key = True)
-    gene = db.Column('Family', db.String)
+    chembl_ID = db.Column('ChEMBL_ID', db.Integer, primary_key = True)
+    name = db.Column('Name', db.String)
+    syn = db.Column('Synonyms', db.String)
+    mol_formula = db.Column('Molecular_Formula', db.String)
+    type = db.Column('Type', db.String)

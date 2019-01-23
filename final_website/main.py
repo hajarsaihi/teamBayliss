@@ -20,11 +20,11 @@ def index():
 def kinase():
     search = KinaseSearchForm(request.form)
     if request.method == 'POST':
-        return search_results(search)
+        return k_search_results(search)
     return render_template('kinase.html', form=search)
 
 @app.route('/Kinase results')
-def search_results(search):
+def k_search_results(search):
     results = []
     search_string = search.data['search']
 
@@ -66,18 +66,18 @@ def search_results(search):
 def Inhibitor():
     search = InhibitorSearchForm(request.form)
     if request.method == 'POST':
-        return search_results(search)
+        return i_search_results(search)
     return render_template('Inhibitor.html', form=search)
 
 @app.route('/Inhibitor results')
-def search_results(search):
+def i_search_results(search):
     results = []
     search_string = search.data['search']
 
     if search_string:
         if search.data['select'] == 'CHEMBL ID':
             #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(HERE).filter(HERE.kinase.ilike(search_string))
+            qry = db_session.query(Inhibitor_Information).filter(Inhibitor_Information.chembl_ID.ilike(search_string))
             results = qry.all()
 
         else:
