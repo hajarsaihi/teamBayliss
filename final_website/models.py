@@ -8,6 +8,7 @@ class Kinase_Information(db.Model):
     family = db.Column('Family', db.String)
     subFamily = db.Column('Subfamily', db.String)
     entrez = db.Column('Entrez_GeneID', db.String)
+    Alias = db.Column('Alias', db.String)
     location = db.Column('location', db.String)
 
 class Phosphosites(db.Model):

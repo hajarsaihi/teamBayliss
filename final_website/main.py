@@ -34,12 +34,17 @@ def search_results(search):
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.family.ilike(search_string))
             results = qry.all()
 
+        elif search.data['select'] == 'Alias Name':
+            search_string = search_string.upper()
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string))
+            results = qry.all()
+
         else:
             qry = db_session.query(Kinase_Information)
             results = qry.all()
     else:
-        qry = db_session.query(Kinase_Information)
-        results = qry.all()
+        flash('Search Field Empty')
+        return redirect('/kinase')
 
     if not results:
         flash('No results found!')
