@@ -1,21 +1,28 @@
 {% extends "layout.html" %}
-
 {% block content %}
-  <main class="about-section">
-    <div class="container">
 
-    <h2>Protein Kinase Inhibitor Database</h2>
+<doctype html>
+<head>
+    <title>Kinase Inhibitor Database</title>
+</head>
+<h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Kinase Inhibitor Database</b></h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
-        <h3> Enter CHEMBL ID or Compound Name of Inhibitor</h3>
-
-        <body>
-	<form action="" id="questions" method="post" name="questions">
-		<input type="Inhibitor" name="Inhibitor" id="Inhibitor" placeholder="Enter CHEMBL ID/Inhibitor Name"><br>
-
-		<input type="submit">
-	</form>
-        </body>
-    </div>
-
-
+{% from "_formhelpers.html" import render_field %}
+<form method=post>
+  <dl>
+    {{ render_field(form.select) }}
+    <p>
+    {{ render_field(form.search) }}
+  </dl>
+  <p><input type=submit value=Search>
+</form>
 {% endblock %}

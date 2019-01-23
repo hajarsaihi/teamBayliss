@@ -11,12 +11,9 @@ class Kinase_Information(db.Model):
     Alias = db.Column('Alias', db.String)
     location = db.Column('location', db.String)
 
-class Phosphosites(db.Model):
-    __tablename__ = "Kinase_Phosphosite"
+class Inhibitors(db.Model):
+    """"""
+    __tablename__ = "Kinase_Phosphosite_1"
 
     Phosphosite_ID = db.Column('Kinase_Name', db.Integer, primary_key = True)
     gene = db.Column('Family', db.String)
-    chr_loc = db.Column('HU_CHR_LOC', db.String)
-    mod_res = db.Column('MOD_RSD', db.String)
-    accession = db.Column('ACC_ID', db.String)
-    site_seq = db.Column('SITE_SEQ', db.String)
