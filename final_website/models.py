@@ -11,9 +11,9 @@ class Kinase_Information(db.Model):
     Alias = db.Column('Alias', db.String)
     location = db.Column('location', db.String)
 
-class Inhibitor_Information(db.Model):
+class inhibitor_information(db.Model):
     """"""
-    __tablename__ = "Inhibitor_Information"
+    __tablename__ = "inhibitor_information"
 
     chembl_ID = db.Column('ChEMBL_ID', db.Integer, primary_key = True)
     name = db.Column('Name', db.String)

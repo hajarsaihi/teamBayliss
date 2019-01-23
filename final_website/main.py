@@ -1,11 +1,9 @@
-from flask import Flask, render_template, flash, render_template, request, redirect
-from forms import KinaseSearchForm
-from forms import InhibitorSearchForm
-from forms import PhosphositeSearchForm
-from models import Kinase_Information
 from app import app
+from flask import Flask, render_template, flash, render_template, request, redirect
+from forms import KinaseSearchForm, PhosphositeSearchForm, InhibitorSearchForm
+from models import Kinase_Information, Kinase_Phosphosite, inhibitor_information
 from db_setup import init_db, db_session
-from tables import KResults
+from tables import KResults, IResults, PResults
 ###############################################################################
 
 app = Flask(__name__)
@@ -78,11 +76,11 @@ def i_search_results(search):
     if search_string:
         if search.data['select'] == 'CHEMBL ID':
             #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Inhibitor_Information).filter(Inhibitor_Information.chembl_ID.ilike(search_string))
+            qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
             results = qry.all()
 
         else:
-            qry = db_session.query(Inhibitor_Information)
+            qry = db_session.query(inhibitor_information)
             results = qry.all()
     else:
         flash('Search Field Empty')
