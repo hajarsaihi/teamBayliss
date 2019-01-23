@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash, render_template, request, redirect
 from forms import KinaseSearchForm
 from forms import InhibitorSearchForm
+from forms import PhosphositeSearchForm
 from models import Kinase_Information
 from app import app
 from db_setup import init_db, db_session
@@ -81,7 +82,7 @@ def i_search_results(search):
             results = qry.all()
 
         else:
-            qry = db_session.query(Kinase_Information)
+            qry = db_session.query(Inhibitor_Information)
             results = qry.all()
     else:
         flash('Search Field Empty')
@@ -98,9 +99,41 @@ def i_search_results(search):
         return render_template('inhib_results.html', table=table)
 
 ###### Phosphosites ###############################################################
-@app.route("/Phosphosite")
+@app.route('/Phosphosite', methods=['GET', 'POST'])
 def Phosphosite():
-  return render_template("Phosphosite.html")
+    search = PhosphositeSearchForm(request.form)
+    if request.method == 'POST':
+        return p_search_results(search)
+    return render_template('Phosphosite.html', form=search)
+
+@app.route('/Phosphosite results')
+def p_search_results(search):
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Kinase':
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.chembl_ID.ilike(search_string))
+            results = qry.all()
+
+        else:
+            qry = db_session.query(Kinase_Phosphosite)
+            results = qry.all()
+    else:
+        flash('Search Field Empty')
+        return redirect('/kinase')
+
+    if not results:
+        flash('No results found!')
+        return redirect('/kinase')
+
+    else:
+        # display results
+        table = IResults(results)
+        table.border = True
+        return render_template('inhib_results.html', table=table)
+###############################################################################
 
 @app.route("/Tool")
 def Tool():

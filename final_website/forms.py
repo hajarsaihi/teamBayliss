@@ -9,3 +9,8 @@ class InhibitorSearchForm(Form):
     choices = [('CHEMBL ID', 'CHEMBL ID')]
     select = SelectField('Search for Inhibitor:', choices=choices)
     search = StringField('')
+
+class PhosphositeSearchForm(Form):
+    choices = [('Kinase', 'Kinase'), ('Substrate', 'Substrate')]
+    select = SelectField('Search for Inhibitor:', choices=choices)
+    search = StringField('')

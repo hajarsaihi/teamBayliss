@@ -13,3 +13,10 @@ class IResults(Table):
     syn = Col('Synonyms')
     mol_formula = Col('Molecular_Formula')
     type = Col('Type')
+
+class PResults(Table):
+    chembl_ID = Col('ChEMBL_ID')
+    name = Col('Name')
+    syn = Col('Synonyms')
+    mol_formula = Col('Molecular_Formula')
+    type = Col('Type')

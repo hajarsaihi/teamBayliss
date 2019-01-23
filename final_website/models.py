@@ -20,3 +20,13 @@ class Inhibitor_Information(db.Model):
     syn = db.Column('Synonyms', db.String)
     mol_formula = db.Column('Molecular_Formula', db.String)
     type = db.Column('Type', db.String)
+
+class Kinase_Phosphosite(db.Model):
+    """"""
+    __tablename__ = "Kinase_Phosphosite"
+
+    chembl_ID = db.Column('ChEMBL_ID', db.Integer, primary_key = True)
+    name = db.Column('Name', db.String)
+    syn = db.Column('Synonyms', db.String)
+    mol_formula = db.Column('Molecular_Formula', db.String)
+    type = db.Column('Type', db.String)

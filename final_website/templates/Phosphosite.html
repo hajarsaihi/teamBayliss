@@ -1,30 +1,28 @@
 {% extends "layout.html" %}
-
 {% block content %}
-  <main class="about-section">
-    <div class="container">
 
-    <h2>Phosphosite Database</h2>
+<doctype html>
+<head>
+    <title>Phosphosite Database</title>
+</head>
+<h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Phosphosite Database</b></h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
-        <h3> Enter Protein or Substrate name</h3>
-
-        <body>
-	<form action="" method="GET" name="search" role="search">
-               <label for="categories" class="grid-20">In</label>
-        <select name="search categories" id="categories" class="grid-80">
-          <option value="Protein" selected>Protein</option>
-          <option value="Substrate of">Substrate of</option>
-        </select>
-
-        <label for="search-field" class="search-label grid-25">Search</label>
-        <input type="search" name="search-term" id="search-field" class="grid-75" placeholder="Enter Protein or Substrate of" />
-
-
-		<input type="submit">
-	</form>
-        </body>
-    </div>
-  </main>
-
-
+{% from "_formhelpers.html" import render_field %}
+<form method=post>
+  <dl>
+    {{ render_field(form.select) }}
+    <p>
+    {{ render_field(form.search) }}
+  </dl>
+  <p><input type=submit value=Search>
+</form>
 {% endblock %}
