@@ -2,11 +2,11 @@ import csv, sqlite3
 
 
 # Create a database in RAM
-con = sqlite3.connect('PROTEIN_KINASE_DATABASE_DRAFT_1.db')
+con = sqlite3.connect('final_data.db')
 
 
 #A cursor object is required to pinpoint data in the database
-cur = con.cursor()  
+cur = con.cursor()
 
 print("Opened database successfully")
 
@@ -23,7 +23,7 @@ with open('KinaseInformation.csv','rb') as fin: # `with` statement available in 
     to_db_1 = [(i['Kinase_Name'], i['Family'], i['SubFamily'], i['ENTREZ_GENEID'], i['Location']) for i in dr_1]    #These names must be the same as in the columns of the CSV table
 
 cur.executemany("INSERT INTO Kinase_Information(Kinase_Name, Family, SubFamily, ENTREZ_GENEID, Location) VALUES (?, ?,?,?,?);", to_db_1)
-con.commit()  #Commit the changes 
+con.commit()  #Commit the changes
 
 print to_db_1
 
@@ -63,9 +63,9 @@ print to_db_3
 
 ### 5: TO JOIN THE TABLES USING A FOREIGN KEY
 
-cur.execute("SELECT Kinase_Name FROM Kinase_Information INNER JOIN Kinase_Phosphosite ON Kinase_Phosphosite.GENE = Kinase_Information.Kinase_Name ;") 
+cur.execute("SELECT Kinase_Name FROM Kinase_Information INNER JOIN Kinase_Phosphosite ON Kinase_Phosphosite.GENE = Kinase_Information.Kinase_Name ;")
 
-cur.execute("SELECT Kinase_Name FROM Kinase_Information INNER JOIN InteractingKinase ON InteractingKinase.Target_Kinase = Kinase_Information.Kinase_Name ;") 
+cur.execute("SELECT Kinase_Name FROM Kinase_Information INNER JOIN InteractingKinase ON InteractingKinase.Target_Kinase = Kinase_Information.Kinase_Name ;")
 
 print(cur.fetchall())
 

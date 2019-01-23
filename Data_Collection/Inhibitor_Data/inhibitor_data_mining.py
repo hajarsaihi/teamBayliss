@@ -26,7 +26,7 @@ comp_data = comp_data[comp_data['ChEMBL_ID'].isin(compounds2)]
 # Make the inhibitor_references table.
 inhibitor_references = comp_data.drop(columns=['GSK_REG_NO', 'MOLREGNO',
                                                 'INCHI','SMILES', 'PARENT_CHEMBL_ID',
-                                                'PARENT_INCHI','PARENT_SMILES','TARGETS',
+                                                'PARENT_INCHI','PARENT_SMILES',
                                                 'TARGET_CHEMBL_IDS','REF_CHEMBL_ID'], axis=1)
 
 inhibitor_references.to_csv('inhibitor_references.csv')
@@ -36,7 +36,7 @@ comp_data = comp_data.join(comp_specifics.set_index('ChEMBL_ID'), on='ChEMBL_ID'
 
 # Drop the columns that arent needed.
 comp_data = comp_data.drop(columns=['PARENT_CHEMBL_ID', 'PARENT_INCHI',
-                                    'PARENT_SMILES','TARGETS', 'TARGET_CHEMBL_IDS',
+                                    'PARENT_SMILES','TARGET_CHEMBL_IDS',
                                     'REF_CHEMBL_ID','REFERENCE','PUBMED_ID',
                                     'GSK_REG_NO','MOLREGNO','Molecular Species','Targets'], axis=1)
 
