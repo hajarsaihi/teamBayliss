@@ -84,11 +84,11 @@ def i_search_results(search):
             results = qry.all()
     else:
         flash('Search Field Empty')
-        return redirect('/kinase')
+        return redirect('/Inhibitor')
 
     if not results:
         flash('No results found!')
-        return redirect('/kinase')
+        return redirect('/Inhibitor')
 
     else:
         # display results
@@ -96,7 +96,7 @@ def i_search_results(search):
         table.border = True
         return render_template('inhib_results.html', table=table)
 
-###### Phosphosites ###############################################################
+###### Phosphosites ###########################################################
 @app.route('/Phosphosite', methods=['GET', 'POST'])
 def Phosphosite():
     search = PhosphositeSearchForm(request.form)
@@ -110,9 +110,14 @@ def p_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'Kinase':
+        if search.data['select'] == 'Substrate Protein':
             #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.chembl_ID.ilike(search_string))
+            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
+            results = qry.all()
+
+        elif search.data['select'] == 'Kinase':
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.pkinase.ilike(search_string))
             results = qry.all()
 
         else:
@@ -120,17 +125,17 @@ def p_search_results(search):
             results = qry.all()
     else:
         flash('Search Field Empty')
-        return redirect('/kinase')
+        return redirect('/Phosphosite')
 
     if not results:
         flash('No results found!')
-        return redirect('/kinase')
+        return redirect('/Phosphosite')
 
     else:
         # display results
-        table = IResults(results)
+        table = PResults(results)
         table.border = True
-        return render_template('inhib_results.html', table=table)
+        return render_template('phosph_results.html', table=table)
 ###############################################################################
 
 @app.route("/Tool")
