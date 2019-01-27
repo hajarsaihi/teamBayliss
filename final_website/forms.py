@@ -6,11 +6,11 @@ class KinaseSearchForm(Form):
     search = StringField('')
 
 class InhibitorSearchForm(Form):
-    choices = [('CHEMBL ID', 'CHEMBL ID')]
+    choices = [(' ChEMBL ID ', ' ChEMBL ID ')]
     select = SelectField('Search for Inhibitor:', choices=choices)
     search = StringField('')
 
 class PhosphositeSearchForm(Form):
-    choices = [('Substrate Protein', 'Substrate Protein')]
+    choices = [('Substrate', 'Substrate')]
     select = SelectField('Search for Phosphosite:', choices=choices)
     search = StringField('')

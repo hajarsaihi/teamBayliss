@@ -1,28 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-
 <doctype html>
 <head>
     <title>Kinase Database</title>
-    <link rel="stylesheet" type="text/css" href="static/css/search.css">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css?version=55">
 </head>
 <br>
-<br>
 <center>
-  <header class="w3-center w3-margin-bottom"> <p><b>Search for a Kinase based on it's name or family. <p>New feature! No search results? Search by Alias names!</b></p></header>
+  <header class="w3-center w3-margin-bottom"> <p>Search for a Protein Kinase based on it's name or family. <p><b>New feature!</b> No search results? Search by Alias names!</p></header>
   {% with messages = get_flashed_messages() %}
     {% if messages %}
-      <ul class=flashes>
+      <l class=flashes>
       {% for message in messages %}
-        <li>{{ message }}</li>
+        {{ message }}
       {% endfor %}
-      </ul>
+      </l>
   </center>
   {% endif %}
 {% endwith %}
-<br>
-<br>
-<br>
 <br>
 {% from "_formhelpers.html" import render_field %}
 <form method=post>
@@ -31,15 +26,13 @@
       {{ form.select(class_="searchTerm")}}
       <br>
       <br>
-      <br>
       {{ form.search(class_="searchTerm", placeholder="What are you looking for?") }}
     <p>
-    <button type="submit" class="searchButton">
-      <i class="fa fa-search"></i>
- </button>
- </div>
+      <br>
+      <br>
+    <input type=submit value=Search class=searchButton>
+  </div>
  </div>
 </form>
-<br>
 
 {% endblock %}

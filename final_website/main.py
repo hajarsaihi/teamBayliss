@@ -75,7 +75,7 @@ def i_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'CHEMBL ID':
+        if search.data['select'] == ' ChEMBL ID ':
             #search_string = search_string.upper() use ilike for case sensitive search
             qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
             results = qry.all()
