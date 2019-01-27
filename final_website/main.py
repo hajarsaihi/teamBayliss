@@ -9,6 +9,7 @@ from tables import KResults, IResults, PResults
 app = Flask(__name__)
 app.secret_key = 'ca/i4tishfkaSJSF'
 init_db()
+
 ###############################################################################
 @app.route("/")
 def index():
@@ -47,8 +48,8 @@ def k_search_results(search):
             qry = db_session.query(Kinase_Information)
             results = qry.all()
     else:
-        flash('Search Field Empty')
-        return redirect('/kinase')
+        qry = db_session.query(Kinase_Information)
+        results = qry.all()
 
     if not results:
         flash('No results found!')
@@ -115,17 +116,12 @@ def p_search_results(search):
             qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
             results = qry.all()
 
-        elif search.data['select'] == 'Kinase':
-            #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.pkinase.ilike(search_string))
-            results = qry.all()
-
         else:
             qry = db_session.query(Kinase_Phosphosite)
             results = qry.all()
     else:
-        flash('Search Field Empty')
-        return redirect('/Phosphosite')
+        qry = db_session.query(Kinase_Phosphosite)
+        results = qry.all()
 
     if not results:
         flash('No results found!')

@@ -4,25 +4,36 @@
 <doctype html>
 <head>
     <title>Kinase Database</title>
+    <link rel="stylesheet" type="text/css" href="static/css/search.css">
 </head>
-<h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Kinase Database</b></h1>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
+<center>
+  <h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Kinase Database</b></h1>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+  </center>
   {% endif %}
 {% endwith %}
 
 {% from "_formhelpers.html" import render_field %}
 <form method=post>
-  <dl>
-    {{ render_field(form.select) }}
-    <p>
-    {{ render_field(form.search) }}
-  </dl>
-  <p><input type=submit value=Search>
+<div class="wrap">
+  <div class="search">
+    <center>
+    {{ form.select(class_="searchTerm")}}
+    <br>
+    {{ form.search(class_="searchTerm", placeholder="Please enter name.") }}
+    </center>
+  <p>
+  
+  <button type="submit" class="searchButton">
+    <i class="fa fa-search"></i>
+ </button>
 </form>
+
+
 {% endblock %}

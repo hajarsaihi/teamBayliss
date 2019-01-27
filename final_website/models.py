@@ -25,7 +25,8 @@ class Kinase_Phosphosite(db.Model):
     """"""
     __tablename__ = "Kinase_Phosphosite"
 
-    gene = db.Column('GENE', db.Integer, primary_key = True)
+    keys_row = db.Column('Keys_row', db.Integer, primary_key = True)
+    gene = db.Column('GENE', db.Integer)
     pkinase = db.Column('KINASE', db.String)
     kinase_accession = db.Column('KIN_ACC_ID', db.String)
     substrate_protein = db.Column('SUBSTRATE', db.String)
