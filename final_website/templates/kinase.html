@@ -6,8 +6,10 @@
     <title>Kinase Database</title>
     <link rel="stylesheet" type="text/css" href="static/css/search.css">
 </head>
+<br>
+<br>
 <center>
-  <h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Kinase Database</b></h1>
+  <header class="w3-center w3-margin-bottom"> <p><b>Search for a Kinase based on it's name or family. <p>New feature! No search results? Search by Alias names!</b></p></header>
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class=flashes>
@@ -18,22 +20,26 @@
   </center>
   {% endif %}
 {% endwith %}
-
+<br>
+<br>
+<br>
+<br>
 {% from "_formhelpers.html" import render_field %}
 <form method=post>
-<div class="wrap">
   <div class="search">
-    <center>
-    {{ form.select(class_="searchTerm")}}
-    <br>
-    {{ form.search(class_="searchTerm", placeholder="Please enter name.") }}
-    </center>
-  <p>
-  
-  <button type="submit" class="searchButton">
-    <i class="fa fa-search"></i>
+    <div class="wrap">
+      {{ form.select(class_="searchTerm")}}
+      <br>
+      <br>
+      <br>
+      {{ form.search(class_="searchTerm", placeholder="What are you looking for?") }}
+    <p>
+    <button type="submit" class="searchButton">
+      <i class="fa fa-search"></i>
  </button>
+ </div>
+ </div>
 </form>
-
+<br>
 
 {% endblock %}
