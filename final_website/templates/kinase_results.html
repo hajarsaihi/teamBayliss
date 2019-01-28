@@ -5,28 +5,46 @@
 <title>Search Results - Kinase Database</title>
 <head>
     <title> Kinase Database</title>
+    <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
+    <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
 </head>
   <div class="w3-card-4 w3-margin w3-white">
       <div class="w3-container">
         <br>
         {% for x in results %}
         <center> <h3><b>Results</b></h3> <center>
-        <h5> Kinase Name: <span class="w3-deep-purple"><td>{{ x.kinase }}</td></span></h5>
+        <h5> Kinase Name: <span class="w3-deep-purple"><td>{{ x.kinase.upper() }}</td></span></h5>
 
       </div>
 
       <div class="w3-container">
         <br>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12">Kinase Information</h4>
+        <h5> Name: <span class="w3-opacity"><td>{{ x.full_name }}</td></span>
         <h5> Family: <span class="w3-opacity"><td>{{ x.family.upper() }}</td></span>
         <h5> SubFamily: <span class="w3-opacity"><td>{{ x.subFamily.upper() }}</td></span></h5>
         <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
         <br>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12"> External Links</h4>
-        <h5> Entrez ID: <span class="w3-opacity"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=207">{{ x.entrez.upper()}}</a></span></h5>
-        <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/mk01_human">{{ x.uniprot.upper()}}</a></span></h5>
+        <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ x.entrez }}" >{{ x.entrez }}</a></span></h5>
+        <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.uniprot.upper()}}">{{ x.uniprot.upper()}}</a></span></h5>
         <br>
         <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12"> Annotated Features </h4>
+        <div id="yourDiv" style="width:1024px; margin:auto;"></div>
+        <script>
+            window.onload = function() {
+                var yourDiv = document.getElementById('yourDiv');
+                var ProtVista = require('ProtVista');
+                var instance = new ProtVista({
+                    el: yourDiv,
+                    uniprotacc: 'P31749',
+
+                    //These categories will **not** be rendered at all
+                    exclusions: ['SEQUENCE_INFORMATION', 'STRUCTURAL', 'TOPOLOGY', 'MUTAGENESIS', 'MOLECULE_PROCESSING']
+                });
+            }
+        </script>
         <div class="w3-row">
 
           </div>

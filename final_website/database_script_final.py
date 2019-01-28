@@ -79,17 +79,17 @@ print(cur.fetchall())
 #A table is created
 
 cur.execute("CREATE TABLE Kinase_Information(key_numbers PRIMARY KEY, Name, Groups TEXT, Family VARCHAR(30), Subfamily VARCHAR(30),\
-											Entrez_GeneID VARCHAR(30), Entrez_description REAL, location, Alias, uniprot_IDs);") # use your column names here
+											Entrez_GeneID VARCHAR(30), Entrez_description REAL, location, Alias, uniprot_IDs, Kinase_Domain);") # use your column names here
 
 #The csv file is opened
 with open('kinase_df.csv','rb') as fin: # reads file in Binary mode,
 	#csv.DictReader uses first line in file for column headings by default
     dr_1 = csv.DictReader(fin) # comma is default delimiter
     to_db_1 = [(i['key_numbers'],i['Name'], i['Groups'],i['Family'], i['Subfamily'], i['Entrez_GeneID'],\
-    			i['Entrez_description'], i['location'], i['Alias'], i['uniprot_IDs']) for i in dr_1]    #These names must be the same as in the columns of the CSV table
+    			i['Entrez_description'], i['location'], i['Alias'], i['uniprot_IDs'], i['Kinase_Domain']) for i in dr_1]    #These names must be the same as in the columns of the CSV table
 
 cur.executemany("INSERT INTO Kinase_Information(key_numbers,Name, Groups, Family, Subfamily, Entrez_GeneID,\
-				 Entrez_description,location, Alias, uniprot_IDs) VALUES (?,?,?,?,?,?,?,?,?,?);", to_db_1)
+				 Entrez_description,location, Alias, uniprot_IDs, Kinase_Domain) VALUES (?,?,?,?,?,?,?,?,?,?,?);", to_db_1)
 con.commit()  #Commit the changes
 
 print to_db_1
