@@ -6,18 +6,31 @@
 <head>
     <title> Kinase Database</title>
 </head>
-<h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Kinase Search Result</b></h1>
+  <div class="w3-card-4 w3-margin w3-white">
+      <div class="w3-container">
+        <br>
+        {% for x in results %}
+        <center> <h3><b>Results</b></h3> <center>
+        <h5> Kinase Name: <span class="w3-deep-purple"><td>{{ x.kinase }}</td></span></h5>
 
-{{ table }}
+      </div>
 
-{% for x in results %}
-      <p>Kinase Name: <td>{{ x.kinase }}</td></p>
-      <p>Family: <td>{{ x.family }}</td></p>
-      <p>Sub Family: <td>{{ x.subFamily }}</td></p>
-      <p>Entrez ID: <td>{{ x.entrez }}</td></p>
-      <p>Location: <td>{{ x.location }}</td></p>
-{% endfor %}
+      <div class="w3-container">
+        <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12">Kinase Information</h4>
+        <h5> Family: <span class="w3-opacity"><td>{{ x.family.upper() }}</td></span>
+        <h5> SubFamily: <span class="w3-opacity"><td>{{ x.subFamily.upper() }}</td></span></h5>
+        <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
+        <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12"> External Links</h4>
+        <h5> Entrez ID: <span class="w3-opacity"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=207">{{ x.entrez.upper()}}</a></span></h5>
+        <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/mk01_human">{{ x.uniprot.upper()}}</a></span></h5>
+        <br>
+        <br>
+        <div class="w3-row">
 
-<h2> </h2>
-
+          </div>
+        </div>
+      </div>
+    {% endfor %}
 {% endblock %}
