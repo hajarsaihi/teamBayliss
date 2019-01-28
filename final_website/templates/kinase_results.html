@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block content %}
 
 <doctype html>
@@ -12,5 +11,13 @@
 {{ table }}
 
 <h2> </h2>
+
+{% if results %}
+    {% for temp in res %}
+
+        <p>{{ temp.kinase }}</p>
+
+    {% endfor %}
+{% endif %}
 
 {% endblock %}

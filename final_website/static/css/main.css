@@ -46,5 +46,10 @@ body{
   position: absolute;
   top: 120%;
   left: 50%;
-  transform: translate(-50%, -20%);
+  transform: translate(-50%, 20%);
+}
+
+err.one {
+  border-style: solid;
+  border-color: red;
 }

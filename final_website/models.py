@@ -9,6 +9,7 @@ class Kinase_Information(db.Model):
     subFamily = db.Column('Subfamily', db.String)
     entrez = db.Column('Entrez_GeneID', db.String)
     Alias = db.Column('Alias', db.String)
+    uniprot = db.Column('uniprot_IDs', db.String)
     location = db.Column('location', db.String)
 
 class inhibitor_information(db.Model):

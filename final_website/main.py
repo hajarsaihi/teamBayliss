@@ -44,12 +44,11 @@ def k_search_results(search):
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string))
             results = qry.all()
 
-        else:
-            qry = db_session.query(Kinase_Information)
+        elif search.data['select'] == 'Uniprot ID':
+            search_string = search_string.upper()
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.ilike(search_string))
             results = qry.all()
-    else:
-        qry = db_session.query(Kinase_Information)
-        results = qry.all()
+
 
     if not results:
         flash('No results found!')
@@ -111,7 +110,7 @@ def p_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'Substrate Protein':
+        if search.data['select'] == 'Substrate':
             #search_string = search_string.upper() use ilike for case sensitive search
             qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
             results = qry.all()
@@ -120,8 +119,8 @@ def p_search_results(search):
             qry = db_session.query(Kinase_Phosphosite)
             results = qry.all()
     else:
-        qry = db_session.query(Kinase_Phosphosite)
-        results = qry.all()
+        flash('Search Field Empty')
+        return redirect('/Phosphosite')
 
     if not results:
         flash('No results found!')
