@@ -30,7 +30,7 @@
         <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.uniprot.upper()}}">{{ x.uniprot.upper()}}</a></span></h5>
         <br>
         <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12"> Annotated Features </h4>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12">{{ x.kinase.upper() }} Protein Annotation </h4>
         <div id="yourDiv" style="width:1024px; margin:auto;"></div>
         <script>
             window.onload = function() {
@@ -40,7 +40,7 @@
                     el: yourDiv,
                     uniprotacc: 'P31749',
 
-                    //These categories will **not** be rendered at all
+                    //These categories will **not** be rendered.
                     exclusions: ['SEQUENCE_INFORMATION', 'STRUCTURAL', 'TOPOLOGY', 'MUTAGENESIS', 'MOLECULE_PROCESSING']
                 });
             }
