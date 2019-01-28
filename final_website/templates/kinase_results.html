@@ -10,14 +10,14 @@
 
 {{ table }}
 
+{% for x in results %}
+      <p>Kinase Name: <td>{{ x.kinase }}</td></p>
+      <p>Family: <td>{{ x.family }}</td></p>
+      <p>Sub Family: <td>{{ x.subFamily }}</td></p>
+      <p>Entrez ID: <td>{{ x.entrez }}</td></p>
+      <p>Location: <td>{{ x.location }}</td></p>
+{% endfor %}
+
 <h2> </h2>
-
-{% if results %}
-    {% for temp in res %}
-
-        <p>{{ temp.kinase }}</p>
-
-    {% endfor %}
-{% endif %}
 
 {% endblock %}

@@ -30,13 +30,7 @@ def k_search_results(search):
 
     if search_string:
         if search.data['select'] == 'Kinase':
-            #search_string = search_string.upper() use ilike for case sensitive search
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
-            results = qry.all()
-
-        elif search.data['select'] == 'Family':
-            search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.family.ilike(search_string))
             results = qry.all()
 
         elif search.data['select'] == 'Alias Name':
@@ -46,9 +40,12 @@ def k_search_results(search):
 
         elif search.data['select'] == 'Uniprot ID':
             search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.ilike(search_string))
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.uniprot.ilike(search_string))
             results = qry.all()
 
+        else:
+            qry = db_session.query(Kinase_Information)
+            results = qry.all()
 
     if not results:
         flash('No results found!')
@@ -58,7 +55,7 @@ def k_search_results(search):
         # display results
         table = KResults(results)
         table.border = True
-        return render_template('kinase_results.html', table=table)
+        return render_template('kinase_results.html', results=results)
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
@@ -79,12 +76,14 @@ def i_search_results(search):
             qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
             results = qry.all()
 
+        elif search.data['select'] == 'GSK Name':
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(inhibitor_information).filter(inhibitor_information.name.ilike(search_string))
+            results = qry.all()
+
         else:
             qry = db_session.query(inhibitor_information)
             results = qry.all()
-    else:
-        flash('Search Field Empty')
-        return redirect('/Inhibitor')
 
     if not results:
         flash('No results found!')
@@ -118,9 +117,6 @@ def p_search_results(search):
         else:
             qry = db_session.query(Kinase_Phosphosite)
             results = qry.all()
-    else:
-        flash('Search Field Empty')
-        return redirect('/Phosphosite')
 
     if not results:
         flash('No results found!')
