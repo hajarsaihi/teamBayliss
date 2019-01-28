@@ -28,8 +28,8 @@
         <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
         <br>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12"> External Links</h4>
-        <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ x.entrez }}" >{{ x.entrez }}</a></span></h5>
-        <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.uniprot.upper()}}">{{ x.uniprot.upper()}}</a></span></h5>
+        <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ (x.entrez)|int }}" >{{ (x.entrez)|int }}</a></span></h5>
+        <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.accID }}">{{ x.accID}}</a></span></h5>
         <br>
         <br>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12">{{ x.kinase.upper() }} Protein Annotation </h4>
