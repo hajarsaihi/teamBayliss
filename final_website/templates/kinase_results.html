@@ -21,6 +21,7 @@
         <br>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12">Kinase Information</h4>
         <h5> Protein Name: <span class="w3-opacity"><td>{{ x.full_name }}</td></span>
+        <h5> Gene Name: <span class="w3-opacity"><td>{{ x.gene_name }}</td></span>
         <h5> Species: <span class="w3-opacity"><td>Human</td></span>
         <h5> Family: <span class="w3-opacity"><td>{{ x.family.upper() }}</td></span>
         <h5> SubFamily: <span class="w3-opacity"><td>{{ x.subFamily.upper() }}</td></span></h5>
@@ -39,7 +40,7 @@
                 var ProtVista = require('ProtVista');
                 var instance = new ProtVista({
                     el: yourDiv,
-                    uniprotacc: 'P31749',
+                    uniprotacc: '{{ x.accID }}',
 
                     //These categories will **not** be rendered.
                     exclusions: ['SEQUENCE_INFORMATION', 'STRUCTURAL', 'TOPOLOGY', 'MUTAGENESIS', 'MOLECULE_PROCESSING']

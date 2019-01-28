@@ -12,7 +12,9 @@ class Kinase_Information(db.Model):
     Alias = db.Column('Alias', db.String)
     uniprot = db.Column('uniprot_IDs', db.String)
     location = db.Column('location', db.String)
-    kinase_domain = db.Column('Kinase_Domain', db.String)
+    gene_name = db.Column('gene_name', db.String)
+    accID = db.Column('uni_accession', db.String)
+
 
 class inhibitor_information(db.Model):
     """"""
