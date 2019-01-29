@@ -30,6 +30,25 @@ class inhibitor_information(db.Model):
     target2 = db.Column('TARGETS_2', db.String)
     inchi = db.Column('INCHI', db.String)
     smiles = db.Column('SMILES', db.String)
+    maxphase = db.Column('Max_Phase', db.String)
+    aromaticrings = db.Column('Aromatic_Rings', db.String)
+    structuretype = db.Column('Structure_Type', db.String)
+
+    bioactivities = db.Column('Bioactivities', db.String)
+    alogP = db.Column('AlogP', db.String)
+    psa = db.Column('PSA', db.String)
+    hba = db.Column('HBA', db.String)
+    hbd = db.Column('HBD', db.String)
+    rotatablebonds = db.Column('Rotatable_Bonds', db.String)
+    passesro3 = db.Column('Passes_Ro3', db.String)
+    qed = db.Column('QED_Weighted', db.String)
+    apka = db.Column('ACD_ApKa', db.String)
+    bpka = db.Column('ACD_BpKa', db.String)
+    acdlogp = db.Column('ACD_LogP', db.String)
+    acdlogd = db.Column('ACD_LogD', db.String)
+    heavyatoms = db.Column('Heavy_Atoms', db.String)
+    molweightmono = db.Column('Molecular_Weight_Monoisotopic', db.String)
+
 
 class Kinase_Phosphosite(db.Model):
     """"""

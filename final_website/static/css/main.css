@@ -49,17 +49,37 @@ body{
   transform: translate(-50%, 20%);
 }
 
-err.one {
-  border-style: solid;
-  border-color: red;
-}
 figure {
-  float: right;
-  width: 20%;
+  position: absolute;
+  left: 77%;
+  width: 19%;
   text-align: center;
   font-style: italic;
   font-size: smaller;
   text-indent: 0;
-  margin: 0.5em;
-  padding: 0.5em;
+
+}
+
+.zui-table {
+    border: solid 1px #DDEEEE;
+    position: absolute;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 16px Arial, sans-serif;
+    width: 100px;
+    height: 100px;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
 }
