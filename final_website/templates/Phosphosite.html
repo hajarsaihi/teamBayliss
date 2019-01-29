@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<doctype html>
+<head>
+    <title>Kinase Database</title>
+    <link rel="stylesheet" type="text/css" href="static/css/main.css?version=86">
+
+<br>
+<center>
+  <header class="w3-center w3-margin-bottom">
+    <p> Phosphosites are sites that are responsible for, or associated with, phosphorylation</p>
+    <p> Use the PhosphoKinase search engine to browse phosphosites that are substrates of Kinases</p></header>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <l class=flashes>
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+      </l>
+  </center>
+  {% endif %}
+{% endwith %}
+
+{% from "_formhelpers.html" import render_field %}
+<form method=post>
+  <div class="search">
+    <div class="wrap">
+      {{ form.select(class_="searchTerm")}}
+      <br>
+      <br>
+      {{ form.search(class_="searchTerm", placeholder="What are you looking for?") }}
+    <p>
+      <br>
+      <br>
+    <input type=submit value=Search class=searchButton>
+  </div>
+ </div>
+</form>
+<br>
+<br>
+{% endblock %}
