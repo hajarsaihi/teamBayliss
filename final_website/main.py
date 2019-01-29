@@ -93,7 +93,7 @@ def i_search_results(search):
         # display results
         table = IResults(results)
         table.border = True
-        return render_template('inhib_results.html', table=table)
+        return render_template('inhib_results.html', results=results)
 
 ###### Phosphosites ###########################################################
 @app.route('/Phosphosite', methods=['GET', 'POST'])

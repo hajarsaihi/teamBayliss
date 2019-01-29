@@ -1,16 +1,52 @@
 {% extends "layout.html" %}
-
 {% block content %}
 
 <doctype html>
 <title>Search Results - Inhibitor Database</title>
 <head>
-    <title>Inhibitor Database</title>
+    <title> Inhibitor Database</title>
+    <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
+    <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="static/css/main.css?version=7">
 </head>
-<h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Inhibitor Search Result</b></h1>
+  <div class="w3-card-4 w3-margin w3-white">
+      <div class="w3-container">
+        <br>
+        {% for x in results %}
+        <center> <h3><b>Results</b></h3> <center>
+        <h5> <span class="w3-teal"><td>{{ x.chembl_ID }}</td></span></h5>
 
-{{ table }}
+      </div>
 
-<h2> </h2>
+      <div class="w3-container">
+        <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Information </h4>
+        <figure>
+            <img src="{{ x.image }}" style="width:250px;height:200px;border:1px solid grey" alt='missing' />
+            <figcaption>{{ x.chembl_ID }}</figcaption>
+        </figure>
+        <br>
+        <h5> Inhibitor Name: <span class="w3-opacity"><td>{{ x.name }}</td></span>
+        <h5> Synonyms: <span class="w3-opacity"><td>{{ x.syn }}</td></span>
+        <h5> Type: <span class="w3-opacity"><td>{{ x.type }}</td></span>
+        <h5> Kinase Target(s): <span class="w3-opacity"><td>{{ x.target1 }}{{ x.target2 }}</td></span>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Chemical Structure </h4>
+        <h5> Molecular Formula: <span class="w3-opacity"><td>{{ x.mol_formula }}</td></span>
+        <h5> SMILES: <span class="w3-opacity"><td>{{ x.smiles }}</td></span>
+        <h5> INCHI: <span class="w3-opacity"><td>{{ x.inchi }}</td></span>
+        <br>
+        <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> External Links</h4>
+        <br>
+        <br>
+        <div class="w3-row">
 
+        </div>
+      </div>
+    {% endfor %}
 {% endblock %}

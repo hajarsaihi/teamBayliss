@@ -20,11 +20,16 @@ class inhibitor_information(db.Model):
     """"""
     __tablename__ = "inhibitor_information"
 
-    chembl_ID = db.Column('ChEMBL_ID', db.Integer, primary_key = True)
+    chembl_ID = db.Column('ChEMBL_IDs', db.Integer, primary_key = True)
     name = db.Column('Name', db.String)
     syn = db.Column('Synonyms', db.String)
     mol_formula = db.Column('Molecular_Formula', db.String)
     type = db.Column('Type', db.String)
+    image = db.Column("image_link", db.String)
+    target1 = db.Column('TARGETS_1', db.String)
+    target2 = db.Column('TARGETS_2', db.String)
+    inchi = db.Column('INCHI', db.String)
+    smiles = db.Column('SMILES', db.String)
 
 class Kinase_Phosphosite(db.Model):
     """"""
