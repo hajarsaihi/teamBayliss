@@ -29,7 +29,7 @@ def k_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'Kinase':
+        if search.data['select'] == 'Protein Kinase Name':
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
             results = qry.all()
 
@@ -38,9 +38,9 @@ def k_search_results(search):
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string))
             results = qry.all()
 
-        elif search.data['select'] == 'Uniprot ID':
+        elif search.data['select'] == 'Gene Name':
             search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.uniprot.ilike(search_string))
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))
             results = qry.all()
 
         else:
@@ -124,9 +124,7 @@ def p_search_results(search):
 
     else:
         # display results
-        table = PResults(results)
-        table.border = True
-        return render_template('phosph_results.html', table=table)
+        return render_template('phosph_results.html', results=results)
 ###############################################################################
 
 @app.route("/Tool")

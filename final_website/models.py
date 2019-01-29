@@ -61,4 +61,4 @@ class Kinase_Phosphosite(db.Model):
     substrate_protein = db.Column('SUBSTRATE', db.String)
     sub_gene = db.Column('SUB_GENE', db.String)
     sub_accession = db.Column('SUB_ACC_ID', db.String)
-    Phosphosite = db.Column('SITE_7_AA', db.String)
+    phosphosite = db.Column('SITE_7_AA', db.String)

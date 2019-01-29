@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired
 from wtforms import validators
 
 class KinaseSearchForm(Form):
-    choices = [('Kinase', 'Kinase'), ('Alias Name', 'Alias Name'),
-                ('Uniprot ID', 'Uniprot ID')]
+    choices = [('Protein Kinase Name', 'Protein Kinase Name'), ('Alias Name', 'Alias Name'),
+                ('Gene Name', 'Gene Name')]
     select = SelectField('Search for Kinase:', choices=choices)
     search = StringField('',[validators.DataRequired()])
 
