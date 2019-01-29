@@ -124,9 +124,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="341" />
-    <option name="y" value="69" />
-    <option name="width" value="1386" />
+    <option name="x" value="19" />
+    <option name="y" value="23" />
+    <option name="width" value="1046" />
     <option name="height" value="794" />
   </component>
   <component name="ProjectView">
@@ -235,7 +235,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Documents/Bioinformatics/Scripts/Learning_Flask/models.py">
+    <entry file="file://$PROJECT_DIR$/../../../../Bioinformatics/Scripts/Learning_Flask/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret selection-end-line="1" selection-end-column="64" />
@@ -252,7 +252,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive - Queen Mary, University of London/teamBayliss/Bayliss_webpage/bayliss.py">
+    <entry file="file://$PROJECT_DIR$/../../../teamBayliss/Bayliss_webpage/bayliss.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret selection-end-line="21" selection-end-column="55" />
