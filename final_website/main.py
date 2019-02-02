@@ -111,7 +111,7 @@ def p_search_results(search):
     if search_string:
         if search.data['select'] == 'Substrate':
             #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
+            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.sub_gene.ilike(search_string))
             results = qry.all()
 
         else:
