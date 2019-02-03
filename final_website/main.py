@@ -23,7 +23,7 @@ def kinase():
         return k_search_results(search)
     return render_template('kinase.html', form=search)
 
-@app.route('/Kinase results')
+@app.route('/k_search_results')
 def k_search_results(search):
     results = []
     search_string = search.data['search']
@@ -57,6 +57,12 @@ def k_search_results(search):
         table.border = True
         return render_template('kinase_results.html', results=results)
 
+@app.route('/profile/<kinase>')
+def profile(kinase):
+    qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
+    results = qry.all()
+    return render_template('profile.html', results=results)
+
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
 def Inhibitor():
@@ -65,7 +71,7 @@ def Inhibitor():
         return i_search_results(search)
     return render_template('Inhibitor.html', form=search)
 
-@app.route('/Inhibitor results')
+@app.route('/i_search_results')
 def i_search_results(search):
     results = []
     search_string = search.data['search']
