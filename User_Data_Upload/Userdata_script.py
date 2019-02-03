@@ -139,14 +139,24 @@ class KinaseSearcher:
         
     def open(self):
         self.data=pd.read_csv(self.filename, header=0)
-        
-    def findkinase(self,sub_gene, sub_mod_rsd):
-        a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
-        b = a[a.SUB_GENE.str.contains(sub_gene)==True]
-        if len(b.index)== 0:
-            return None
-        else:
-            return ",".join(b["KINASE"]) 
+    
+    def findkinase(self,sub_gene, phosphosite):
+        a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
+        #print(a)
+
+        for i in range(1,49):
+            b =[a[a["Z_SITE_{}".format(i)].str.contains(phosphosite) ==True]]
+print(b)               
+            
+            
+            
+   # def findkinase(self,sub_gene, sub_mod_rsd):
+    #    a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+     #   b = a[a.SUB_GENE.str.contains(sub_gene)==True]
+      #  if len(b.index)== 0:
+       #     return None
+        #else:
+         #   return ",".join(b["KINASE"]) 
         
         #just the kinase, if not it will return all columns from kinase_substrate
     #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
