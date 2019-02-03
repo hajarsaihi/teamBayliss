@@ -29,7 +29,9 @@
         <h5> Inhibitor Name: <span class="w3-opacity"><td>{{ x.name }}</td></span>
         <h5> Synonyms: <span class="w3-opacity"><td>{{ x.syn }}</td></span>
         <h5> Type: <span class="w3-opacity"><td>{{ x.type }}</td></span>
-        <h5> Kinase Target(s): <span class="w3-opacity"><td>{{ x.target1 }} {{ x.target2 }}</td></span>
+        <h5> Kinase Target(s): <span class="w3-opacity"><a href="{{ url_for('profile', kinase = x.target1) }}">{{ x.target1 }}</a>
+          <a href="{{ url_for('profile', kinase = x.target2) }}">{{ x.target2 }}</a></span>
+
         <h5> Molecular Formula: <span class="w3-opacity"><td>{{ x.mol_formula }}</td></span>
         <br><br><br><br><br><br><br><br><br>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Structure Representations </h4>

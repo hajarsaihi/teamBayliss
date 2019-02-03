@@ -49,6 +49,7 @@ d.head(30)
 import re
 
 
+
 d=(d[~d.Substrate.str.contains("None")] ) #drop rows with "None"
 
 patternDel = r"\([M]\d+\)" #Use Regex to find "(M and any number of digits)" #\d+ : one or more digits)
@@ -68,7 +69,7 @@ dd[["Substrate","Phosphosite"]] = dd.Substrate.str.extract(r"(.+)\((.\d+)", expa
 print (dd.head(30))
 
 
-# In[19]:
+# In[6]:
 
 
 
@@ -90,11 +91,11 @@ def process_query(query):
     else:
         return query
     
-process_query("YL004_HUMAN") #Test
+process_query("ADT1_HUMAN") #Test
     
 
 
-# In[6]:
+# In[7]:
 
 
 #make copy of Substrate to Substrate gene
@@ -102,21 +103,24 @@ process_query("YL004_HUMAN") #Test
 dd["Sub_gene"]=dd["Substrate"].copy()
 
 
-# In[7]:
+# In[ ]:
 
 
 #Substrates with "_HUMAN" converted to Uniprot Gene Names
+
 dd.Sub_gene = dd.apply(lambda row: process_query(row["Substrate"]), axis =1)
 
 dd["Sub_gene"] = dd["Sub_gene"].str.strip("[]").str.strip("''")  #remove square bracket and '' 
+  #remove square bracket and '' 
 
-#print(dd.head(5)) #Test
+print(dd.head(5)) #Test
 
 
 # In[9]:
 
 
-dd.to_csv("checkH.csv")
+# 
+# dd.to_csv("checkH.csv")
 
 
 # In[26]:
@@ -132,6 +136,36 @@ dd.dropna(subset=["Sub_gene"], inplace=True)
 
 
 #make Kinase column, match Gene to Phosphosite to Kinase info from Kinase_substrate.csv
+# class KinaseSearcher:
+#     def __init__(self,filename):
+#         self.filename=filename
+#         self.open()
+        
+#     def open(self):
+#         self.data=pd.read_csv(self.filename, header=0)
+        
+#     def findkinase(self,sub_gene, sub_mod_rsd):
+#         a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+#         b = a[a.SUB_GENE.str.contains(sub_gene)==True]
+#         if len(b.index)== 0:
+#             return None
+#         else:
+#             return ",".join(b["KINASE"]) 
+        
+#         #just the kinase, if not it will return all columns from kinase_substrate
+#     #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
+        
+# k=KinaseSearcher("kinase_substrate.csv")    
+# #k.findkinase("S129", "AKT1")     #Run Test: AKT1(S129)
+
+#    def findkinase(self,sub_gene, sub_mod_rsd):
+#         a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
+#         b = a[a.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+
+
+# In[11]:
+
+
 class KinaseSearcher:
     def __init__(self,filename):
         self.filename=filename
@@ -139,27 +173,35 @@ class KinaseSearcher:
         
     def open(self):
         self.data=pd.read_csv(self.filename, header=0)
-        
-    def findkinase(self,sub_gene, sub_mod_rsd):
-        a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
-        b = a[a.SUB_GENE.str.contains(sub_gene)==True]
-        if len(b.index)== 0:
-            return None
-        else:
-            return ",".join(b["KINASE"]) 
-        
+
+    
+    def findkinase(self,sub_gene, phosphosite):
+        a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
+        #print(a)
+
+        for i in range(1,49):
+            b =[a[a["Z_SITE_{}".format(i)].str.contains(phosphosite) ==True]]
+print(b)               
+            
+            
+            
+   # def findkinase(self,sub_gene, sub_mod_rsd):
+    #    a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+     #   b = a[a.SUB_GENE.str.contains(sub_gene)==True]
+      #  if len(b.index)== 0:
+       #     return None
+        #else:
+         #   return ",".join(b["KINASE"]) 
+
+
         #just the kinase, if not it will return all columns from kinase_substrate
-    #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
+        #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
         
-k=KinaseSearcher("kinase_substrate.csv")    
-#k.findkinase("S129", "AKT1")     #Run Test: AKT1(S129)
-
-#    def findkinase(self,sub_gene, sub_mod_rsd):
-#         a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
-#         b = a[a.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+k=KinaseSearcher("kinase_substrate_filtered.csv")    #kinase_substrated_filtered runs up to z_site_48
+k.findkinase("NCF1", "S303")     #Run Test: AKT1(S129)
 
 
-# In[31]:
+# In[64]:
 
 
 #to apply class and populate column for kinase GENE name
@@ -169,11 +211,24 @@ dk=dd.apply(lambda row: k.findkinase(row["Sub_gene"],row["Phosphosite"] ), axis 
 #Use Kinase column (not Gene) from kinase_substrate.csv == Name in Kinase_df.csv.
 
 
-# In[32]:
+# In[63]:
 
 
 dd["Kinase"]= dk
 dd.head()
+dd.to_csv("kinasetosplit.csv")
+
+
+# In[ ]:
+
+
+#     var1  var2
+# 0  a,b,c     1
+# 1  d,e,f     2
+
+dd = dd(dd.Kinase.str.split(',').tolist(), index=a.var2).stack()
+b = b.reset_index()[[0, 'var2']] # var1 variable is currently labeled 0
+b.columns = ['var1', 'var2'] # renaming var1
 
 
 # In[33]:
