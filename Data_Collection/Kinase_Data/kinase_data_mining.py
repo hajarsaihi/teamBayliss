@@ -64,3 +64,38 @@ for value in name:
 
 kinase_df['Alias'] = alias_list
 kinase_df.to_csv('kinase_df.csv')
+
+################################# Update - need to mine more data from uniprot
+
+# get the accession IDs
+import pandas
+df = pandas.read_csv("kinase_df.csv", index_col=0)
+df = df[df.uniprot_IDs != "unknown"]
+
+uniprot_ID = list(df["uniprot_IDs"])
+
+# just to check :)
+# for kinase in uniprot_ID:
+ #   if kinase == 'unknown':
+  #      print kinase
+accID_list = []
+
+for kinase in uniprot_ID:
+    data = pandas.read_csv("http://www.uniprot.org/uniprot/?query="+kinase+"&sort=score&columns=id,comment(id)&format=tab", sep="\t")
+    accID = data["Entry"][0]
+    accID_list.append(accID)
+df["uni_accession"] = accID_list
+
+# get gene names
+uniprot_ID = list(df["uniprot_IDs"])
+gene_name_list = []
+
+for kinase in uniprot_ID:
+    data = pandas.read_csv("http://www.uniprot.org/uniprot/?query="+kinase+"&sort=score&columns=id,genes(PREFERRED)&format=tab", sep="\t")
+    gene = data["Gene names  (primary )"][0]
+    gene_name_list.append(gene)
+    
+df["gene_name"] = gene_name_list
+
+df=df.drop(columns=['Kinase Domain']) # realised we dont really need this
+df.to_csv("kinase_df.csv")

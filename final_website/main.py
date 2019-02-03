@@ -9,6 +9,7 @@ from tables import KResults, IResults, PResults
 app = Flask(__name__)
 app.secret_key = 'ca/i4tishfkaSJSF'
 init_db()
+
 ###############################################################################
 @app.route("/")
 def index():
@@ -28,14 +29,8 @@ def k_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'Kinase':
-            #search_string = search_string.upper() use ilike for case sensitive search
+        if search.data['select'] == 'Protein Kinase Name':
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
-            results = qry.all()
-
-        elif search.data['select'] == 'Family':
-            search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.family.ilike(search_string))
             results = qry.all()
 
         elif search.data['select'] == 'Alias Name':
@@ -43,12 +38,14 @@ def k_search_results(search):
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string))
             results = qry.all()
 
+        elif search.data['select'] == 'Gene Name':
+            search_string = search_string.upper()
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))
+            results = qry.all()
+
         else:
             qry = db_session.query(Kinase_Information)
             results = qry.all()
-    else:
-        flash('Search Field Empty')
-        return redirect('/kinase')
 
     if not results:
         flash('No results found!')
@@ -58,7 +55,7 @@ def k_search_results(search):
         # display results
         table = KResults(results)
         table.border = True
-        return render_template('kinase_results.html', table=table)
+        return render_template('kinase_results.html', results=results)
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
@@ -74,17 +71,19 @@ def i_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'CHEMBL ID':
+        if search.data['select'] == ' ChEMBL ID ':
             #search_string = search_string.upper() use ilike for case sensitive search
             qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
+            results = qry.all()
+
+        elif search.data['select'] == 'GSK Name':
+            #search_string = search_string.upper() use ilike for case sensitive search
+            qry = db_session.query(inhibitor_information).filter(inhibitor_information.name.ilike(search_string))
             results = qry.all()
 
         else:
             qry = db_session.query(inhibitor_information)
             results = qry.all()
-    else:
-        flash('Search Field Empty')
-        return redirect('/Inhibitor')
 
     if not results:
         flash('No results found!')
@@ -94,7 +93,7 @@ def i_search_results(search):
         # display results
         table = IResults(results)
         table.border = True
-        return render_template('inhib_results.html', table=table)
+        return render_template('inhib_results.html', results=results)
 
 ###### Phosphosites ###########################################################
 @app.route('/Phosphosite', methods=['GET', 'POST'])
@@ -110,22 +109,14 @@ def p_search_results(search):
     search_string = search.data['search']
 
     if search_string:
-        if search.data['select'] == 'Substrate Protein':
+        if search.data['select'] == 'Substrate':
             #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
-            results = qry.all()
-
-        elif search.data['select'] == 'Kinase':
-            #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.pkinase.ilike(search_string))
+            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.sub_gene.ilike(search_string))
             results = qry.all()
 
         else:
             qry = db_session.query(Kinase_Phosphosite)
             results = qry.all()
-    else:
-        flash('Search Field Empty')
-        return redirect('/Phosphosite')
 
     if not results:
         flash('No results found!')
@@ -133,9 +124,7 @@ def p_search_results(search):
 
     else:
         # display results
-        table = PResults(results)
-        table.border = True
-        return render_template('phosph_results.html', table=table)
+        return render_template('phosph_results.html', results=results)
 ###############################################################################
 
 @app.route("/Tool")
