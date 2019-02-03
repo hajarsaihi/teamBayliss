@@ -25,7 +25,7 @@ cur.execute("CREATE TABLE inhibitor_information(ChEMBL_IDs PRIMARY KEY, INCHI VA
 												 Molecular_Weight_Monoisotopic REAL, Molecular_Formula VARCHAR(50), image_link VARCHAR(300));")
 
 #The csv file is opened
-with open('raw_inhibitor_data_final.csv','rb') as fin: # reads file in Binary mode, fin is the file name which is used below
+with open('raw_inhibitor_data_final.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
 	#csv.DictReader uses first line in file for column headings by default
 	dr_in_1 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings
 	to_in_1 = [(i['ChEMBL_IDs'], i['INCHI'], i['SMILES'], i['TARGETS_1'], i['TARGETS_2'],i['Name'],i['Synonyms'], i['Type'], i['Max_Phase'], i['Molecular_Weight'],\
@@ -53,7 +53,7 @@ con.commit()  #Commit the changes
 cur.execute("CREATE TABLE inhibitor_references(Key PRIMARY KEY, ChEMBL_ID_, TARGET_1,TARGET_2, PUBMED_ID VARCHAR(30))") # use your column names here
 
 #The csv file is opened
-with open('inhib_and_ref.csv','rb') as fin: # `with` statement available in 2.5+
+with open('inhib_and_ref.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
 	#csv.DictReader uses first line in file for column headings by default
     dr_in_2 = csv.DictReader(fin) # comma is default delimiter
     to_in_2 = [(i['Key'],i['ChEMBL_ID_'], i['TARGET_1'], i['TARGET_2'],i['PUBMED_ID'],) for i in dr_in_2]    #These names must be the same as in the columns of the CSV table
@@ -73,7 +73,7 @@ con.commit()  #Commit the changes
 cur.execute("CREATE TABLE inhibitor_KINASE(Primary_Key PRIMARY KEY, ChEMBL_ID TEXT,TARGETs_1 TEXT, TARGETs_2 TEXT);")
 
 #The csv file is opened
-with open('raw_inhibitor_data_final.csv','rb') as fin: # reads file in Binary mode, fin is the file name which is used below
+with open('raw_inhibitor_data_final.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
 	#csv.DictReader uses first line in file for column headings by default
 	dr_in_3 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings
 	to_in_3 = [(i['Primary_Key'], i['ChEMBL_IDs'], i['TARGETS_1'],i['TARGETS_2'],) for i in dr_in_3]       #These names must be the same as in the columns of the CSV table
@@ -119,7 +119,7 @@ cur.execute("CREATE TABLE Kinase_Information(key_numbers PRIMARY KEY, Name VARCH
                                             Entrez_GeneID VARCHAR(30), Entrez_description REAL,uniprot_IDs TEXT, location TEXT, uni_accession TEXT, gene_name TEXT, Alias VARCHAR(200));") # use your column names here
 
 #The csv file is opened
-with open('kinase_df.csv','rb') as fin: # reads file in Binary mode,
+with open('kinase_df.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
     #csv.DictReader uses first line in file for column headings by default
     dr_1 = csv.DictReader(fin) # comma is default delimiter
     to_db_1 = [(i['key_numbers'],i['Name'], i['Groups'],i['Family'], i['Subfamily'], i['Entrez_GeneID'],\
@@ -131,25 +131,46 @@ con.commit()  #Commit the changes
 
 #print to_db_1
 
+
 #######2: THE KINASE PHOSPHOSITES##########
 
 
-cur.execute("CREATE TABLE Kinase_Phosphosite(Keys_row PRIMARY KEY, GENE TEXT, KINASE VARCHAR(30), KIN_ACC_ID VARCHAR(30),\
-				 SUBSTRATE TEXT, SUB_ACC_ID VARCHAR(30),SUB_GENE VARCHAR(20),SUB_MOD_RSD TEXT,\
-				 SITE_GRP_ID INTEGER,SITE_7_AA VARCHAR(16));") # use your column names here
+cur.execute("CREATE TABLE Kinase_Phosphosite(Key_rows PRIMARY KEY, GENE TEXT, KINASE VARCHAR(30), KIN_ACC_ID VARCHAR(30),\
+				 SUBSTRATE TEXT, SUB_ACC_ID VARCHAR(30),SUB_GENE VARCHAR(20),SUB_GENE_ID TEXT, Z_SITE_1 TEXT,Z_SITE_2 TEXT,\
+				 Z_SITE_3 TEXT,Z_SITE_4 TEXT,Z_SITE_5 TEXT,Z_SITE_6 TEXT,Z_SITE_7 TEXT,Z_SITE_8 TEXT,Z_SITE_9 TEXT,Z_SITE_10 TEXT,\
+				 Z_SITE_11 TEXT,Z_SITE_12 TEXT,Z_SITE_13 TEXT,Z_SITE_14 TEXT,Z_SITE_15 TEXT,Z_SITE_16 TEXT,Z_SITE_17 TEXT,\
+				Z_SITE_18 TEXT,Z_SITE_19 TEXT,Z_SITE_20 TEXT,Z_SITE_21 TEXT,Z_SITE_22 TEXT,Z_SITE_23 TEXT,Z_SITE_24 TEXT,Z_SITE_25 TEXT,Z_SITE_26 TEXT,\
+				Z_SITE_27 TEXT,Z_SITE_28 TEXT,Z_SITE_29 TEXT,Z_SITE_30 TEXT,Z_SITE_31 TEXT,Z_SITE_32 TEXT,Z_SITE_33 TEXT,Z_SITE_34 TEXT,Z_SITE_35 TEXT,\
+				Z_SITE_36 TEXT,Z_SITE_37 TEXT,Z_SITE_38 TEXT,Z_SITE_39 TEXT,Z_SITE_40 TEXT,Z_SITE_41 TEXT,Z_SITE_42 TEXT,Z_SITE_43 TEXT,Z_SITE_44 TEXT,\
+				Z_SITE_45 TEXT,Z_SITE_46 TEXT,Z_SITE_47 TEXT,Z_SITE_48 TEXT);") # use your column names here
 
-with open('kinase_substrate.csv','rb') as fin: # `with` statement available in 2.5+
+with open('kinase_substrate_filtered.csv','rt') as fin: # reads file in text mode,
    # csv.DictReader uses first line in file for column headings by default
     dr_2 = csv.DictReader(fin) # comma is default delimiter
-    to_db_2 = [(i['Keys_row'],i['GENE'], i['KINASE'], i['KIN_ACC_ID'], i['SUBSTRATE'], i['SUB_ACC_ID'], i['SUB_GENE'], \
-    			i['SUB_MOD_RSD'], i['SITE_GRP_ID'], i['SITE_7_AA'] ) for i in dr_2]
+    to_db_2 = [(i['Key_rows'],i['GENE'], i['KINASE'], i['KIN_ACC_ID'], i['SUBSTRATE'], i['SUB_ACC_ID'], i['SUB_GENE'], \
+    			i['SUB_GENE_ID'],i['Z_SITE_1'], i['Z_SITE_2'],i['Z_SITE_3'], i['Z_SITE_4'],i['Z_SITE_5'],
+    			i['Z_SITE_6'],i['Z_SITE_7'], i['Z_SITE_8'],i['Z_SITE_9'], i['Z_SITE_10'],
+    			i['Z_SITE_11'], i['Z_SITE_12'],i['Z_SITE_13'], i['Z_SITE_14'],i['Z_SITE_15'], i['Z_SITE_16'],
+    			i['Z_SITE_17'], i['Z_SITE_18'],i['Z_SITE_19'], i['Z_SITE_20'],i['Z_SITE_21'], i['Z_SITE_22'],i['Z_SITE_23'],
+    			i['Z_SITE_24'], i['Z_SITE_25'],i['Z_SITE_26'], i['Z_SITE_27'],i['Z_SITE_28'], i['Z_SITE_29'],
+    			i['Z_SITE_30'], i['Z_SITE_31'],i['Z_SITE_32'], i['Z_SITE_33'],i['Z_SITE_34'], i['Z_SITE_35'],
+    			i['Z_SITE_36'], i['Z_SITE_37'],i['Z_SITE_38'], i['Z_SITE_39'],i['Z_SITE_40'], i['Z_SITE_41'], i['Z_SITE_42'],
+    			i['Z_SITE_43'], i['Z_SITE_44'],i['Z_SITE_45'], i['Z_SITE_46'],i['Z_SITE_47'], i['Z_SITE_48'],) for i in dr_2]
 
-cur.executemany("INSERT INTO Kinase_Phosphosite(Keys_row,GENE, KINASE, KIN_ACC_ID, SUBSTRATE, SUB_ACC_ID, SUB_GENE,\
-				 SUB_MOD_RSD, SITE_GRP_ID, SITE_7_AA) VALUES (?,?,?,?,?,?,?,?,?,?);", to_db_2)
+cur.executemany("INSERT INTO Kinase_Phosphosite(Key_rows,GENE,KINASE,KIN_ACC_ID,SUBSTRATE,SUB_ACC_ID,\
+	SUB_GENE,SUB_GENE_ID,Z_SITE_1,Z_SITE_2,Z_SITE_3,Z_SITE_4,Z_SITE_5,Z_SITE_6,Z_SITE_7,Z_SITE_8,\
+	Z_SITE_9,Z_SITE_10,Z_SITE_11,Z_SITE_12,Z_SITE_13,Z_SITE_14,Z_SITE_15,Z_SITE_16,Z_SITE_17,\
+	Z_SITE_18,Z_SITE_19,Z_SITE_20,Z_SITE_21,Z_SITE_22,Z_SITE_23,Z_SITE_24,Z_SITE_25,Z_SITE_26,\
+	Z_SITE_27,Z_SITE_28,Z_SITE_29,Z_SITE_30,Z_SITE_31,Z_SITE_32,Z_SITE_33,Z_SITE_34,Z_SITE_35,\
+	Z_SITE_36,Z_SITE_37,Z_SITE_38,Z_SITE_39,Z_SITE_40,Z_SITE_41,Z_SITE_42,Z_SITE_43,Z_SITE_44,\
+	Z_SITE_45,Z_SITE_46,Z_SITE_47,Z_SITE_48) \
+	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",to_db_2)
 
 con.commit()
 
-#print to_db_2
+
+print(to_db_2)
+
 
 
 ### 4: TO JOIN THE TABLES USING A FOREIGN KEY ########
