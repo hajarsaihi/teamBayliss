@@ -253,10 +253,12 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
 
 
 
-    from bokeh.plotting import figure, ColumnDataSource, output_notebook, show
+
+    from bokeh.resources import CDN
+    from bokeh.embed import file_html, components
+    from bokeh.plotting import figure, ColumnDataSource, output_notebook, show, output_file
     from bokeh.models import HoverTool, WheelZoomTool, PanTool, BoxZoomTool, ResetTool, TapTool, SaveTool
     from bokeh.palettes import brewer
-
 
     output_notebook()
 
@@ -284,12 +286,28 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
     p = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
    
     p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
+   
+    ##---------displaying the graph
     
-    #displaying the graph
     show(p)
-    
+    components(p)                    #To get the bokeh html and jazavascript
+    script1, div1 =components(p)
+    print(script1)    
+
+#makeplot(dd, 1.0, 0.05, "AZ20")
+
+output_file("volcano_plot1.html")  #to output the volcano plot as a html 
+
+
 makeplot(dd, 1.0, 0.05, "AZ20")
 
+###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here  
+ #CDN: Content Delivery Network 
+    
+cdn_js=CDN.js_files[0]   #Only the first link is used 
+
+#To get the CSS style sheet of the Bokeh volcano plot
+cdn_css=CDN.css_files[0] #Only the first link is used 
 
 # In[36]:
 
@@ -323,11 +341,11 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
     df.head()
 
 
-
-    from bokeh.plotting import figure, ColumnDataSource, output_notebook, show
+    from bokeh.resources import CDN
+    from bokeh.embed import file_html, components
+    from bokeh.plotting import figure, ColumnDataSource, output_notebook, show, output_file
     from bokeh.models import HoverTool, WheelZoomTool, PanTool, BoxZoomTool, ResetTool, TapTool, SaveTool
     from bokeh.palettes import brewer
-
 
     output_notebook()
 
@@ -356,11 +374,28 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
    
     p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
-    #displaying the graph
+##---------displaying the graph
+    
     show(p)
+    components(p)                    #To get the bokeh html and jazavascript
+    script1, div1 =components(p)
+    print(script1)    
+
+#makeplot(dd, 1.0, 0.05, "AZ20")
+
+output_file("volcano_plot1.html")  #to output the volcano plot as a html 
+
+
     
 makeplot_2(dd, 1.0, 0.05, "AZ20")
 
+###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here  
+ #CDN: Content Delivery Network 
+    
+cdn_js=CDN.js_files[0]   #Only the first link is used 
+
+#To get the CSS style sheet of the Bokeh volcano plot
+cdn_css=CDN.css_files[0] #Only the first link is used 
 
 # In[31]:
 

@@ -1,9 +1,24 @@
+import os
 from app import app
-from flask import Flask, render_template, flash, render_template, request, redirect
+from flask import Flask, Markup, render_template, flash,url_for, render_template, request, redirect,g,send_from_directory, Response, request
 from forms import KinaseSearchForm, PhosphositeSearchForm, InhibitorSearchForm
 from models import Kinase_Information, Kinase_Phosphosite, inhibitor_information
 from db_setup import init_db, db_session
 from tables import KResults, IResults, PResults
+import pandas as pd
+import numpy as np
+import csv
+import pandas as pd
+from werkzeug.utils import secure_filename
+from bokeh.plotting import figure,  ColumnDataSource, output_notebook, show
+from bokeh.resources import CDN, INLINE
+from bokeh.embed import file_html, components
+from bokeh.models import HoverTool, WheelZoomTool, PanTool, BoxZoomTool, ResetTool, TapTool, SaveTool
+from bokeh.palettes import brewer
+import matplotlib.pyplot as plt
+import datetime
+import re
+import requests
 ###############################################################################
 
 app = Flask(__name__)
@@ -132,10 +147,63 @@ def p_search_results(search):
         # display results
         return render_template('phosph_results.html', results=results)
 ###############################################################################
+###TOOLS ###
 
-@app.route("/Tool")
+UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
+ALLOWED_EXTENSIONS= set(['tsv'])   #only tsv files are allowed 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/Tool/", methods=['GET','POST'])
 def Tool():
-  return render_template("Tool.html")
+    return render_template('Tool.html')
+
+@app.route("/Tool/upload", methods=['POST'])
+def upload():
+#the name of the input is file in the html
+        target = os.path.join(UPLOAD_FOLDER, 'static/')    #to create a folder into which the file will be saved
+        print(target)
+
+        if not os.path.isdir(target):                  #if folder is not made it should be made
+            os.mkdir(target)
+
+        for file in request.files.getlist("file"):
+            filename = secure_filename(file.filename)
+            print(file)
+            filename =file.filename
+            destination ="/".join([target, "temp.tsv"])   #saves teh file as temp.tsv
+            print(destination)
+            file.save(destination)
+
+        return render_template("Upload.html")
+     
+
+###Output where the volcano plot and table will be shown 
+@app.route("/Tool/upload/compute", methods=['POST'])
+
+def plot():
+    import Userdata_script
+
+    Userdata_script.open_file(file)
+    
+    Userdata_script.process_query()
+
+    Userdata_script.cv_filter(dd, CV_P)
+    Userdata_script.makeplot(dd, FC_P, PV_P, Inhibitor)
+
+
+    return render_template("plot.html", 
+        script1=script1,
+        div1=div1,
+        cdn_css=cdn_css,
+        cdn_js=cdn_js)
+
+
+###############################
+
 
 @app.route("/about")
 def about():
