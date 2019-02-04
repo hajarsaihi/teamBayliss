@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+
+        <link rel="stylesheet" href={{cdn_css | safe}} type="text/css" />
+        
+        
+          
+   <script type="text/javascript" src={{cdn_js | safe}}></script>
+
+
+  <main class="about-section">
+    <div class="container">
+
+      <h1 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Phosphoproteomics Tool Results</b></h1>
+
+        <body>
+      
+
+<p> Your File Has Been Analysed</p>
+<p> Volcano Plot</p>
+{{script1 | safe}}
+
+{{div1 | safe}}
+
+
+
+<p> The red points show </p>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+
+
+
+  
+  </body>
+
+</div>
+
+
+{% endblock %}
