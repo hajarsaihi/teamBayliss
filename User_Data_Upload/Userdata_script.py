@@ -437,8 +437,9 @@ dkinase
 
 # In[40]:
 
+Kinasetable_sorted=dkinase.sort_values(by='mean_FC_kinase', ascending=False)
 
-dkinase.sort_values(by='mean_FC_kinase', ascending=False)
+Kinasetable_sorted=Kinasetable_sorted.to_html()    #The html format of the  table is saved whihc will be shown on the website
 
 
 # In[23]:
