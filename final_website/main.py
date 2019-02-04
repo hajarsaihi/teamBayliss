@@ -195,11 +195,15 @@ def plot():
     Userdata_script.makeplot(dd, FC_P, PV_P, Inhibitor)
 
 
+
     return render_template("plot.html", 
         script1=script1,
         div1=div1,
+        script2=script2,
+        div2=div2,
         cdn_css=cdn_css,
-        cdn_js=cdn_js)
+        cdn_js=cdn_js,
+        Kinasetable_sorted=Kinasetable_sorted )
 
 
 ###############################
