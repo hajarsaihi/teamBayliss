@@ -1,12 +1,11 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[11]:
 
 
 
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 import os
 
@@ -28,20 +27,20 @@ def open_file(filename):
     d = pd.read_csv(filename ,usecols=list(range(0,7)), na_values='inf', sep = '\t')
     return d
 
-d=open_file("az20.tsv")
+d=open_file("az20_500.tsv")
 
 
 
-# In[2]:
+# In[12]:
 
 
 d_cols=["Substrate", "Control_mean", "Inhibitor_mean", "Fold_change", "p_value", "ctrlCV", "treatCV" ]
 d.columns=d_cols
 
-d.head(30)
+d.head()
 
 
-# In[3]:
+# In[13]:
 
 
 ####drop out methonine and none####
@@ -59,7 +58,7 @@ dd=(d[~d.Substrate.str.contains(patternDel)].copy()) #d1: rows with (Mddd) remov
 print(dd.head(30))
 
 
-# In[4]:
+# In[14]:
 
 
 #add split of gene/protein names to XXX_HUMAN   and (SNNN)
@@ -69,7 +68,7 @@ dd[["Substrate","Phosphosite"]] = dd.Substrate.str.extract(r"(.+)\((.\d+)", expa
 print (dd.head(30))
 
 
-# In[6]:
+# In[15]:
 
 
 
@@ -95,7 +94,7 @@ process_query("ADT1_HUMAN") #Test
     
 
 
-# In[7]:
+# In[16]:
 
 
 #make copy of Substrate to Substrate gene
@@ -103,7 +102,7 @@ process_query("ADT1_HUMAN") #Test
 dd["Sub_gene"]=dd["Substrate"].copy()
 
 
-# In[ ]:
+# In[17]:
 
 
 #Substrates with "_HUMAN" converted to Uniprot Gene Names
@@ -123,7 +122,7 @@ print(dd.head(5)) #Test
 # dd.to_csv("checkH.csv")
 
 
-# In[26]:
+# In[18]:
 
 
 #Removes Substrates "_HUMAN" with no Sub_gene result: likely experimental protein
@@ -132,10 +131,36 @@ dd.dropna(subset=["Sub_gene"], inplace=True)
 #dd.to_csv("checkNoH.csv")
 
 
-# In[27]:
+# In[26]:
 
 
 #make Kinase column, match Gene to Phosphosite to Kinase info from Kinase_substrate.csv
+class KinaseSearcher:
+    def __init__(self,filename):
+        self.filename=filename
+        self.open()
+        
+    def open(self):
+        self.data=pd.read_csv(self.filename, header=0)
+        
+    def findkinase(self,sub_gene, sub_mod_rsd):
+        a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
+        b = a[a.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+        if len(b.index)== 0:
+            return None
+        else:
+            return ",".join(b["KINASE"]) 
+        
+        #just the kinase, if not it will return all columns from kinase_substrate
+    #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
+        
+k=KinaseSearcher("kinase_substrate.csv")    
+k.findkinase("AKT1", "S129")     #Run Test: AKT1(S129)
+
+
+# In[59]:
+
+
 # class KinaseSearcher:
 #     def __init__(self,filename):
 #         self.filename=filename
@@ -144,64 +169,28 @@ dd.dropna(subset=["Sub_gene"], inplace=True)
 #     def open(self):
 #         self.data=pd.read_csv(self.filename, header=0)
         
-#     def findkinase(self,sub_gene, sub_mod_rsd):
-#         a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
-#         b = a[a.SUB_GENE.str.contains(sub_gene)==True]
-#         if len(b.index)== 0:
-#             return None
-#         else:
-#             return ",".join(b["KINASE"]) 
+#     def findkinase(self,sub_gene, phosphosite):
+#         a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
+#         #return a
+#         #b = a["Z_SITE_{}".format(i)].str.contains(phosphosite)
+#         for i in range(1,49,1):
+#             b = a[a["Z_SITE_{}".format(i)].str.contains(phosphosite)==True]
+#             return b
+#             if len(b)== 0:
+#                 return None
+#             else:
+#                 b==phosphosite
+#                 return a["KINASE"]
+#                 #return b["KINASE"]
         
 #         #just the kinase, if not it will return all columns from kinase_substrate
-#     #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
+#         #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
         
-# k=KinaseSearcher("kinase_substrate.csv")    
-# #k.findkinase("S129", "AKT1")     #Run Test: AKT1(S129)
-
-#    def findkinase(self,sub_gene, sub_mod_rsd):
-#         a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
-#         b = a[a.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
+# k=KinaseSearcher("kinase_substrate_filtered.csv")    #kinase_substrated_filtered runs up to z_site_48
+# k.findkinase("NCF1", "S303")     #Run Test: AKT1(S129)
 
 
-# In[11]:
-
-
-class KinaseSearcher:
-    def __init__(self,filename):
-        self.filename=filename
-        self.open()
-        
-    def open(self):
-        self.data=pd.read_csv(self.filename, header=0)
-
-    
-    def findkinase(self,sub_gene, phosphosite):
-        a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
-        #print(a)
-
-        for i in range(1,49):
-            b =[a[a["Z_SITE_{}".format(i)].str.contains(phosphosite) ==True]]
-print(b)               
-            
-            
-            
-   # def findkinase(self,sub_gene, sub_mod_rsd):
-    #    a = self.data[self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)==True]
-     #   b = a[a.SUB_GENE.str.contains(sub_gene)==True]
-      #  if len(b.index)== 0:
-       #     return None
-        #else:
-         #   return ",".join(b["KINASE"]) 
-
-
-        #just the kinase, if not it will return all columns from kinase_substrate
-        #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
-        
-k=KinaseSearcher("kinase_substrate_filtered.csv")    #kinase_substrated_filtered runs up to z_site_48
-k.findkinase("NCF1", "S303")     #Run Test: AKT1(S129)
-
-
-# In[64]:
+# In[27]:
 
 
 #to apply class and populate column for kinase GENE name
@@ -211,27 +200,28 @@ dk=dd.apply(lambda row: k.findkinase(row["Sub_gene"],row["Phosphosite"] ), axis 
 #Use Kinase column (not Gene) from kinase_substrate.csv == Name in Kinase_df.csv.
 
 
-# In[63]:
+# In[32]:
 
 
 dd["Kinase"]= dk
-dd.head()
-dd.to_csv("kinasetosplit.csv")
+dd.head(50)
+#dd.to_csv("kinasetosplit.csv")
 
 
-# In[ ]:
+# In[34]:
 
 
-#     var1  var2
-# 0  a,b,c     1
-# 1  d,e,f     2
+# split multiple kinases to one substrate/phosphosite into individual rows
+dd = dd.join(dd.pop('Kinase')
+                   .str.strip(',')
+                   .str.split(',', expand=True)
+                   .stack()
+                   .reset_index(level=1, drop=True)
+                   .rename('Kinase')).reset_index(drop=True)
 
-dd = dd(dd.Kinase.str.split(',').tolist(), index=a.var2).stack()
-b = b.reset_index()[[0, 'var2']] # var1 variable is currently labeled 0
-b.columns = ['var1', 'var2'] # renaming var1
 
 
-# In[33]:
+# In[35]:
 
 
 def cv_filter(dd, CV_P):
@@ -301,7 +291,7 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
 makeplot(dd, 1.0, 0.05, "AZ20")
 
 
-# In[72]:
+# In[36]:
 
 
 
@@ -378,7 +368,7 @@ makeplot_2(dd, 1.0, 0.05, "AZ20")
 ##########
 
 
-# In[80]:
+# In[37]:
 
 
 ###Sum of control_mean and inhibitor_mean 
@@ -410,10 +400,10 @@ dkinase
 
 
 
-# In[83]:
+# In[40]:
 
 
-dkinase[dkinase.p_value<0.10].sort_values(by='mean_FC_kinase', ascending=False) #[dkinase.p_value<0.10]
+dkinase.sort_values(by='mean_FC_kinase', ascending=False)
 
 
 # In[23]:
