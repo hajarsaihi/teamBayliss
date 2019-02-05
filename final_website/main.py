@@ -159,7 +159,7 @@ def allowed_file(filename):
 
 @app.route("/Tool/", methods=['GET','POST'])
 def Tool():
-    return render_template('Tool.html')
+    return render_template('Tool.html')      #The upload button is shown 
 
 @app.route("/Tool/upload", methods=['POST'])
 def upload():
@@ -232,7 +232,6 @@ def plot():
         cdn_css=cdn_css,
         cdn_js=cdn_js,
         Kinasetable_sorted=Kinasetable_sorted)
-
 
 
 
