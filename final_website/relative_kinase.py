@@ -254,7 +254,7 @@ def relative_kinase_activity_calculation(de):
     dkinase["mean_FC_kinase"]= dkinase["Inhibitor_mean"]/dkinase["Control_mean"]
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
-    dkinase.sort_values(by='mean_FC_kinase', ascending=False)
+    dkinase=dkinase.sort_values(by='mean_FC_kinase', ascending=False)
     Kinasetable_sorted=dkinase.to_html() #To get the html version of the table
    
     return Kinasetable_sorted
