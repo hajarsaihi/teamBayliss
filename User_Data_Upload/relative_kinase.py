@@ -108,20 +108,21 @@ def add_kinase(dd, kinase_datafile):
     dk=dd.apply(lambda row: k.findkinase(row["Sub_gene"],row["Phosphosite"] ), axis =1)
     dd["Kinase"]= dk
 
-    dd = dd.join(dd.pop('Kinase')   #gives multiple-kinase-to-one-sub-gene-phosphosite indv rows
+    de = dd.join(dd.pop('Kinase')   #gives multiple-kinase-to-one-sub-gene-phosphosite indv rows
                    .str.strip(',')
                    .str.split(',', expand=True)
                    .stack()
                    .reset_index(level=1, drop=True)
                    .rename('Kinase')).reset_index(drop=True)
 
-    return dd
+
+    return de
 
 
 
 def cv_filter(dd, CV_P):
 
-    dd= dd.loc[(dd['ctrlCV'] <=  CV_P) & (dd['treatCV'] <= CV_P)]   #user define CV value: Rows Above CV_P filtered out 
+    dd= dd.loc[(dd['ctrlCV'] <=  CV_P) & (dd['treatCV'] <= CV_P)]   #user define CV value: Rows Above CV_P filtered out
     return dd
 
 
@@ -183,7 +184,7 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
 def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
-    df = df[~df["Kinase"].isnull()]  # user define CV value: Rows Above CV_P filtered out
+    df = df[df['Kinase']!='']  # user define CV value: Rows Above CV_P filtered out
 
     df.loc[(df['Fold_change'] > FC_P) & (df['p_value'] < PV_P), 'color' ] = "Blue"  # upregulated
     #df.loc - Selects single row or subset of rows from the DataFrame by label
@@ -194,6 +195,8 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
     df["log_pvalue"] = -np.log10(df['p_value'])
     df["log_FC"]=np.log2(df['Fold_change'])
+
+    df.head()
 
     output_notebook()
 
@@ -227,12 +230,12 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
 
-def relative_kinase_activity_calculation(dd):
+def relative_kinase_activity_calculation(de):
 
 ###Sum of control_mean and inhibitor_mean
     #=control mean
-    kinase_sum_control_mean= dd.groupby("Kinase").Control_mean.sum() #sum of individual group of kinases at a phosphosite
-    total_control_mean=dd.Control_mean.sum()  #toal sum of control_mean of all kinases
+    kinase_sum_control_mean= de.groupby("Kinase").Control_mean.sum() #sum of individual group of kinases at a phosphosite
+    total_control_mean=de.Control_mean.sum()  #toal sum of control_mean of all kinases
 
     dkinase=pd.DataFrame(kinase_sum_control_mean)
     dkinase["relative_control_activity"]=dkinase["Control_mean"]/total_control_mean
@@ -240,16 +243,16 @@ def relative_kinase_activity_calculation(dd):
     #relative activity = mean of each kinase/total control means
     #-------------
     #inhibitor mean
-    kinase_sum_inhibitor_mean= dd.groupby("Kinase").Inhibitor_mean.sum() #sum of groups of kinases
+    kinase_sum_inhibitor_mean= de.groupby("Kinase").Inhibitor_mean.sum() #sum of groups of kinases
     dkinase["Inhibitor_mean"]=kinase_sum_inhibitor_mean
-    total_inhibitor_mean=dd.Inhibitor_mean.sum()
+    total_inhibitor_mean=de.Inhibitor_mean.sum()
     dkinase["relative_inhibitor_activity"]=dkinase["Inhibitor_mean"]/total_inhibitor_mean
     #Mean Fold Change
     dkinase["mean_FC_kinase"]= dkinase["Inhibitor_mean"]/dkinase["Control_mean"]
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
     dkinase.sort_values(by='mean_FC_kinase', ascending=False)
-    return dkinase
+    return dkinase.sort_values(by='mean_FC_kinase', ascending=False)#dkinase
 
 
 
