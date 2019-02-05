@@ -10,9 +10,12 @@ import numpy as np
 import os
 import re
 import requests
-from bokeh.plotting import figure, ColumnDataSource, output_notebook, show
+from bokeh.resources import CDN
+from bokeh.embed import file_html, components
+from bokeh.plotting import figure, ColumnDataSource, output_notebook, show, output_file
 from bokeh.models import HoverTool, WheelZoomTool, PanTool, BoxZoomTool, ResetTool, TapTool, SaveTool
 from bokeh.palettes import brewer
+
 
 
 #FC_P=float(input("Input Fold_Change Threshold")) #user input fold change parameter
@@ -221,12 +224,12 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
     #finally making figure with scatter plot
-    p = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
+    pp = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
    
-    p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
+    pp.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
     #displaying the graph
-    return(p)
+    return(pp)
 
 
 
@@ -252,22 +255,8 @@ def relative_kinase_activity_calculation(de):
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
     dkinase.sort_values(by='mean_FC_kinase', ascending=False)
-    return dkinase.sort_values(by='mean_FC_kinase', ascending=False)#dkinase
+    Kinasetable_sorted=dkinase.to_html() #To get the html version of the table
+   
+    return Kinasetable_sorted
 
 
-
-
-def relative_kinase_activity(filename, FC_P, PV_P, CV_P, Inhibitor ):
-    input_data=open_file(filename)
-    data=filter_data(input_data, FC_P, PV_P, CV_P)
-    data=add_sub_gene(data)
-    #print(data)
-    data=add_kinase(data, "kinase_substrate_filtered.csv")
-    #print(data)
-    plot1=makeplot(data, FC_P, PV_P, Inhibitor)
-    #print(data)
-    plot2=makeplot_2(data, FC_P, PV_P, Inhibitor)
-    print(data)
-    kinase_activity_data=relative_kinase_activity_calculation(data)
-
-    return plot1, plot2, kinase_activity_data
