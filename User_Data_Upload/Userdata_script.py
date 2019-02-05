@@ -15,6 +15,8 @@ import os
 #CV_P=float("Input CV Thresholds") #user input fold change parameter
 #Inhibitor=("Input inhibitor")  #user input fold change parameter
 
+filename="./static/temp.tsv"
+
 def open_file(filename):
     
 #allow for user file input
@@ -27,7 +29,7 @@ def open_file(filename):
     d = pd.read_csv(filename ,usecols=list(range(0,7)), na_values='inf', sep = '\t')
     return d
 
-d=open_file("az20_500.tsv")
+d=open_file("./static/temp.tsv")
 
 
 
@@ -37,7 +39,7 @@ d=open_file("az20_500.tsv")
 d_cols=["Substrate", "Control_mean", "Inhibitor_mean", "Fold_change", "p_value", "ctrlCV", "treatCV" ]
 d.columns=d_cols
 
-d.head()
+#d.head()
 
 
 # In[13]:
@@ -90,7 +92,7 @@ def process_query(query):
     else:
         return query
     
-process_query("ADT1_HUMAN") #Test
+#process_query("ADT1_HUMAN") #Test
     
 
 
@@ -154,8 +156,8 @@ class KinaseSearcher:
         #just the kinase, if not it will return all columns from kinase_substrate
     #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
         
-k=KinaseSearcher("kinase_substrate.csv")    
-k.findkinase("AKT1", "S129")     #Run Test: AKT1(S129)
+#k=KinaseSearcher("kinase_substrate.csv")    
+#k.findkinase("AKT1", "S129")     #Run Test: AKT1(S129)
 
 
 # In[59]:
@@ -185,9 +187,9 @@ k.findkinase("AKT1", "S129")     #Run Test: AKT1(S129)
         
 #         #just the kinase, if not it will return all columns from kinase_substrate
 #         #and self.data.SUB_MOD_RSD.str.contains(sub_mod_rsd)]
-        
-# k=KinaseSearcher("kinase_substrate_filtered.csv")    #kinase_substrated_filtered runs up to z_site_48
-# k.findkinase("NCF1", "S303")     #Run Test: AKT1(S129)
+    
+k=KinaseSearcher("kinase_substrate_filtered.csv")    #kinase_substrated_filtered runs up to z_site_48
+#k.findkinase("NCF1", "S303")     #Run Test: AKT1(S129)
 
 
 # In[27]:
@@ -229,7 +231,7 @@ def cv_filter(dd, CV_P):
     dd= dd.loc[(dd['ctrlCV'] <=  CV_P) & (dd['treatCV'] <= CV_P)]   #user define CV value: Rows Above CV_P filtered out 
     return dd
 
-cv_filter(dd, 1.0)
+#cv_filter(dd, 1.0)
 #dd.to_csv("check.csv")
 
 
@@ -292,24 +294,14 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
     show(p)
     components(p)                    #To get the bokeh html and jazavascript
     script1, div1 =components(p)
-    print(script1)    
+   # print(script1)    
 
 #makeplot(dd, 1.0, 0.05, "AZ20")
 
 output_file("volcano_plot1.html")  #to output the volcano plot as a html 
 
 
-makeplot(dd, 1.0, 0.05, "AZ20")
-
-###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here  
- #CDN: Content Delivery Network 
-    
-cdn_js=CDN.js_files[0]   #Only the first link is used 
-
-#To get the CSS style sheet of the Bokeh volcano plot
-cdn_css=CDN.css_files[0] #Only the first link is used 
-
-# In[36]:
+#makeplot(dd, 1.0, 0.05, "AZ20")
 
 
 
@@ -378,16 +370,16 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
     
     show(p)
     components(p)                    #To get the bokeh html and jazavascript
-    script1, div1 =components(p)
-    print(script1)    
+    script2, div2 =components(p)
+    #print(script2)    
 
 #makeplot(dd, 1.0, 0.05, "AZ20")
 
-output_file("volcano_plot1.html")  #to output the volcano plot as a html 
+output_file("volcano_plot2.html")  #to output the volcano plot as a html 
 
 
     
-makeplot_2(dd, 1.0, 0.05, "AZ20")
+#makeplot_2(dd, 1.0, 0.05, "AZ20")
 
 ###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here  
  #CDN: Content Delivery Network 
@@ -436,10 +428,9 @@ dkinase
 
 
 # In[40]:
+Kinasetable_sorted=dkinase.sort_values(by='mean_FC_kinase', ascending=False)
 
-
-dkinase.sort_values(by='mean_FC_kinase', ascending=False)
-
+Kinasetable_sorted=Kinasetable_sorted.to_html()
 
 # In[23]:
 

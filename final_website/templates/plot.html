@@ -4,10 +4,8 @@
 
 
 
-        <link rel="stylesheet" href={{cdn_css | safe}} type="text/css" />
-        
-        
-          
+     <link rel="stylesheet" href={{cdn_css | safe}} type="text/css" />
+             
    <script type="text/javascript" src={{cdn_js | safe}}></script>
 
 
@@ -19,16 +17,58 @@
         <body>
       
 
-<p> Your File Has Been Analysed</p>
-<p> Volcano Plot</p>
+<h1>Your File Has Been Analysed</h1>
+ <br>
+
+ <b> Please see below for two volcano plots and a table with the relative kinase activity as taken from your uploaded file.</b>
+
+ <br>
+ <br>
+
+<div>
+<h2>Volcano Plot</h2>
 {{script1 | safe}}
 
 {{div1 | safe}}
 
 
 
-<p> The red points show </p>
+<p><b>Parameters Entered by You:</b>
+<b>Fold change:</b> {{FC_P | safe}},  <b>p-value Threshold:</b> {{PV_P | safe}},  <b>Cumulative Variance Threshold:</b> {{CV_P | safe}},  <b>Inhibitor:</b>  {{Inhibitor | safe}}.</p>
 
+
+<b>Each point represents the susbtrates that were found in your file. The red points show the substrates that are below the fold-change at the chosen p-value. The green points show substrates that are above the fold-change at the chosen p-value.The grey points are the substrates that are below the fold-change and below the chosen p-value. </b>
+
+</div>
+
+ <br>
+ <br>
+<div>
+<h2>Volcano Plot 2</h2>
+{{script2 | safe}}
+
+{{div2 | safe}}
+
+<p><b>Parameters Entered by You:</b>
+<b>Fold change:</b> {{FC_P | safe}},  <b>p-value Threshold:</b> {{PV_P | safe}},  <b>Cumulative Variance Threshold:</b> {{CV_P | safe}},  <b>Inhibitor:</b>  {{Inhibitor | safe}}.</p>
+
+<b>Each point represents the susbtrates foudn in your file which were paired with known kinases that phosphorylate at the given phosphorylation site. The purple points show the substrates that are below the fold-change at the chosen p-value. The blue points show substrates that are above the fold-change at the chosen p-value.The grey points are the substrates that are below the fold-change and below the chosen p-value.</b>
+
+ <br>
+
+ <br>
+ 
+
+<h2>Sorted Table with Relative Kinase Activity</h2>
+
+<b>The table below shows the relative kinase activity of all known human kinases found when paired with your subtrates' and their phosphorylation sites. </b>
+
+
+
+
+{{Kinasetable_sorted | safe}}
+
+</div>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
 

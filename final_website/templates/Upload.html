@@ -10,21 +10,20 @@
         <body>
       
              <div class="w3-padding w3-teal w3-opacity-min">
-              <h2>Input Form</h2>
+              <h2>Input Required: </h2>
             </div>
-           
-            <form class="w3-container " >
+            <form id="upload-form" action="/Tool/upload/compute/" method="POST" enctype="multipart/form-data" class="w3-container " >
               <label class="w3-text-teal center-block" for= "FC_P"><b>Fold Change: </b></label>
-              <input class="w3-input w3-border w3-light-grey center-block" type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
+              <input class="w3-input w3-border w3-light-grey center-block" type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
 
-              <label class="w3-text-teal center-block" for= "PV_P"><b>PV_P: </b></label>
-              <input class="w3-input w3-border w3-light-grey center-block" type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
+              <label class="w3-text-teal center-block" for= "PV_P"><b>p-value Threshold: </b></label>
+              <input class="w3-input w3-border w3-light-grey center-block" type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
 
-              <label class="w3-text-teal center-block" for= "CV_P"><b>CV_P: </b></label>
-              <input class="w3-input w3-border w3-light-grey center-block" type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
+              <label class="w3-text-teal center-block" for= "CV_P"><b>CV Thresholds: </b></label>
+              <input class="w3-input w3-border w3-light-grey center-block" type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
 
               <label class="w3-text-teal center-block" for= "Inhibitor"><b>Inhibitor used:</b></label>
-              <input class="w3-input w3-border w3-light-grey center-block" <input type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10">
+              <input class="w3-input w3-border w3-light-grey center-block" <input type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10" required>
 
             
 
@@ -38,51 +37,3 @@
 
 
 {% endblock %}
-
-
-<!-------------
-      
-        <form action="enter FC_P"> Fold Change : <input type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
-        <form action="enter  PV_P"> PV_P: <input type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
-        <form action="enter  CV_P"> CV_P: <input type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
-          <label for="Inhibitor">Inhibitor used :</label>
-        <input type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10">
-       
-        <input type=submit value=Run>
-       </form>
-
-
-
-       <!-
-
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <form id="parse-data" action="{{ url_for('plot')}}" method="POST" enctype="multipart/form-data">
-        <form action="enter FC_P"> Fold Change : <input type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
-      <div class="valid-feedback">
-
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-          <form action="enter  PV_P"> PV_P: <input type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
-        <div class="valid-feedback">
-       
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-          <form action="enter  CV_P"> CV_P: <input type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-md-6 mb-3">
-           <label for="Inhibitor">Inhibitor used :</label>
-          <input type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10">
-        </div>
-      </div>
-    </div>
-     <input type=submit value=Run>
-    </form>
-
- <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
