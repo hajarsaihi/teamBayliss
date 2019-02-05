@@ -12,7 +12,7 @@
              <div class="w3-padding w3-teal w3-opacity-min">
               <h2>Input Required: </h2>
             </div>
-            <form id="upload-form" action="{{ url_for('plot')}}" method="POST" enctype="multipart/form-data" class="w3-container " >
+            <form id="upload-form" action="/Tool/upload/compute/" method="POST" enctype="multipart/form-data" class="w3-container " >
               <label class="w3-text-teal center-block" for= "FC_P"><b>Fold Change: </b></label>
               <input class="w3-input w3-border w3-light-grey center-block" type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
 
@@ -37,4 +37,3 @@
 
 
 {% endblock %}
-
