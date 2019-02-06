@@ -1,31 +1,55 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<doctype html>
 <title>Search Results - Kinase Database</title>
 <head>
     <title> Kinase Database</title>
     <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
     <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
 </head>
-  <div class="w3-card-4 w3-margin w3-white">
-      <div class="w3-container">
-        <br>
-        {% for x in results %}
-        <center> <h3><b>Results</b></h3> <center>
+{% if result %}
+<div>
+    <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container"></div>
+        <center><h3><b>{{ result.subtract }}</b></h3></center>
+
+        <div class="w3-container">
+            <br>
+            <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Information </h4>
+
+            <h5> Subtract: <span class="w3-opacity">{{ result.subtract }}</span></h5>
+            <h5> gene: <span class="w3-opacity">{{ result.gene }}</span></h5>
+            <h5> Chromosome: <span class="w3-opacity">{{ result.loc }}</span></h5>
+
+        </div>
+    </div>
+
+    <center>
+        <div id="my_graph"></div>
+    </center>
+
+</div>
+{% else %}
+<div>
+    <center>
+        <div>
+            Result Not Found
+        </div>
+    </center>
+
+</div>
+{% endif %}
 
 
-      </div>
+<script>
 
-      <div class="w3-container">
-        <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Information </h4>
-        <h5> gene: <span class="w3-opacity"><td>{{ x.gene }}</td></span>
-        <h5> prot kinase: <span class="w3-opacity"><td>{{ x.pkinase }}</td></span>
-        <h5>sub gene: <span class="w3-opacity"><td>{{ x.sub_gene }}</td></span>
-          <h5> Alias: <span class="w3-opacity"><td>{{ x.phosphosite }}</td></span>
-        <br>
-
-    {% endfor %}
-
+    window.onload = function () {
+        var yourDiv = document.getElementById('my_graph');
+        var ProtVista = require('ProtVista');
+        var instance = new ProtVista({
+            el: yourDiv,
+            uniprotacc: '{{ result.acc_id }}'
+        });
+    }
+</script>
 {% endblock %}

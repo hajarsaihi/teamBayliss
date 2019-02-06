@@ -1,35 +1,26 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<doctype html>
+<head>
+    <title>PP Tool</title>
+    <link rel="stylesheet" type="text/css" href="static/css/main.css?version=89">
 
-  <main class="about-section">
-    <div class="container">
-      <h2 class="w3-medium w3-text-white"><span class="w3-padding w3-teal w3-opacity-min"><b>Phosphoproteomics Tool</b></h2>
-        <body>
-      
-          
+<main>
+  <div class="container">
+      <body>
+        <header class="w3-center w3-margin-bottom">
+          <br>
+          <b> The PP tool is an efficent and reliable tool that allows you to upload and analyse Phosphoproteomic data in two easy steps. </b>
+            <p> Upload your data now! </p></header>
+            <br>
 
-
-        <h3>This tool summarises quantitative phophoproteomics data graphically and displays the top gene inhibited. </h3>
-
-        <body>
-
-
-      <form id="upload-form" action="{{ url_for('upload')}}" method="POST" enctype="multipart/form-data" >
-        <input type="file" name="file" accept=".tsv">
-        <input type=submit value=Upload>
-
-                 File format accepted: '.tsv' 
-
-                 
-    </form>
- 
-  
-  
-
-  </body>
-
-</div>
+            <form style="text-align:center;" id="upload-form" action="{{ url_for('upload')}}" method="POST" enctype="multipart/form-data" >
+            <input style="text-align:center;" type="file" name="file" accept=".tsv">
+            <input class=searchButton type=submit value=Upload>
+                         File format accepted: '.tsv'
+            </form> </body>
+  </div>
 
 
 {% endblock %}

@@ -126,26 +126,38 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-    results = []
+    import csv
+    results = {}
     search_string = search.data['search']
+    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
+    csvFile = 'Locations.csv'
+    reader = csv.reader(open(csvFile, 'r'))
 
-    if search_string:
-        if search.data['select'] == 'Substrate':
-            #search_string = search_string.upper() use ilike for case sensitive search
-            qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.sub_gene.ilike(search_string))
-            results = qry.all()
+    for data in reader:
+        if data[1].lower() == search_string.lower():
+            results['subtract'] = data[1]
+            results['gene'] = data[0]
+            results['loc'] = data[3]
+            results['acc_id'] = data[2]
+            break
 
-        else:
-            qry = db_session.query(Kinase_Phosphosite)
-            results = qry.all()
+    # if search_string:
+    #     if search.data['select'] == 'Substrate':
+    #         #search_string = search_string.upper() use ilike for case sensitive search
+    #         qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.sub_gene.ilike(search_string))
+    #         results = qry.all()
+    #
+    #     else:
+    #         qry = db_session.query(Kinase_Phosphosite)
+    #         results = qry.all()
 
-    if not results:
-        flash('No results found!')
-        return redirect('/Phosphosite')
-
-    else:
-        # display results
-        return render_template('phosph_results.html', results=results)
+    # if not results:
+    #     flash('No results found!')
+    #     return redirect('/Phosphosite')
+    #
+    # else:
+    #     # display results
+    return render_template('phosph_results.html', result=results)
 ###############################################################################
 ###TOOLS ###
 
@@ -159,13 +171,14 @@ def allowed_file(filename):
 
 @app.route("/Tool/", methods=['GET','POST'])
 def Tool():
-    return render_template('Tool.html')
+    return render_template('Tool.html')      #The upload button is shown 
 
 @app.route("/Tool/upload", methods=['POST'])
 def upload():
 #the name of the input is file in the html
         target = os.path.join(UPLOAD_FOLDER, 'static/')    #to create a folder into which the file will be saved
         print(target)
+
 
         if not os.path.isdir(target):                  #if folder is not made it should be made
             os.mkdir(target)
@@ -179,27 +192,60 @@ def upload():
             file.save(destination)
 
         return render_template("Upload.html")
-     
+    
 
-###Output where the volcano plot and table will be shown 
-@app.route("/Tool/upload/compute", methods=['POST'])
+@app.route("/Tool/upload/compute/", methods=['POST'])
 
 def plot():
-    import Userdata_script
 
-    Userdata_script.open_file(file)
+    FC_P= request.form['FC_P']
+    FC_P=float(FC_P)                  # the numbers can be decimals therefore they have been specified  to be floats
+    PV_P=request.form['PV_P']
+    PV_P=float(PV_P)
+    CV_P=request.form['CV_P']
+    CV_P=float(CV_P)
+    Inhibitor=request.form['Inhibitor']
+
+    import relative_kinase
+    filename="./static/temp.tsv"
+   
+    input_data=relative_kinase.open_file(filename)
+    data=relative_kinase.filter_data(input_data, FC_P, PV_P, CV_P)
+    data=relative_kinase.add_sub_gene(data)
+    #print(data)
+    data=relative_kinase.add_kinase(data, "kinase_substrate_filtered.csv")
+    #print(data)
+    plot1=relative_kinase.makeplot(data, FC_P, PV_P, Inhibitor)
+    #print(data)
+    plot2=relative_kinase.makeplot_2(data, FC_P, PV_P, Inhibitor)
+    #print(data)
+    script1, div1 =components(plot1)
+    script2, div2 =components(plot2)
+
+    Kinasetable_sorted=relative_kinase.relative_kinase_activity_calculation(data) #to get the html format of the table
+
+###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here  
+     #CDN: Content Delivery Network 
+
+    cdn_js=CDN.js_files[0]   #Only the first link is used 
+
+    #To get the CSS style sheet of the Bokeh volcano plot
+    cdn_css=CDN.css_files[0] #Only the first link is used 
     
-    Userdata_script.process_query()
-
-    Userdata_script.cv_filter(dd, CV_P)
-    Userdata_script.makeplot(dd, FC_P, PV_P, Inhibitor)
-
-
-    return render_template("plot.html", 
+    return render_template("plot.html",
+        FC_P =FC_P,
+        PV_P=PV_P,
+        CV_P=CV_P,
+        Inhibitor=Inhibitor,
         script1=script1,
         div1=div1,
+        script2=script2,
+        div2=div2,
         cdn_css=cdn_css,
-        cdn_js=cdn_js)
+        cdn_js=cdn_js,
+        Kinasetable_sorted=Kinasetable_sorted)
+
+
 
 
 ###############################
