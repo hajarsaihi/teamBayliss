@@ -65,8 +65,12 @@ def k_search_results(search):
         flash('No results found!')
         return redirect('/kinase')
 
+    elif search.data['select'] == 'Alias Name':
+        return render_template('alias.html', results=results)
+
     else:
         return render_template('kinase_results.html', results=results)
+
 
 @app.route('/profile/<kinase>')
 def profile(kinase):
