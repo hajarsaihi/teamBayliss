@@ -3,7 +3,6 @@ from flask import Flask, render_template, flash, render_template, request, redir
 from forms import KinaseSearchForm, PhosphositeSearchForm, InhibitorSearchForm
 from models import Kinase_Information, Kinase_Phosphosite, inhibitor_information
 from db_setup import init_db, db_session
-from tables import KResults, IResults, PResults
 ###############################################################################
 
 app = Flask(__name__)
@@ -52,9 +51,6 @@ def k_search_results(search):
         return redirect('/kinase')
 
     else:
-        # display results
-        table = KResults(results)
-        table.border = True
         return render_template('kinase_results.html', results=results)
 
 @app.route('/profile/<kinase>')
@@ -97,8 +93,6 @@ def i_search_results(search):
 
     else:
         # display results
-        table = IResults(results)
-        table.border = True
         return render_template('inhib_results.html', results=results)
 
 ###### Phosphosites ###########################################################
