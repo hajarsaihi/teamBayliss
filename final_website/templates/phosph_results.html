@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<doctype html>
+<title>Search Results - Kinase Database</title>
+<head>
+    <title> Kinase Database</title>
+    <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
+    <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
+</head>
+  <div class="w3-card-4 w3-margin w3-white">
+      <div class="w3-container">
+        <br>
+        {% for x in results %}
+        <center> <h3><b>Results</b></h3> <center>
+
+
+      </div>
+
+      <div class="w3-container">
+        <br>
+        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Information </h4>
+        <h5> gene: <span class="w3-opacity"><td>{{ x.gene }}</td></span>
+        <h5> prot kinase: <span class="w3-opacity"><td>{{ x.pkinase }}</td></span>
+        <h5>sub gene: <span class="w3-opacity"><td>{{ x.sub_gene }}</td></span>
+          <h5> Alias: <span class="w3-opacity"><td>{{ x.phosphosite }}</td></span>
+        <br>
+
+    {% endfor %}
+
+{% endblock %}
