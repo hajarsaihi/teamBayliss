@@ -256,7 +256,8 @@ def relative_kinase_activity_calculation(de):
     total_control_mean_sum=de.Control_mean.sum()  #toal sum of control_mean of all kinases
 
     dkinase=pd.DataFrame(kinase_sum_control_mean)
-    dkinase["relative_control_activity"]=dkinase["Control_mean"]/total_control_mean_sum
+
+    dkinase["relative_control_activity"]=kinase_sum_control_mean/total_control_mean_sum
     #dkinase
     #relative activity = mean of each kinase/total control means
     #-------------
@@ -267,13 +268,13 @@ def relative_kinase_activity_calculation(de):
     dkinase["relative_inhibitor_activity"]=dkinase["Inhibitor_mean"]/total_inhibitor_mean
     #Mean Fold Change
     dkinase["mean_FC_kinase"]= dkinase["Inhibitor_mean"]/dkinase["Control_mean"]
-    dkinase.rename(columns={dkinase.columns[0]: "total_control_mean"}, inplace=True) #C rename to more accurate description
-    dkinase.rename(columns={dkinase.columns[2]: "total_inhibitor_mean"}, inplace=True) #C rename to more accurate description
+    dkinase.rename(columns={dkinase.columns[0]: "total_control_mean"}, inplace=True) #C  rename to more accurate description
+    dkinase.rename(columns={dkinase.columns[2]: "total_inhibitor_mean"}, inplace=True) #C  rename to more accurate description
 
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
-    dkinase.sort_values(by='mean_FC_kinase', ascending=False)
-    return dkinase.sort_values(by='mean_FC_kinase', ascending=False)#dkinase
+    dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C
+    return dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C #dkinase
 
 
 
@@ -288,7 +289,7 @@ def relative_kinase_activity(filename, FC_P, PV_P, CV_P, Inhibitor ):
     plot1=makeplot(data, FC_P, PV_P, Inhibitor)
     #print(data)
     plot2=makeplot_2(data, FC_P, PV_P, Inhibitor)
-    data=pv_filter(data,PV_P) #C #filter out data above PV_P, and rows with no kinases
+    data=pv_filter(data,PV_P) #C  #filter out data above PV_P, and rows with no kinases
     print(data)
     kinase_activity_data=relative_kinase_activity_calculation(data)
 
