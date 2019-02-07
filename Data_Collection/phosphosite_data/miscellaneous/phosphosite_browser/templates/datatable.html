@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{%block extra_css %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/dataTables.bootstrap4.min.css')}}" />
+{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+
+<div class="table-responsive">
+<table id="data_table" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Name</th>
+            <th>Aliases</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Name</th>
+            <th>Aliases</th>
+        </tr>
+    </tfoot>
+</table>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{url_for('static', filename='js/jquery.dataTables.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/dataTables.bootstrap4.min.js')}}"></script>
+<script>
+    var table = null;
+
+    table = $("#data_table").DataTable({
+        ajax: "/_table",
+        columns: [{
+                "class": "details-control",
+                "orderable": false,
+                "data": null,
+                "defaultContent": ""
+            },
+            {
+                "data": "id",
+                "searchable": false,
+                "sortable": false,
+                "render": function (data, type, row, meta) {
+                    return type === 'display' ?
+                        '<a href="/details?g=' + data + '">Details</a>' :
+                        data;
+                }
+            },
+            {
+                "data": "name",
+                "searchable": true
+            },
+            {
+                "data": "aliases",
+                "searchable": true
+            },
+        ],
+        lengthMenu: [10, 50, 100, 500, 1000],
+        pageLength: 10,
+        order: [
+            [2, "asc"]
+        ],
+        responsive: true
+    })
+</script>
+{% endblock %}

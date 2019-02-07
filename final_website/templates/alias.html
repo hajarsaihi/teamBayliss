@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<doctype html>
+<title>Search Results - Alias Names</title>
+<head>
+
+<div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <br>
+      <center> <h5><b>Select Kinase Name</b></h5> <center>
+        <br>
+        <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+        </style>
+
+        <table>
+        {% for x in results %}
+        <tr>
+           <td>Kinase: <a href="{{ url_for('profile', kinase = x.kinase) }}">{{ x.kinase }}</a></td>
+           <td>{{ x.Alias }}</td>
+           <td>{{ x.gene_name }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+{% endblock %}
