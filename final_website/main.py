@@ -66,6 +66,9 @@ def k_search_results(search):
         flash('No results found!')
         return redirect('/kinase')
 
+    elif search.data['select'] == 'Alias Name':
+	    return render_template('alias.html', results=results)
+
     else:
         # display results
         table = KResults(results)
@@ -163,7 +166,7 @@ def p_search_results(search):
 
 UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
-ALLOWED_EXTENSIONS= set(['tsv'])   #only tsv files are allowed 
+ALLOWED_EXTENSIONS= set(['tsv'])   #only tsv files are allowed
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -171,7 +174,7 @@ def allowed_file(filename):
 
 @app.route("/Tool/", methods=['GET','POST'])
 def Tool():
-    return render_template('Tool.html')      #The upload button is shown 
+    return render_template('Tool.html')      #The upload button is shown
 
 @app.route("/Tool/upload", methods=['POST'])
 def upload():
@@ -192,7 +195,7 @@ def upload():
             file.save(destination)
 
         return render_template("Upload.html")
-    
+
 
 @app.route("/Tool/upload/compute/", methods=['POST'])
 
@@ -208,7 +211,7 @@ def plot():
 
     import relative_kinase
     filename="./static/temp.tsv"
-   
+
     input_data=relative_kinase.open_file(filename)
     data=relative_kinase.filter_data(input_data, FC_P, PV_P, CV_P)
     data=relative_kinase.add_sub_gene(data)
@@ -224,14 +227,14 @@ def plot():
 
     Kinasetable_sorted=relative_kinase.relative_kinase_activity_calculation(data) #to get the html format of the table
 
-###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here  
-     #CDN: Content Delivery Network 
+###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
+     #CDN: Content Delivery Network
 
-    cdn_js=CDN.js_files[0]   #Only the first link is used 
+    cdn_js=CDN.js_files[0]   #Only the first link is used
 
     #To get the CSS style sheet of the Bokeh volcano plot
-    cdn_css=CDN.css_files[0] #Only the first link is used 
-    
+    cdn_css=CDN.css_files[0] #Only the first link is used
+
     return render_template("plot.html",
         FC_P =FC_P,
         PV_P=PV_P,
