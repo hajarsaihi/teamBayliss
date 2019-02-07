@@ -10,7 +10,7 @@ cur = con.cursor()
 
 print("Opened database successfully")
 
-###############################~~~~~~~~~~~~~~~~INHIBITORS TABLES~~~~~~~~~~~~##################################
+###############################~~~~~~~~~~~~~~~~INHIBITOR TABLES~~~~~~~~~~~~##################################
 
 #######1: THE INHIBITOR INFORMATION ##########
 
@@ -27,21 +27,23 @@ cur.execute("CREATE TABLE inhibitor_information(ChEMBL_IDs PRIMARY KEY, INCHI VA
 #The csv file is opened
 with open('raw_inhibitor_data_final.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
 	#csv.DictReader uses first line in file for column headings by default
-	dr_in_1 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings
+	dr_in_1 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings which are added into a dictionary
+	#Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
 	to_in_1 = [(i['ChEMBL_IDs'], i['INCHI'], i['SMILES'], i['TARGETS_1'], i['TARGETS_2'],i['Name'],i['Synonyms'], i['Type'], i['Max_Phase'], i['Molecular_Weight'],\
 		       i['Bioactivities'], i['AlogP'], i['PSA'], i['HBA'], i['HBD'],i['RO5_Violations'], i['Rotatable_Bonds'], i['Passes_Ro3'],\
 		       i['QED_Weighted'], i['ACD_ApKa'], i['ACD_BpKa'], i['ACD_LogP'], i['ACD_LogD'], i['Aromatic_Rings'], i['Structure_Type'],\
 		       i['Inorganic_Flag'],i['Heavy_Atoms'], i['HBA_Lipinski'], i['HBD_Lipinski'], i['RO5_Violations_Lipinski'],\
-		       i['Molecular_Weight_Monoisotopic'], i['Molecular_Formula'], i['image_link'],) for i in dr_in_1]       #These names must be the same as in the columns of the CSV table
+		       i['Molecular_Weight_Monoisotopic'], i['Molecular_Formula'], i['image_link'],) for i in dr_in_1] #These names must be the same as in the columns of the CSV table
 
 cur.executemany("INSERT INTO inhibitor_information(ChEMBL_IDs, INCHI,SMILES,TARGETS_1, TARGETS_2, Name,Synonyms,Type,Max_Phase,\
 	Molecular_Weight,Bioactivities,AlogP,PSA,HBA,HBD,RO5_Violations,Rotatable_Bonds,Passes_Ro3,QED_Weighted,\
 	ACD_ApKa,ACD_BpKa,ACD_LogP,ACD_LogD,Aromatic_Rings,Structure_Type,Inorganic_Flag,Heavy_Atoms,HBA_Lipinski,\
 	HBD_Lipinski,RO5_Violations_Lipinski,Molecular_Weight_Monoisotopic,Molecular_Formula,image_link)\
-	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", to_in_1)
+	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", to_in_1)  #? is each element in the table, the number of ? have to be the same as the number of columns
 con.commit()  #Commit the changes
 
-#print to_in_1
+#print(dr_in_1)
+print(to_in_1)
 
 
 
@@ -55,7 +57,9 @@ cur.execute("CREATE TABLE inhibitor_references(Key PRIMARY KEY, ChEMBL_ID_, TARG
 #The csv file is opened
 with open('inhib_and_ref.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
 	#csv.DictReader uses first line in file for column headings by default
-    dr_in_2 = csv.DictReader(fin) # comma is default delimiter
+    dr_in_2 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings which are added into a dictionary
+    
+    #Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
     to_in_2 = [(i['Key'],i['ChEMBL_ID_'], i['TARGET_1'], i['TARGET_2'],i['PUBMED_ID'],) for i in dr_in_2]    #These names must be the same as in the columns of the CSV table
 
 cur.executemany("INSERT INTO inhibitor_references(Key,ChEMBL_ID_,TARGET_1, TARGET_2, PUBMED_ID) VALUES (?,?,?,?,?);", to_in_2)
@@ -75,8 +79,10 @@ cur.execute("CREATE TABLE inhibitor_KINASE(Primary_Key PRIMARY KEY, ChEMBL_ID TE
 #The csv file is opened
 with open('raw_inhibitor_data_final.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
 	#csv.DictReader uses first line in file for column headings by default
-	dr_in_3 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings
-	to_in_3 = [(i['Primary_Key'], i['ChEMBL_IDs'], i['TARGETS_1'],i['TARGETS_2'],) for i in dr_in_3]       #These names must be the same as in the columns of the CSV table
+	dr_in_3 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings which are added into a dictionary
+	
+	#Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
+	to_in_3 = [(i['Primary_Key'], i['ChEMBL_IDs'], i['TARGETS_1'],i['TARGETS_2'],) for i in dr_in_3] #These names must be the same as in the columns of the CSV table
 
 cur.executemany("INSERT INTO inhibitor_KINASE(Primary_Key, ChEMBL_ID ,TARGETs_1, TARGETs_2 )\
 	VALUES (?,?,?,?);", to_in_3)
@@ -94,6 +100,9 @@ cur.execute("SELECT ChEMBL_IDs, ChEMBL_ID_ FROM inhibitor_information, inhibitor
 #print(cur.fetchall())
 con.commit()
 #cur.execute("SELECT ChEMBL_IDs FROM inhibitor_information  INNER JOIN inhibitor_references ON inhibitor_references.ChEMBL_ID_ = inhibitor_information.ChEMBL_IDs ;")
+
+
+#~~ Some inhibitors may have two targets therefore both need  to be joined ~~~
 
 cur.execute("SELECT TARGET_1 FROM inhibitor_references INNER JOIN inhibitor_information, inhibitor_KINASE ON inhibitor_references.TARGET_1  = inhibitor_information.TARGETS_1 or inhibitor_KINASE.TARGETs_1;")
 #print(cur.fetchall())
@@ -121,7 +130,8 @@ cur.execute("CREATE TABLE Kinase_Information(key_numbers PRIMARY KEY, Name VARCH
 #The csv file is opened
 with open('kinase_df.csv','rt') as fin: # reads file in text mode, fin is the file name which is used below
     #csv.DictReader uses first line in file for column headings by default
-    dr_1 = csv.DictReader(fin) # comma is default delimiter
+    dr_1 = csv.DictReader(fin) # comma is default delimiter, Each row read from the csv file is returned as a list of strings which are added into a dictionary
+    #Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
     to_db_1 = [(i['key_numbers'],i['Name'], i['Groups'],i['Family'], i['Subfamily'], i['Entrez_GeneID'],\
                 i['Entrez_description'],i['uniprot_IDs'], i['location'], i['Alias'], i['uni_accession'], i['gene_name']) for i in dr_1]    #These names must be the same as in the columns of the CSV table
 
@@ -147,6 +157,8 @@ cur.execute("CREATE TABLE Kinase_Phosphosite(Key_rows PRIMARY KEY, GENE TEXT, KI
 with open('kinase_substrate_filtered.csv','rt') as fin: # reads file in text mode,
    # csv.DictReader uses first line in file for column headings by default
     dr_2 = csv.DictReader(fin) # comma is default delimiter
+   	
+   	#Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
     to_db_2 = [(i['Key_rows'],i['GENE'], i['KINASE'], i['KIN_ACC_ID'], i['SUBSTRATE'], i['SUB_ACC_ID'], i['SUB_GENE'], \
     			i['SUB_GENE_ID'],i['Z_SITE_1'], i['Z_SITE_2'],i['Z_SITE_3'], i['Z_SITE_4'],i['Z_SITE_5'],
     			i['Z_SITE_6'],i['Z_SITE_7'], i['Z_SITE_8'],i['Z_SITE_9'], i['Z_SITE_10'],
@@ -175,20 +187,31 @@ print(to_db_2)
 
 ### 4: TO JOIN THE TABLES USING A FOREIGN KEY ########
 
-#Joined the Kinase tables
+#Joined the Kinase_Phosphosite and Kinase_Phosphosite tables
 
 cur.execute("SELECT Name FROM Kinase_Information INNER JOIN Kinase_Phosphosite ON Kinase_Phosphosite.KINASE = Kinase_Information.Name ;")
 
-#con.commit()
+con.commit()
 
 #print(cur.fetchall())
 
 
-#Joined the Inhibitor and Kinase information tables
+#Joined the Inhibitor_Kinase and Kinase_Information tables
 
+cur.execute("SELECT TARGETS_1, TARGETS_2 FROM inhibitor_kinase INNER JOIN Kinase_Information ON Kinase_Information.Name = inhibitor_kinase.TARGETS_1 OR inhibitor_kinase.TARGETS_2  ;")
+
+con.commit()
+#print(cur.fetchall())
+
+#Joined the Inhibitor_Kinase and Kinase_Phosphosite tables
+cur.execute("SELECT TARGETS_1, TARGETS_2 FROM inhibitor_kinase INNER JOIN Kinase_Phosphosite ON Kinase_Phosphosite.KINASE = inhibitor_kinase.TARGETS_1 OR inhibitor_kinase.TARGETS_2  ;")
+
+con.commit()
+#print(cur.fetchall())
+
+
+#Joined the inhibitor_information and Kinase_Information tables
 cur.execute("SELECT TARGETS_1, TARGETS_2 FROM inhibitor_information INNER JOIN Kinase_Information ON Kinase_Information.Name = inhibitor_information.TARGETS_1 OR inhibitor_information.TARGETS_2  ;")
-
-#print(cur.fetchall())
 
 con.commit()
 
