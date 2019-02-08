@@ -22,7 +22,7 @@ import requests
 ###############################################################################
 
 app = Flask(__name__)
-app.secret_key = 'ca/i4tishfkaSJSF'
+app.secret_key = 'ca/i4tishfkhaSJSF'
 init_db()
 
 ###############################################################################
@@ -71,15 +71,14 @@ def k_search_results(search):
 
     else:
         # display results
-        table = KResults(results)
-        table.border = True
         return render_template('kinase_results.html', results=results)
 
-@app.route('/profile/<kinase>')
+
+@app.route('/kinase/<kinase>')
 def profile(kinase):
     qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
     results = qry.all()
-    return render_template('profile.html', results=results)
+    return render_template('kinase_results.html', results=results)
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
@@ -144,22 +143,6 @@ def p_search_results(search):
             results['acc_id'] = data[2]
             break
 
-    # if search_string:
-    #     if search.data['select'] == 'Substrate':
-    #         #search_string = search_string.upper() use ilike for case sensitive search
-    #         qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.sub_gene.ilike(search_string))
-    #         results = qry.all()
-    #
-    #     else:
-    #         qry = db_session.query(Kinase_Phosphosite)
-    #         results = qry.all()
-
-    # if not results:
-    #     flash('No results found!')
-    #     return redirect('/Phosphosite')
-    #
-    # else:
-    #     # display results
     return render_template('phosph_results.html', result=results)
 ###############################################################################
 ###TOOLS ###
@@ -249,14 +232,8 @@ def plot():
         Kinasetable_sorted=Kinasetable_sorted)
 
 
-
-
 ###############################
 
-
-@app.route("/about")
-def about():
-  return render_template("about.html")
 
 if __name__ == "__main__":
   app.run(debug=True)
