@@ -93,7 +93,7 @@ def add_sub_gene(dd):
     dd["Sub_gene"] = dd["Sub_gene"].str.strip("[]").str.strip("''")  #remove square bracket and ''
       #remove square bracket and ''
 #Removes Substrates "_HUMAN" with no Sub_gene result: likely experimental protein
-    dd.Sub_gene.replace(" ", np.nan, inplace=True)
+    dd.Sub_gene.replace("", np.nan, inplace=True)
     dd.dropna(subset=["Sub_gene"], inplace=True)
 
     return dd
