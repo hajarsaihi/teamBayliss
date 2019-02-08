@@ -49,7 +49,7 @@ def open_file(filename):
         d["treatCV"] = 9.9  # C - default CV_P 10.0 will display all results
         return d
 
-def filter_data(d, FC_P, PV_P, CV_P):
+def filter_data(d, FC_P, PV_P, CV_P, N_P):
 
 
     # d_cols=["Substrate", "Control_mean", "Inhibitor_mean", "Fold_change", "p_value", "ctrlCV", "treatCV" ]
@@ -66,6 +66,7 @@ def filter_data(d, FC_P, PV_P, CV_P):
 
     dd[["Substrate","Phosphosite"]] = dd.Substrate.str.extract(r"(.+)\((.\d+)", expand=True)
     dd=cv_filter(dd, CV_P)
+    dd=noise_filter(dd, N_P)      #C6
 #
     return dd
 
@@ -144,6 +145,11 @@ def pv_filter(dd, PV_P):  #C
 
     dd= dd.loc[(dd['p_value'] <=  PV_P)]   #user define PV value: Rows Above PV_P filtered out
     dd = dd[dd['Kinase'] != '']            #last part of data: Drop
+    return dd
+
+def noise_filter(dd, N_P): #C6
+
+    dd= dd.loc[(dd['Control_mean'] >=  N_P) & (dd['Inhibitor_mean'] >= N_P)]   #user define CV value: Rows Above CV_P filtered out
     return dd
 
 
@@ -279,9 +285,9 @@ def relative_kinase_activity_calculation(de):
 
 
 
-def relative_kinase_activity(filename, FC_P, PV_P, CV_P, Inhibitor ):
+def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
     input_data=open_file(filename)
-    data=filter_data(input_data, FC_P, PV_P, CV_P)
+    data=filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
     data=add_sub_gene(data)
     #print(data)
     data=add_kinase(data, "kinase_substrate_filtered.csv")
