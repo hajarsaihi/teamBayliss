@@ -144,22 +144,6 @@ def p_search_results(search):
             results['acc_id'] = data[2]
             break
 
-    # if search_string:
-    #     if search.data['select'] == 'Substrate':
-    #         #search_string = search_string.upper() use ilike for case sensitive search
-    #         qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.sub_gene.ilike(search_string))
-    #         results = qry.all()
-    #
-    #     else:
-    #         qry = db_session.query(Kinase_Phosphosite)
-    #         results = qry.all()
-
-    # if not results:
-    #     flash('No results found!')
-    #     return redirect('/Phosphosite')
-    #
-    # else:
-    #     # display results
     return render_template('phosph_results.html', result=results)
 ###############################################################################
 ###TOOLS ###
@@ -249,14 +233,11 @@ def plot():
         Kinasetable_sorted=Kinasetable_sorted)
 
 
-
-
 ###############################
 
-
-@app.route("/about")
-def about():
-  return render_template("about.html")
+@app.route("/intviewer")
+def intviewer():
+    return render_template("index0.html")
 
 if __name__ == "__main__":
   app.run(debug=True)
