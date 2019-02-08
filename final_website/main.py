@@ -22,7 +22,7 @@ import requests
 ###############################################################################
 
 app = Flask(__name__)
-app.secret_key = 'ca/i4tishfkaSJSF'
+app.secret_key = 'ca/i4tishfkhaSJSF'
 init_db()
 
 ###############################################################################
@@ -71,15 +71,14 @@ def k_search_results(search):
 
     else:
         # display results
-        table = KResults(results)
-        table.border = True
         return render_template('kinase_results.html', results=results)
 
-@app.route('/profile/<kinase>')
+
+@app.route('/kinase/<kinase>')
 def profile(kinase):
     qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
     results = qry.all()
-    return render_template('profile.html', results=results)
+    return render_template('kinase_results.html', results=results)
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
@@ -235,9 +234,6 @@ def plot():
 
 ###############################
 
-@app.route("/intviewer")
-def intviewer():
-    return render_template("index0.html")
 
 if __name__ == "__main__":
   app.run(debug=True)
