@@ -1,6 +1,6 @@
 import os
 from app import app
-from flask import Flask, Markup, render_template, flash,url_for, render_template, request, redirect,g,send_from_directory, Response, request
+from flask import Flask, Markup, render_template, flash,url_for, render_template, request, redirect,g,send_from_directory, Response, request, send_file
 from forms import KinaseSearchForm, PhosphositeSearchForm, InhibitorSearchForm
 from models import Kinase_Information, Kinase_Phosphosite, inhibitor_information
 from db_setup import init_db, db_session
@@ -223,7 +223,7 @@ def plot():
     data_csv=relative_kinase6.make_csv(Kinasetable_sorted) #to create a csv file
     
 
-###To get the java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
+###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
      #CDN: Content Delivery Network
 
     cdn_js=CDN.js_files[0]   #Only the first link is used
@@ -250,7 +250,6 @@ def plot():
                      mimetype='text/csv',
                      attachment_filename='relative_kinase_activity.csv',
                      as_attachment=True)
-
 
 
 
