@@ -276,13 +276,12 @@ def relative_kinase_activity_calculation(de):
     return dkinase
 
 def make_html(dkinase):
-    dkinase_30=dkinase.head(30)
+    dkinase_30=dkinase.head(30) #to get the top 30 rows only
     Kinasetable_sorted=dkinase_30.to_html() #To get the html version of the table
-
     return Kinasetable_sorted
 
 def make_csv(dkinase):
-    Kinasetable_sorted_csv=dkinase.to_csv("./static/relative_kinase_activity.csv", sep=',')  #
+    Kinasetable_sorted_csv=dkinase.to_csv("./static/relative_kinase_activity.csv", sep=',')  #to get the csv file which the user can download
     return Kinasetable_sorted_csv
 
 
