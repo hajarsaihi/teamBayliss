@@ -2,59 +2,130 @@
 {% block content %}
 
 <doctype html>
+<html class="no-js" lang="">
 <title>Search Results - Kinase Database</title>
 <head>
     <title> Kinase Database</title>
     <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
     <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=3423">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
 </head>
-  <div class="w3-card-4 w3-margin w3-white">
-      <div class="w3-container">
-        <br>
-        {% for x in results %}
-        <center> <h3><b>Profile</b></h3> <center>
-        <h5> Kinase: <span class="w3-teal"><td>{{ x.kinase.upper() }}</td></span></h5>
 
-      </div>
+{% for x in results %}
 
-      <div class="w3-container">
-        <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Information </h4>
-        <h5> Protein Name: <span class="w3-opacity"><td>{{ x.full_name }}</td></span>
-        <h5> Gene Name: <span class="w3-opacity"><td>{{ x.gene_name }}</td></span>
-        <h5> Alias: <span class="w3-opacity"><td>{{ x.Alias }}</td></span>
-        <br>
-        <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Classification </h4>
-        <h5> Species: <span class="w3-opacity"><td>Human</td></span>
-        <h5> Family: <span class="w3-opacity"><td>{{ x.family.upper() }}</td></span>
-        <h5> SubFamily: <span class="w3-opacity"><td>{{ x.subFamily.upper() }}</td></span></h5>
-        <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
-        <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Kinase Cross References </h4>
-        <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ (x.entrez)|int }}" >{{ (x.entrez)|int }}</a></span></h5>
-        <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.accID }}">{{ x.accID}}</a></span></h5>
-        <br>
-        <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">{{ x.kinase.upper() }} Protein Annotation </h4>
-        <div id="yourDiv" style="width:1024px; margin:auto;"></div>
-        <script>
-            window.onload = function() {
-                var yourDiv = document.getElementById('yourDiv');
-                var ProtVista = require('ProtVista');
-                var instance = new ProtVista({
-                    el: yourDiv,
-                    uniprotacc: '{{ x.accID }}',
+<div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <br>
 
-                    //These categories will **not** be rendered.
-                    exclusions: ['SEQUENCE_INFORMATION', 'STRUCTURAL', 'TOPOLOGY', 'MUTAGENESIS', 'MOLECULE_PROCESSING']
-                });
-            }
-        </script>
-        <div class="w3-row">
+      <center> <h3><b>Profile</b></h3> <center>
+      <h5> Kinase: <span class="w3-teal"><td>{{ x.kinase.upper() }}</td></span></h5>
 
-          </div>
-        </div>
-      </div>
+    </div>
+
+<div class="tabset">
+  <!-- Tab 1 -->
+  <input type="radio" name="tabset" id="tab1" aria-controls="info" checked>
+  <label for="tab1">Information</label>
+  <!-- Tab 2 -->
+  <input type="radio" name="tabset" id="tab2" aria-controls="crossref">
+  <label for="tab2">Cross References</label>
+  <!-- Tab 3 -->
+  <input type="radio" name="tabset" id="tab3" aria-controls="annot">
+  <label for="tab3">{{ x.kinase.upper() }} Protein Annotation</label>
+  <!-- Tab 4 -->
+  <input type="radio" name="tabset" id="tab4" aria-controls="inter">
+  <label for="tab4">{{ x.kinase.upper() }} Protein Interaction</label>
+
+  <div class="tab-panels">
+    <section id="Information" class="tab-panel">
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Names </h4>
+      <h5> Protein Name: <span class="w3-opacity"><td>{{ x.full_name }}</td></span>
+      <h5> Gene Name: <span class="w3-opacity"><td>{{ x.gene_name }}</td></span>
+      <h5> Alias: <span class="w3-opacity"><td>{{ x.Alias }}</td></span>
+      <br>
+      <br>
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Classification </h4>
+      <h5> Species: <span class="w3-opacity"><td>Human</td></span>
+      <h5> Family: <span class="w3-opacity"><td>{{ x.family.upper() }}</td></span>
+      <h5> SubFamily: <span class="w3-opacity"><td>{{ x.subFamily.upper() }}</td></span></h5>
+      <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
+
+  </section>
+    <section id="Cross References" class="tab-panel">
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-100 w3-light-grey"> Links </h4>
+      <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ (x.entrez)|int }}" >{{ (x.entrez)|int }}</a></span></h5>
+      <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.accID }}">{{ x.accID}}</a></span></h5>
+
+      </section>
+
+    <section id="Protein Annotation" class="tab-panel">
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">{{ x.kinase.upper() }} Protein Annotation </h4>
+      <div id="yourDiv" style="width:1024px; margin:auto;"></div>
+      <center><script>
+          window.onload = function() {
+              var yourDiv = document.getElementById('yourDiv');
+              var ProtVista = require('ProtVista');
+              var instance = new ProtVista({
+                  el: yourDiv,
+                  uniprotacc: '{{ x.accID }}',
+
+                  //These categories will **not** be rendered.
+                  exclusions: ['SEQUENCE_INFORMATION', 'STRUCTURAL', 'TOPOLOGY', 'MUTAGENESIS', 'MOLECULE_PROCESSING']
+              });
+          }
+      </script></center>
+    </section>
+
+    <section id="Interaction Viewer" class="tab-panel">
+      <center>
+        Uniprot Name: {{ x.uniprot }}
+
+      <interaction-viewer accession="{{ x.accID }}"></interaction-viewer>
+
+      <!-- Required for IE11 -->
+      <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js" defer></script>
+      <!-- Web component polyfill (only loads what it needs) -->
+      <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-lite.js" charset="utf-8" defer></script>
+      <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+      <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js" charset="utf-8"
+          defer></script>
+      <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch/fetch.min.js" charset="utf-8" defer></script>
+      <script src= "{{ url_for('static', filename='interaction-viewer.js') }}" charset="utf-8" defer></script>
+
+      <!--<script src="dist/interaction-viewer.js" charset="utf-8" defer></script>-->
+      <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+          crossorigin="anonymous"></script>
+      <script type="text/javascript">
+          $('.accession-selector').change(function () {
+              updateAccession(this.value);
+          });
+          var updateAccession = function (accession) {
+              document.querySelector("interaction-viewer").setAttribute('accession',
+                  accession);
+          };
+      </script>
+
+        <br>
+        <p>
+        Interaction Viewer provides a quality-filtered set of binary interactions automatically derived from the IntAct database.
+        These are presented in a visual matrix, which shows blue dots for interactions.
+        The matrix shows interactions between the protein and its interactors as well as those between the interactors.
+        The depth of the blue colour shows the number of experiments providing evidence for the interaction.
+        The interactions can be filtered by subcellular location or disease involvement of one of the interactors. </p></center>
+        <small>Source: <cite><a href="https://github.com/ebi-uniprot/interaction-viewer">An adjacency graph visualisation of protein interaction data.</a></cite></small>
+      </section>
+  </div>
+</div>
+
+<div class="w3-row"></div>
+
     {% endfor %}
 {% endblock %}
