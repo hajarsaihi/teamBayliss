@@ -1,4 +1,9 @@
 
+# coding: utf-8
+
+# In[60]:
+
+
 
 import pandas as pd
 import numpy as np
@@ -287,3 +292,21 @@ def make_csv(dkinase):
     return Kinasetable_sorted_csv
 
 
+
+"""
+def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
+    input_data=open_file(filename)
+    data=filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
+    data=add_sub_gene(data)
+    #print(data)
+    data=add_kinase(data, "kinase_substrate_filtered.csv")
+    #print(data)
+    plot1=makeplot(data, FC_P, PV_P, Inhibitor)
+    #print(data)
+    plot2=makeplot_2(data, FC_P, PV_P, Inhibitor)
+    data=pv_filter(data,PV_P) #C  #filter out data above PV_P, and rows with no kinases
+    print(data)
+    kinase_activity_data=relative_kinase_activity_calculation(data)
+
+    return plot1, plot2, kinase_activity_data
+"""
