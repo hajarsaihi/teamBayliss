@@ -2,87 +2,98 @@
 {% block content %}
 
 <doctype html>
-<title>Search Results - Inhibitor Database</title>
+<title>Search Results - Kinase Database</title>
 <head>
     <title> Inhibitor Database</title>
-    <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
-    <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/main.css?version=647">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css?version=1">
+    <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=1">
 </head>
-  <div class="w3-card-4 w3-margin w3-white">
-      <div class="w3-container">
-        <br>
-        {% for x in results %}
-        <center> <h3><b>Results</b></h3> <center>
-        <h5> <span class="w3-teal"><td>{{ x.chembl_ID }}</td></span></h5>
+{% for x in results %}
+<div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <br>
+      <center> <h3><b>Results</b></h3> <center>
+      <h5> <span class="w3-teal"><td>{{ x.chembl_ID }}</td></span></h5>
 
-      </div>
+    </div>
 
-      <div class="w3-container">
-        <br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Information </h4>
-        <figure style="">
-            <img src="{{ x.image }}" style="width:300px;height:300px;border:1px solid grey" alt='missing' />
-            <figcaption>{{ x.chembl_ID }}</figcaption>
-        </figure>
-        <br>
-        <h5> Inhibitor Name: <span class="w3-opacity"><td>{{ x.name }}</td></span>
-        <h5> Synonyms: <span class="w3-opacity"><td>{{ x.syn }}</td></span>
-        <h5> Type: <span class="w3-opacity"><td>{{ x.type }}</td></span>
-        <h5> Kinase Target(s): <span class="w3-opacity"><a href="{{ url_for('profile', kinase = x.target1) }}">{{ x.target1 }}</a>
-          <a href="{{ url_for('profile', kinase = x.target2) }}">{{ x.target2 }}</a></span>
+<div class="tabset">
+  <!-- Tab 1 -->
+  <input type="radio" name="tabset" id="tab1" aria-controls="info" checked>
+  <label for="tab1">Information</label>
+  <!-- Tab 2 -->
+  <input type="radio" name="tabset" id="tab2" aria-controls="prop">
+  <label for="tab2">Properties</label>
 
-        <h5> Molecular Formula: <span class="w3-opacity"><td>{{ x.mol_formula }}</td></span>
+  <div class="tab-panels">
+    <section id="info" class="tab-panel">
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Information </h4>
+      <figure style="">
+          <img src="{{ x.image }}" style="width:300px;height:300px;border:1px solid grey" alt='missing' />
+          <figcaption>{{ x.chembl_ID }}</figcaption>
+      </figure>
+      <br>
+      <h5> Inhibitor Name: <span class="w3-opacity"><td>{{ x.name }}</td></span>
+      <h5> Synonyms: <span class="w3-opacity"><td>{{ x.syn }}</td></span>
+      <h5> Type: <span class="w3-opacity"><td>{{ x.type }}</td></span>
+      <h5> Kinase Target(s): <span class="w3-opacity"><a href="{{ url_for('profile', kinase = x.target1) }}">{{ x.target1 }}</a>
+        <a href="{{ url_for('profile', kinase = x.target2) }}">{{ x.target2 }}</a></span>
+
+      <h5> Molecular Formula: <span class="w3-opacity"><td>{{ x.mol_formula }}</td></span>
+      <br><br><br><br><br><br><br><br><br>
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Structure Representations </h4>
+      <h5> Structure Type: <span class="w3-opacity"><td>{{ x.structuretype }}</td></span>
+      <h5> Aromatic Rings: <span class="w3-opacity"><td>{{ x.aromaticrings }}</td></span>
+      <h5> Canonical SMILES: <span class="w3-opacity w3-medium"><td>{{ x.smiles }}</td></span>
+      <h5> Standard InChI: <span class="w3-opacity w3-medium"><td>{{ x.inchi }}</td></span>
+
+  </section>
+
+    <section id="prop" class="tab-panel">
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Properties </h4>
+      <div class="container">
+        <br>
+        <table class="zui-table" align="left">
+            <thead>
+                <tr>
+                    <th>Bioactivities</th>
+                    <th>AlogP</th>
+                    <th>PSA</th>
+                    <th>HBA</th>
+                    <th>HBD</th>
+                    <th>Rotatable Bonds</th>
+                    <th>Passes RO3</th>
+                    <th>QED Weighted</th>
+                    <th>ACD ApKa</th>
+                    <th>ACD BpKa</th>
+                    <th>ACD LogP</th>
+                    <th>ACD LogD</th>
+                    <th>Heavy Atoms</th>
+                    <th>Molecular Weight Monoisotopic</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ x.bioactivities }}</td>
+                    <td>{{ x.alogP }}</td>
+                    <td>{{ x.psa }}</td>
+                    <td>{{ x.hba }}</td>
+                    <td>{{ x.hbd }}</td>
+                    <td>{{ x.rotatablebonds }}</td>
+                    <td>{{ x.passesro3 }}</td>
+                    <td>{{ x.qed }}</td>
+                    <td>{{ x.apka }}</td>
+                    <td>{{ x.bpka }}</td>
+                    <td>{{ x.acdlogp }}</td>
+                    <td>{{ x.acdlogd }}</td>
+                    <td>{{ x.heavyatoms }}</td>
+                    <td>{{ x.molweightmono }}</td>
+                </tr>
+            </tbody>
+        </table>
         <br><br><br><br><br><br><br><br><br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Structure Representations </h4>
-        <h5> Structure Type: <span class="w3-opacity"><td>{{ x.structuretype }}</td></span>
-        <h5> Aromatic Rings: <span class="w3-opacity"><td>{{ x.aromaticrings }}</td></span>
-        <h5> Canonical SMILES: <span class="w3-opacity w3-medium"><td>{{ x.smiles }}</td></span>
-        <h5> Standard InChI: <span class="w3-opacity w3-medium"><td>{{ x.inchi }}</td></span>
-        <br><br>
-        <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Properties </h4>
-        <div class="container">
-          <br>
-          <table class="zui-table" align="left">
-              <thead>
-                  <tr>
-                      <th>Bioactivities</th>
-                      <th>AlogP</th>
-                      <th>PSA</th>
-                      <th>HBA</th>
-                      <th>HBD</th>
-                      <th>Rotatable Bonds</th>
-                      <th>Passes RO3</th>
-                      <th>QED Weighted</th>
-                      <th>ACD ApKa</th>
-                      <th>ACD BpKa</th>
-                      <th>ACD LogP</th>
-                      <th>ACD LogD</th>
-                      <th>Heavy Atoms</th>
-                      <th>Molecular Weight Monoisotopic</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>{{ x.bioactivities }}</td>
-                      <td>{{ x.alogP }}</td>
-                      <td>{{ x.psa }}</td>
-                      <td>{{ x.hba }}</td>
-                      <td>{{ x.hbd }}</td>
-                      <td>{{ x.rotatablebonds }}</td>
-                      <td>{{ x.passesro3 }}</td>
-                      <td>{{ x.qed }}</td>
-                      <td>{{ x.apka }}</td>
-                      <td>{{ x.bpka }}</td>
-                      <td>{{ x.acdlogp }}</td>
-                      <td>{{ x.acdlogd }}</td>
-                      <td>{{ x.heavyatoms }}</td>
-                      <td>{{ x.molweightmono }}</td>
-                  </tr>
-              </tbody>
-          </table>
-          <br><br><br><br><br><br><br><br><br>
-        </div>
+      </div>
+    </section>
       </div>
     {% endfor %}
 {% endblock %}
