@@ -1,4 +1,5 @@
 
+
 import pandas as pd
 import numpy as np
 import os
@@ -276,8 +277,9 @@ def relative_kinase_activity_calculation(de):
     return dkinase
 
 def make_html(dkinase):
-    dkinase_30=dkinase.head(30) #to get the top 30 rows only
+    dkinase_30=dkinase.head(30)
     Kinasetable_sorted=dkinase_30.to_html() #To get the html version of the table
+
     return Kinasetable_sorted
 
 def make_csv(dkinase):
