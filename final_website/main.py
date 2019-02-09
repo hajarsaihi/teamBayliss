@@ -223,7 +223,7 @@ def plot():
     data_csv=relative_kinase6.make_csv(Kinasetable_sorted) #to create a csv file
     
 
-###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
+###To get the java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
      #CDN: Content Delivery Network
 
     cdn_js=CDN.js_files[0]   #Only the first link is used
@@ -250,6 +250,9 @@ def plot():
                      mimetype='text/csv',
                      attachment_filename='relative_kinase_activity.csv',
                      as_attachment=True)
+
+
+
 
 
 ###############################
