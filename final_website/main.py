@@ -188,17 +188,17 @@ def plot():
     FC_P=float(FC_P)          # the numbers can be decimals therefore they have been specified  to be floats
     PV_P=request.form['PV_P']
     PV_P=float(PV_P)
-    if request.form['CV_P'] == "":       #if the user does not provide with  CV_P value then the default would be 10.0 
+    if request.form['CV_P'] == "":       #if the user does not provide with  CV_P value then the default would be 10.0
         CV_P=float(10)
     else:
-        CV_P=request.form['CV_P']      #if the user does provide with a CV_P value then it will be used. 
-        CV_P=float(CV_P) 
-  
-    N_P= request.form['N_P']         #The background noise threshold value will filter out all relative kinase activities according to this threshold. 
-    N_P=float(N_P) 
+        CV_P=request.form['CV_P']      #if the user does provide with a CV_P value then it will be used.
+        CV_P=float(CV_P)
+
+    N_P= request.form['N_P']         #The background noise threshold value will filter out all relative kinase activities according to this threshold.
+    N_P=float(N_P)
     Inhibitor=request.form['Inhibitor']
 
-    
+
     import relative_kinase6
     filename="./static/temp.tsv"
 
@@ -218,10 +218,10 @@ def plot():
     data=relative_kinase6.pv_filter(data,PV_P) #C  #filter out data above PV_P, and rows with no kinases
    # print(data)
     Kinasetable_sorted=relative_kinase6.relative_kinase_activity_calculation(data)
-    
+
     data_html=relative_kinase6.make_html(Kinasetable_sorted)  #to create a html format for teh website
     data_csv=relative_kinase6.make_csv(Kinasetable_sorted) #to create a csv file
-    
+
 
 ###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
      #CDN: Content Delivery Network
@@ -230,7 +230,7 @@ def plot():
 
     #To get the CSS style sheet of the Bokeh volcano plot
     cdn_css=CDN.css_files[0] #Only the first link is used
- 
+
 
     return render_template("plot.html",
         FC_P =FC_P,
@@ -245,7 +245,7 @@ def plot():
         cdn_js=cdn_js,
         Kinasetable_sorted=Kinasetable_sorted,
         data_html=data_html,
-        data_csv=data_csv) 
+        data_csv=data_csv)
     return send_file('static/relative_kinase_activity.csv',
                      mimetype='text/csv',
                      attachment_filename='relative_kinase_activity.csv',
