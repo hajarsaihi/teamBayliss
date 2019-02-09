@@ -185,30 +185,43 @@ def upload():
 def plot():
 
     FC_P= request.form['FC_P']
-    FC_P=float(FC_P)                  # the numbers can be decimals therefore they have been specified  to be floats
+    FC_P=float(FC_P)          # the numbers can be decimals therefore they have been specified  to be floats
     PV_P=request.form['PV_P']
     PV_P=float(PV_P)
-    CV_P=request.form['CV_P']
-    CV_P=float(CV_P)
+    if request.form['CV_P'] == "":       #if the user does not provide with  CV_P value then the default would be 10.0 
+        CV_P=float(10)
+    else:
+        CV_P=request.form['CV_P']      #if the user does provide with a CV_P value then it will be used. 
+        CV_P=float(CV_P) 
+  
+    N_P= request.form['N_P']         #The background noise threshold value will filter out all relative kinase activities according to this threshold. 
+    N_P=float(N_P) 
     Inhibitor=request.form['Inhibitor']
 
-    import relative_kinase
+    
+    import relative_kinase6
     filename="./static/temp.tsv"
 
-    input_data=relative_kinase.open_file(filename)
-    data=relative_kinase.filter_data(input_data, FC_P, PV_P, CV_P)
-    data=relative_kinase.add_sub_gene(data)
+    input_data=relative_kinase6.open_file(filename)
+    data=relative_kinase6.filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
+    data=relative_kinase6.add_sub_gene(data)
     #print(data)
-    data=relative_kinase.add_kinase(data, "kinase_substrate_filtered.csv")
+    data=relative_kinase6.add_kinase(data, "kinase_substrate_filtered.csv")
     #print(data)
-    plot1=relative_kinase.makeplot(data, FC_P, PV_P, Inhibitor)
+    plot1=relative_kinase6.makeplot(data, FC_P, PV_P, Inhibitor)
     #print(data)
-    plot2=relative_kinase.makeplot_2(data, FC_P, PV_P, Inhibitor)
-    #print(data)
-    script1, div1 =components(plot1)
+    plot2=relative_kinase6.makeplot_2(data, FC_P, PV_P, Inhibitor)
+
+    script1, div1 =components(plot1)  # to get the data points(script1 & scrip2) and the javascript for the graph (div1 & div2)
     script2, div2 =components(plot2)
 
-    Kinasetable_sorted=relative_kinase.relative_kinase_activity_calculation(data) #to get the html format of the table
+    data=relative_kinase6.pv_filter(data,PV_P) #C  #filter out data above PV_P, and rows with no kinases
+   # print(data)
+    Kinasetable_sorted=relative_kinase6.relative_kinase_activity_calculation(data)
+    
+    data_html=relative_kinase6.make_html(Kinasetable_sorted)  #to create a html format for teh website
+    data_csv=relative_kinase6.make_csv(Kinasetable_sorted) #to create a csv file
+    
 
 ###To get he java script of the Bokeh volcano plot, to ensure the link is dynamic and changes with the newer version of Bokeh that's why these are added here
      #CDN: Content Delivery Network
@@ -217,6 +230,7 @@ def plot():
 
     #To get the CSS style sheet of the Bokeh volcano plot
     cdn_css=CDN.css_files[0] #Only the first link is used
+ 
 
     return render_template("plot.html",
         FC_P =FC_P,
@@ -229,7 +243,13 @@ def plot():
         div2=div2,
         cdn_css=cdn_css,
         cdn_js=cdn_js,
-        Kinasetable_sorted=Kinasetable_sorted)
+        Kinasetable_sorted=Kinasetable_sorted,
+        data_html=data_html,
+        data_csv=data_csv) 
+    return send_file('static/relative_kinase_activity.csv',
+                     mimetype='text/csv',
+                     attachment_filename='relative_kinase_activity.csv',
+                     as_attachment=True)
 
 
 ###############################
