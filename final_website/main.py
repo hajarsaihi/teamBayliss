@@ -45,6 +45,8 @@ def k_search_results(search):
 
     if search_string:
         if search.data['select'] == 'Protein Kinase Name':
+            iqry = db_session.query(inhibitor_information).filter(inhibitor_information.target1.ilike(search_string))
+            inhibresults = iqry.all()
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
             results = qry.all()
 
@@ -71,7 +73,7 @@ def k_search_results(search):
 
     else:
         # display results
-        return render_template('kinase_results.html', results=results)
+        return render_template('kinase_results.html', results=results, inhibresults=inhibresults)
 
 
 @app.route('/kinase/<kinase>')
@@ -114,9 +116,13 @@ def i_search_results(search):
 
     else:
         # display results
-        table = IResults(results)
-        table.border = True
         return render_template('inhib_results.html', results=results)
+
+@app.route('/inhbitor/<chembl>')
+def inhibprofile(chembl):
+    qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(chembl))
+    results = qry.all()
+    return render_template('inhib_results.html', results=results)
 
 ###### Phosphosites ###########################################################
 @app.route('/Phosphosite', methods=['GET', 'POST'])

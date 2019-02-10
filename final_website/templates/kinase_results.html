@@ -43,6 +43,9 @@
   <!-- Tab 4 -->
   <input type="radio" name="tabset" id="tab4" aria-controls="inter">
   <label for="tab4">{{ x.kinase.upper() }} Protein Interaction</label>
+  <!-- Tab 5 -->
+  <input type="radio" name="tabset" id="tab5" aria-controls="inhib">
+  <label for="tab5">Known {{ x.kinase.upper() }} Inhibitors</label>
 
   <div class="tab-panels">
     <section id="Information" class="tab-panel">
@@ -59,14 +62,14 @@
       <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
 
   </section>
-    <section id="Cross References" class="tab-panel">
+    <section id="crossref" class="tab-panel">
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-100 w3-light-grey"> Links </h4>
       <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ (x.entrez)|int }}" >{{ (x.entrez)|int }}</a></span></h5>
       <h5> Uniprot ID: <span class="w3-opacity"><a href="https://www.uniprot.org/uniprot/{{ x.accID }}">{{ x.accID}}</a></span></h5>
 
       </section>
 
-    <section id="Protein Annotation" class="tab-panel">
+    <section id="annot" class="tab-panel">
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">{{ x.kinase.upper() }} Protein Annotation </h4>
       <div id="yourDiv" style="width:1024px; margin:auto;"></div>
       <center><script>
@@ -84,7 +87,7 @@
       </script></center>
     </section>
 
-    <section id="Interaction Viewer" class="tab-panel">
+    <section id="inter" class="tab-panel">
       <center>
         Uniprot Name: {{ x.uniprot }}
 
@@ -121,11 +124,51 @@
         The depth of the blue colour shows the number of experiments providing evidence for the interaction.
         The interactions can be filtered by subcellular location or disease involvement of one of the interactors. </p></center>
         <small>Source: <cite><a href="https://github.com/ebi-uniprot/interaction-viewer">An adjacency graph visualisation of protein interaction data.</a></cite></small>
+
+      </section>{% endfor %}
+
+      <section id="inhib" class="tab-panel">
+        {% if inhibresults %}
+        <style>
+          table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+          </style>
+
+          <table>
+
+          <tr>
+            <td><b>ChEMBL_ID</td>
+            <td><b>Name</td>
+            <td><b>Synonyms</td>
+          </tr>
+          <tr>
+             {% for y in inhibresults %}
+             <td><a href="{{ url_for('inhibprofile', chembl = y.chembl_ID) }}">{{ y.chembl_ID }}</a>
+             <td>{{ y.name }}</td>
+             <td>{{ y.syn }}</td>
+          </tr>
+          {% endfor %}
+          </table>
+      {% else %}
+        <center> No known GSK kinase inhibitors found </center>
+      {% endif %}
       </section>
   </div>
 </div>
 
 <div class="w3-row"></div>
 
-    {% endfor %}
 {% endblock %}
