@@ -51,9 +51,9 @@ def open_file(filename):
 
 def filter_data(d, FC_P, PV_P, CV_P, N_P):
 
-
-    # d_cols=["Substrate", "Control_mean", "Inhibitor_mean", "Fold_change", "p_value", "ctrlCV", "treatCV" ]
-    # d.columns=d_cols
+    d["Fold_Change_Cal"]=d["Inhibitor_mean"]/d["Control_mean"] #C7
+    d.Fold_Change_Cal.replace([np.inf, -np.inf], np.nan, inplace=True) #C7
+    d.dropna(subset=["Fold_Change_Cal"], inplace=True) #C7
 
 ####drop out methonine and none####
     d=(d[~d.Substrate.str.contains("None")] ) #drop rows with "None"
@@ -156,14 +156,14 @@ def noise_filter(dd, N_P): #C6
 def makeplot(df, FC_P, PV_P, Inhibitor):
     
 
-    df.loc[(df['Fold_change'] > FC_P) & (df['p_value'] < PV_P), 'color'] = "green"  # upregulated
+    df.loc[(df['Fold_Change_Cal'] > FC_P) & (df['p_value'] < PV_P), 'color'] = "green"  # upregulated #C7
     #df.loc - Selects single row or subset of rows from the DataFrame by label
-    df.loc[(df['Fold_change'] <=FC_P) & (df['p_value'] < PV_P), 'color'] = "red"   # downregulated
+    df.loc[(df['Fold_Change_Cal'] <=FC_P) & (df['p_value'] < PV_P), 'color'] = "red"   # downregulated #C7
     df['color'].fillna('grey', inplace=True)
 
 
     df["log_pvalue"] = -np.log10(df['p_value'])
-    df["log_FC"]=np.log2(df['Fold_change'])
+    df["log_FC"]=np.log2(df['Fold_Change_Cal']) #C7
 
     df.head()
 
@@ -184,19 +184,19 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
     #feeding data into ColumnDataSource
     source = ColumnDataSource(df)
     #Editing the hover that need to displayed while hovering
-    hover = HoverTool(tooltips=[('Kinase','@Kinase'),
+    hover = HoverTool(tooltips=[('Kinase', '@Kinase'),
                                 ('Substrate', '@Substrate'),
-                                ('Sub_gene','@Sub_gene'),
+                                ('Sub_gene', '@Sub_gene'),
                                 ('Phosphosite', '@Phosphosite'),
-                               ('Fold_change', '@Fold_change'),
-                               ('p_value', '@p_value')])
+                                ('Fold_Change_Cal', '@Fold_Change_Cal'),
+                                ('p_value', '@p_value')])
     #tools that are need to explote data
     tools = [hover, WheelZoomTool(), PanTool(), BoxZoomTool(), ResetTool(), SaveTool()]
     
 
 
     #finally making figure with scatter plot
-    p = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
+    p = figure(tools=tools,title=title,plot_width=700,plot_height=500,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
    
     p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
@@ -208,17 +208,15 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
 def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
-    df = df[df['Kinase']!='']  # Drop of data with no Kinase allocated
+    df = df[df['Kinase'] != '']  # Drop of data with no Kinase allocated
 
-    df.loc[(df['Fold_change'] > FC_P) & (df['p_value'] < PV_P), 'color' ] = "Blue"  # upregulated
-    #df.loc - Selects single row or subset of rows from the DataFrame by label
-    df.loc[(df['Fold_change'] <=FC_P) & (df['p_value'] < PV_P), 'color' ] = "Purple"   # downregulated
+    df.loc[(df['Fold_Change_Cal'] > FC_P) & (df['p_value'] < PV_P), 'color'] = "Blue"  # upregulated
+    # df.loc - Selects single row or subset of rows from the DataFrame by label
+    df.loc[(df['Fold_Change_Cal'] <= FC_P) & (df['p_value'] < PV_P), 'color'] = "Purple"  # downregulated
     df['color'].fillna('grey', inplace=True)
-    
-
 
     df["log_pvalue"] = -np.log10(df['p_value'])
-    df["log_FC"]=np.log2(df['Fold_change'])
+    df["log_FC"] = np.log2(df['Fold_Change_Cal'])
 
     df.head()
 
@@ -237,7 +235,7 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
                                 ('Substrate', '@Substrate'),
                                 ('Sub_gene','@Sub_gene'),
                                 ('Phosphosite', '@Phosphosite'),
-                               ('Fold_change', '@Fold_change'),
+                               ('Fold_Change_Cal', '@Fold_Change_Cal'), #C7
                                ('p_value', '@p_value')])
     #tools that are need to explote data
     tools = [hover, WheelZoomTool(), PanTool(), BoxZoomTool(), ResetTool(), SaveTool()]
@@ -245,12 +243,12 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
     #finally making figure with scatter plot
-    p = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
+    pp = figure(tools=tools,title=title,plot_width=700,plot_height=500,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
    
-    p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
+    pp.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
     #displaying the graph
-    return(p)
+    return(pp)
 
 
 
@@ -280,11 +278,22 @@ def relative_kinase_activity_calculation(de):
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
     dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C
-    return dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C #dkinase
+    dkinase= dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C #dkinase
+    return dkinase
+
+def make_html(dkinase):
+    dkinase_30=dkinase.head(30)
+    Kinasetable_sorted=dkinase_30.to_html() #To get the html version of the table
+
+    return Kinasetable_sorted
+
+def make_csv(dkinase):
+    Kinasetable_sorted_csv=dkinase.to_csv("./static/relative_kinase_activity.csv", sep=',')  #to get the csv file which the user can download
+    return Kinasetable_sorted_csv
 
 
 
-
+"""
 def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
     input_data=open_file(filename)
     data=filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
@@ -300,3 +309,4 @@ def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
     kinase_activity_data=relative_kinase_activity_calculation(data)
 
     return plot1, plot2, kinase_activity_data
+"""
