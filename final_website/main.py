@@ -80,7 +80,9 @@ def k_search_results(search):
 def profile(kinase):
     qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
     results = qry.all()
-    return render_template('kinase_results.html', results=results)
+    iqry = db_session.query(inhibitor_information).filter(inhibitor_information.target1.ilike(kinase))
+    inhibresults = iqry.all()
+    return render_template('kinase_results.html', results=results, inhibresults=inhibresults)
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])

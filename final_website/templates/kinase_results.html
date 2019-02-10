@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
 </head>
-
+{% if results %}
 {% for x in results %}
 
 <div class="w3-card-4 w3-margin w3-white">
@@ -168,7 +168,11 @@
       </section>
   </div>
 </div>
+{% else %}
+<br>
+  <center> No Results - Please try again! </center>
 
+{% endif %}
 <div class="w3-row"></div>
 
 {% endblock %}
