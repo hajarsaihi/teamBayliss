@@ -196,7 +196,7 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
 
 
     #finally making figure with scatter plot
-    p = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
+    p = figure(tools=tools,title=title,plot_width=700,plot_height=600,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
    
     p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
@@ -243,12 +243,12 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
     #finally making figure with scatter plot
-    p = figure(tools=tools,title=title,plot_width=700,plot_height=400,toolbar_location='right',toolbar_sticky=False, )
+    pp = figure(tools=tools,title=title,plot_width=700,plot_height=600,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
    
-    p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
+    pp.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
     #displaying the graph
-    return(p)
+    return(pp)
 
 
 
@@ -278,11 +278,22 @@ def relative_kinase_activity_calculation(de):
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
     dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C
-    return dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C #dkinase
+    dkinase= dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C #dkinase
+    return dkinase
+
+def make_html(dkinase):
+    dkinase_30=dkinase.head(30)
+    Kinasetable_sorted=dkinase_30.to_html() #To get the html version of the table
+
+    return Kinasetable_sorted
+
+def make_csv(dkinase):
+    Kinasetable_sorted_csv=dkinase.to_csv("./static/relative_kinase_activity.csv", sep=',')  #to get the csv file which the user can download
+    return Kinasetable_sorted_csv
 
 
 
-
+"""
 def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
     input_data=open_file(filename)
     data=filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
@@ -298,3 +309,4 @@ def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
     kinase_activity_data=relative_kinase_activity_calculation(data)
 
     return plot1, plot2, kinase_activity_data
+"""

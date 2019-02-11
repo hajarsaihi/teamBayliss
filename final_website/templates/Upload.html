@@ -1,35 +1,90 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<doctype html>
+<link rel="stylesheet" type="text/css" href="static/css/main.css?version=2">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/r.css">
 <title>Kinase Search Tool</title>
 <main class="w3-card-4 w3-margin w3-white">
 <div class="w3-container">
   <div class="container" style="width:500px;">
 
+
       <body>
           <br>
-          <center><h3><b> User-Defined Paramaters </b></h3>
-          <p> Please select desired thresholds and variables required.</p></center>
-
+          <center><h3><b> STEP 2/2</b></h3></center>
             <br>
+          <center><h3><b>User-Defined Paramaters </b></h3>
+          
+          <p> Please select desired thresholds and variables for Phosphoproteomics Data Analaysis.</p></center>
+              <br>
+              
               <form id="upload-form" action="/Tool/upload/compute/" method="POST" enctype="multipart/form-data" class="w3-container" >
-                <label class="w3-text-teal center-block" for= "FC_P"><b>Fold Change: </b></label>
+                
+                <p><b>Required Paramaters: '*'</b></p>
+                <label class="w3-text-teal center-block" for= "FC_P"><b>*Fold Change: <i>(e.g: 1) </i></b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter value" type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
                 <br>
-                <label class="w3-text-teal center-block" for= "PV_P"><b>p-value Threshold: </b></label>
-                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
+                <label class="w3-text-teal center-block" for= "PV_P"><b>*<i>P-value</i> Threshold: <i>(e.g: 0.05) </i> </b></label>
+                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.0000001" required/>
                 <br>
-                <label class="w3-text-teal center-block" for= "CV_P"><b>CV Threshold: </b></label>
-                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
+                <label class="w3-text-teal center-block" for= "CV_P"><b>Coefficient of Variance Threshold: <i>(e.g: 10) (Optional)</i></b></label>
+                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
                 <br>
-                <label class="w3-text-teal center-block" for= "Inhibitor"><b>Inhibitor used:</b></label>
-                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter name" <input type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10" required>
+                <label class="w3-text-teal center-block" for= "N_P"><b>*Background Noise Threshold: <i>(e.g: 100) </i> </b></label>
+                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="N_P" name="N_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
                 <br>
-                <center><input class="w3-btn w3-padding w3-teal" type=submit value=Run style="width:200px;"></center>
+                <label class="w3-text-teal center-block" for= "Inhibitor"><b>*Inhibitor used: <i>(e.g: AZ20) </i></b></label>
+                <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter name" type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10" required>
+                <br>
+                <p><b>Please note:</b> If your file does not contain <b>Coefficient of Variance (CV)</b> data then the default threshold of <b>'10.0'</b> and the default CV of <b>'9.9'</b> will be used. <b>This may affect the accuracy of the analysis.</b></p></center>
+                
+                <center><input class="w3-btn w3-padding w3-teal" type=submit value=Run id="run" style="width:200px;" disabled="disabled" onClick="$('#loading').show();">
+                <br>
+                <br>
+                <input class="w3-btn w3-padding w3-teal" type="reset" value="Reset the form" accesskey="r">
+                 <html xmlns="http://www.w3.org/1999/xhtml" >
+                  <head runat="server">
+                      <title>Disable Button</title>
+                      <script src="http://code.jquery.com/jquery-1.11.0.min.js" ></script>
+                      <script type="text/javascript">
+
+                      $(document).ready(function (){
+                      validate();
+                      $('#FC_P, #PV_P, #N_P, #Inhibitor').change(validate);
+                  });
+
+                  function validate(){
+                      if ($('#FC_P').val().length   >   0   &&
+                          $('#PV_P').val().length  >   0   &&
+                          $('#N_P').val().length  >   0   &&
+                          $('#Inhibitor').val().length    >   0) {
+                          $("#run").prop("disabled", false);
+                      }
+                      else {
+                          $("#run").prop("disabled", true);
+                      }
+                  }
+
+                      </script>
+                  </head>
+                  <body>
+                      <form id="form1" runat="server">
+                      <div>
+                          <asp:Label ID="Label1" runat="server" Font-Bold="True" Text="Name:"></asp:Label>
+
+
               </form>
+              <br> 
+              <br> 
+                <div class= loading id="loading" style="display:none;"><img src="{{ url_for('static', filename='loading2.gif') }}" alt="Image Placeholder"  height="130" lowsrc="/static/loading2.gif"> <br> LOADING!<br> PLEASE WAIT!</div>
+              </body>
 
         </div>
     </div>
 
 {% endblock %}
+
+
+
+ 

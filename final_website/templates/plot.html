@@ -5,7 +5,7 @@
 <title>Phosphoproteomics</title>
 <head>
     <title> PP Tool </title>
-    <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=3423">
+    <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=3424">
 
     <link rel="stylesheet" href={{cdn_css | safe}} type="text/css" />
     <script type="text/javascript" src={{cdn_js | safe}}></script>
@@ -14,7 +14,7 @@
 <main class="w3-card-4 w3-margin w3-white">
   <div class="w3-container">
     <br>
-    <center> <h3><b>Phosphoproteomics Tool Results</b></h3> <center>
+    <center> <h3><b>Phosphoproteomics Tool Results</b></h3> </center>
       <br>
     </div>
 
@@ -31,56 +31,126 @@
 
         <div class="tab-panels">
           <section id="info" class="tab-panel">
-            <h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Volcano Plot </h5>
-            <div class="container" style="text-align: center; width:800px; margin:auto;" >
-              <p style="text-align:center;">
+            <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">Total Protein Summary </h5></center>
+            <div style="text-align: left; width:800px; margin:auto;" >
+              <p style="text-align:left;">
+                <b>Each point represents the susbtrates that were found in your file.  </b>
+                
+                
                 {{script1 | safe}}
                 {{div1 | safe}}</p>
 
+               
+                <br>
+                <div class='my-legend'>
+                <div class='legend-title'>Key: </div>
+                <div class='legend-scale'>
+                  <ul class='legend-labels'>
+                    <li><span style='background:#FF0000;'></span>Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change < Fold-change Threshold</li>
+                    <li><span style='background:#008000;'></span> Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change > Fold-change Threshold</li>
+                    <li><span style='background:#808A82;'></span>Substrate <i>p-value</i> > <i>p-value</i> Threshold</li>
+                  </ul>
+                </div>
+                <br>
+                <br>
+                <br>
                 <p> <b>User-Defined Parameters:</b>
+                  <br>
                   <b>Fold change:</b> {{FC_P | safe}},
                   <b>p-value Threshold:</b> {{PV_P | safe}},
-                  <b>Cumulative Variance Threshold:</b> {{CV_P | safe}},
+                  <b>Coefficient of Variance Threshold:</b> {{CV_P | safe}},
                   <b>Inhibitor:</b>  {{Inhibitor | safe}}.</p>
-                  <p>Each point represents the susbtrates that were found in your file.
-                    The red points show the substrates that are below the fold-change at the chosen p-value.
-                    The green points show substrates that are above the fold-change at the chosen p-value.
-                    The grey points are the substrates that are below the fold-change and below the chosen p-value. </p></div>
+                </div>
 
           </section>
 
           <section id="kinase" class="tab-panel">
-            <h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Volcano Plot </h5>
-            <div style="text-align: center; width:800px; margin:auto;" >
-              <p style="text-align:center;">
+           <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Filtered Kinase Summary </h5></center>
+            <div style="text-align: left; width:800px; margin:auto;" >
+              <p style="text-align:left;">
+                <b>Each point represents the susbtrates that were found in your file.  </b>
                 {{script2 | safe}}
                 {{div2 | safe}}</p>
-
+                <br>
+                <div class='my-legend'>
+                <div class='legend-title'>Key: </div>
+                <div class='legend-scale'>
+                  <ul class='legend-labels'>
+                    <li><span style='background:#830D95;'></span>Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change < Fold-change Threshold</li>
+                    <li><span style='background:#131BF1;'></span> Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change > Fold-change Threshold</li>
+                    <li><span style='background:#808A82;'></span>Substrate <i>p-value</i> > <i>p-value</i> Threshold</li>
+                  </ul>
+                </div>
+               
+                <br>
+                <br>
+                <br>
                 <p> <b>User-Defined Parameters:</b>
+                  <br>
                   <b>Fold change:</b> {{FC_P | safe}},
                   <b>p-value Threshold:</b> {{PV_P | safe}},
-                  <b>Cumulative Variance Threshold:</b> {{CV_P | safe}},
+                  <b>Coefficient of Variance Threshold:</b> {{CV_P | safe}},
                   <b>Inhibitor:</b>  {{Inhibitor | safe}}.</p>
-                  <p>Each point represents the susbtrates foudn in your file which were paired with known kinases that
-                    phosphorylate at the given phosphorylation site. The purple points show the substrates
-                    that are below the fold-change at the chosen p-value. The blue points show substrates that are above
-                    the fold-change at the chosen p-value.The grey points are the substrates that are below the fold-change
-                    and below the chosen p-value.</p> </div>
+                </div>
           </section>
-
           <section id="relative" class="tab-panel">
             <!--<h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-teal"> Total Kinase Volcano Plot </h5> -->
-            <h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Relative Kinase Activity </h5>
-            <div style="text-align: center; width:800px; margin:auto;" >
-              <b>The table below shows the relative kinase activity of all known human kinases found when
-                paired with your subtrates' and their phosphorylation sites. </b>
+            <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Relative Kinase Activity </h5></center>
+            <div style="text-align: left; width:800px; margin:auto;" >
+              <br>
+              <b>The table below shows the relative kinase activity of all known human kinases found upon comparing the PhosphoKinase database with your subtrates and their phosphorylation sites which were statistically significant (<i>p-value</i>= {{PV_P | safe}}). The kinases below are shown in descending inhibition.</b>
+
                 <br>
                 <br>
-                {{Kinasetable_sorted | safe}}
+                {{data_html | safe}}
+            </div>
+             <br>
+                <br>
+            <div style="text-align: left; width:800px; margin:auto;" >
+            <b>Download the full 'Relative Kinase Activity' file here (.csv format):</b>
+            <a href="{{ url_for('static', filename='relative_kinase_activity.csv') }}"><button class='w3-btn w3-padding w3-teal '>Download</button></a>
+
             </div>
             <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
           </section>
   </div>
-<div class="w3-row"></div>
-
+  <style type='text/css'>
+  .my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    font-size: 80%;
+    list-style: none;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+</style>
 {% endblock %}
