@@ -25,10 +25,10 @@
                 <label class="w3-text-teal center-block" for= "FC_P"><b>*Fold Change: <i>(e.g: 1) </i></b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter value" type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
                 <br>
-                <label class="w3-text-teal center-block" for= "PV_P"><b>*P-value Threshold: <i>(e.g: 0.05) </i> </b></label>
+                <label class="w3-text-teal center-block" for= "PV_P"><b>*<i>P-value</i> Threshold: <i>(e.g: 0.05) </i> </b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="PV_P" name="PV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.0000001" required/>
                 <br>
-                <label class="w3-text-teal center-block" for= "CV_P"><b>Cumulative Variance Threshold: <i>(e.g: 10) (Optional)</i></b></label>
+                <label class="w3-text-teal center-block" for= "CV_P"><b>Coefficient of Variance Threshold: <i>(e.g: 10) (Optional)</i></b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter threshold value" type="number" id="CV_P" name="CV_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01"/>
                 <br>
                 <label class="w3-text-teal center-block" for= "N_P"><b>*Background Noise Threshold: <i>(e.g: 100) </i> </b></label>
@@ -37,7 +37,7 @@
                 <label class="w3-text-teal center-block" for= "Inhibitor"><b>*Inhibitor used: <i>(e.g: AZ20) </i></b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter name" type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10" required>
                 <br>
-                <p><b>Please note:</b> If your file does not contain <b>Cumulative Variance (CV)</b> data then the default threshold of <b>'10.0'</b> and the default CV of <b>'9.9'</b> will be used. <b>This may affect the accuracy of the analysis.</b></p></center>
+                <p><b>Please note:</b> If your file does not contain <b>Coefficient of Variance (CV)</b> data then the default threshold of <b>'10.0'</b> and the default CV of <b>'9.9'</b> will be used. <b>This may affect the accuracy of the analysis.</b></p></center>
                 
                 <center><input class="w3-btn w3-padding w3-teal" type=submit value=Run id="run" style="width:200px;" disabled="disabled" onClick="$('#loading').show();">
                 <br>
