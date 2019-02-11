@@ -196,7 +196,7 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
 
 
     #finally making figure with scatter plot
-    p = figure(tools=tools,title=title,plot_width=700,plot_height=500,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
+    p = figure(tools=tools,title=title,plot_width=700,plot_height=600,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
    
     p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
@@ -243,7 +243,7 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
 
 
     #finally making figure with scatter plot
-    pp = figure(tools=tools,title=title,plot_width=700,plot_height=500,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
+    pp = figure(tools=tools,title=title,plot_width=700,plot_height=600,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
    
     pp.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
     
