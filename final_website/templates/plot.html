@@ -31,7 +31,7 @@
 
         <div class="tab-panels">
           <section id="info" class="tab-panel">
-            <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Volcano Plot </h5></center>
+            <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">Total Protein Summary </h5></center>
             <div style="text-align: left; width:800px; margin:auto;" >
               <p style="text-align:left;">
                 <b>Each point represents the susbtrates that were found in your file.  </b>
@@ -46,9 +46,9 @@
                 <div class='legend-title'>Key: </div>
                 <div class='legend-scale'>
                   <ul class='legend-labels'>
-                    <li><span style='background:#FF0000;'></span>Substrate p-value < p-value Threshold and Substrate Fold-change < Fold-change Threshold</li>
-                    <li><span style='background:#008000;'></span> Substrate p-value < p-value Threshold and Substrate Fold-change > Fold-change Threshold</li>
-                    <li><span style='background:#808A82;'></span>Substrate p-value > p-value Threshold</li>
+                    <li><span style='background:#FF0000;'></span>Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change < Fold-change Threshold</li>
+                    <li><span style='background:#008000;'></span> Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change > Fold-change Threshold</li>
+                    <li><span style='background:#808A82;'></span>Substrate <i>p-value</i> > <i>p-value</i> Threshold</li>
                   </ul>
                 </div>
                 <br>
@@ -58,14 +58,14 @@
                   <br>
                   <b>Fold change:</b> {{FC_P | safe}},
                   <b>p-value Threshold:</b> {{PV_P | safe}},
-                  <b>Cumulative Variance Threshold:</b> {{CV_P | safe}},
+                  <b>Coefficient of Variance Threshold:</b> {{CV_P | safe}},
                   <b>Inhibitor:</b>  {{Inhibitor | safe}}.</p>
                 </div>
 
           </section>
 
           <section id="kinase" class="tab-panel">
-           <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Volcano Plot 2  </h5></center>
+           <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Filtered Kinase Summary </h5></center>
             <div style="text-align: left; width:800px; margin:auto;" >
               <p style="text-align:left;">
                 <b>Each point represents the susbtrates that were found in your file.  </b>
@@ -76,9 +76,9 @@
                 <div class='legend-title'>Key: </div>
                 <div class='legend-scale'>
                   <ul class='legend-labels'>
-                    <li><span style='background:#830D95;'></span>Substrate p-value < p-value Threshold and Substrate Fold-change < Fold-change Threshold</li>
-                    <li><span style='background:#131BF1;'></span> Substrate p-value < p-value Threshold and Substrate Fold-change > Fold-change Threshold</li>
-                    <li><span style='background:#808A82;'></span>Substrate p-value > p-value Threshold</li>
+                    <li><span style='background:#830D95;'></span>Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change < Fold-change Threshold</li>
+                    <li><span style='background:#131BF1;'></span> Substrate <i>p-value</i> < <i>p-value</i> Threshold and Substrate Fold-change > Fold-change Threshold</li>
+                    <li><span style='background:#808A82;'></span>Substrate <i>p-value</i> > <i>p-value</i> Threshold</li>
                   </ul>
                 </div>
                
@@ -89,7 +89,7 @@
                   <br>
                   <b>Fold change:</b> {{FC_P | safe}},
                   <b>p-value Threshold:</b> {{PV_P | safe}},
-                  <b>Cumulative Variance Threshold:</b> {{CV_P | safe}},
+                  <b>Coefficient of Variance Threshold:</b> {{CV_P | safe}},
                   <b>Inhibitor:</b>  {{Inhibitor | safe}}.</p>
                 </div>
           </section>
@@ -98,7 +98,7 @@
             <center><h5 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Relative Kinase Activity </h5></center>
             <div style="text-align: left; width:800px; margin:auto;" >
               <br>
-              <b>The table below shows the relative kinase activity of all known human kinases found upon comparing the PhosphoKinase database with your subtrates and their phosphorylation sites. The kinases below are shown in descending inhibition.</b>
+              <b>The table below shows the relative kinase activity of all known human kinases found upon comparing the PhosphoKinase database with your subtrates and their phosphorylation sites which were statistically significant (<i>p-value</i>= {{PV_P | safe}}). The kinases below are shown in descending inhibition.</b>
 
                 <br>
                 <br>
@@ -107,7 +107,7 @@
              <br>
                 <br>
             <div style="text-align: left; width:800px; margin:auto;" >
-            <b>Download the total Relative Kinase Activity file here:</b>
+            <b>Download the full 'Relative Kinase Activity' file here (.csv format):</b>
             <a href="{{ url_for('static', filename='relative_kinase_activity.csv') }}"><button class='w3-btn w3-padding w3-teal '>Download</button></a>
 
             </div>
