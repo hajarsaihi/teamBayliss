@@ -1,10 +1,3 @@
-
-# coding: utf-8
-
-# In[60]:
-
-
-
 import pandas as pd
 import numpy as np
 import os
@@ -72,18 +65,16 @@ def filter_data(d, FC_P, PV_P, CV_P, N_P):
 
 #Function: Substrates with "_HUMAN" converted to Uniprot Gene Names
 def convert_protein_name_to_gene_name(query):
-    
+
     if re.match(r".+_HUMAN", query):
         URL = 'http://www.uniprot.org/uniprot/?query=' + query + '&columns=genes(PREFERRED)&format=tab'
         r = requests.get(URL)
         lines = r.text.split("\n")
         gene_name=lines[1:2]        #return top preferred uniprot gene result #get accession number
-        
+
         return str(gene_name)  #return gene as string instead of string within a list [""] #get accession number
     else:
         return query
-
-
 
 def add_sub_gene(dd):
 #make copy of Substrate to Substrate gene
@@ -102,9 +93,9 @@ def add_sub_gene(dd):
 
 def database_retriever(kinase_datafile):
 
-    import sqlite3                   
+    import sqlite3
     import pandas as pd
-   
+
     cnx = sqlite3.connect(kinase_datafile)      #the datbase is connected
 
     Kinase_Phosphosite_df = pd.read_sql_query("SELECT * FROM Kinase_Phosphosite", cnx)   #the table is opened and put into a dataframe
@@ -117,10 +108,10 @@ class KinaseSearcher:
         self.open()
         P_cols=["Z_SITE_{}".format(i) for i in range (1,49)]
        # df = df[df[['col_1','col_2']].apply(lambda x: f(*x), axis=1)
-        
+
     def open(self):
         self.data=pd.read_csv(self.filename, header=0)
-        
+
     def findkinase(self,sub_gene, phosphosite):
         a = self.data[self.data.SUB_GENE.str.contains(sub_gene)==True]
         #simple_df['new'] = (simple_df.values == 'AA').any(1).astype(int)
@@ -128,11 +119,8 @@ class KinaseSearcher:
         p= (a.values == phosphosite).any(1)
         #print (len(p))
         b=a[p]
-        return ",".join(b["KINASE"]) 
+        return ",".join(b["KINASE"])
 
-
-    
-    
 def add_kinase(dd,kinase_df):
     kinase_df="kinase.csv"
     k=KinaseSearcher(kinase_df)    #kinase_substrated_filtered runs up to z_site_48
@@ -168,7 +156,7 @@ def noise_filter(dd, N_P): #C6
 
 
 def makeplot(df, FC_P, PV_P, Inhibitor):
-    
+
 
     df.loc[(df['Fold_Change_Cal'] > FC_P) & (df['p_value'] < PV_P), 'color'] = "green"  # upregulated #C7
     #df.loc - Selects single row or subset of rows from the DataFrame by label
@@ -206,14 +194,14 @@ def makeplot(df, FC_P, PV_P, Inhibitor):
                                 ('p_value', '@p_value')])
     #tools that are need to explote data
     tools = [hover, WheelZoomTool(), PanTool(), BoxZoomTool(), ResetTool(), SaveTool()]
-    
+
 
 
     #finally making figure with scatter plot
     p = figure(tools=tools,title=title,plot_width=700,plot_height=600,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
-   
+
     p.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
-    
+
     #displaying the graph
     return(p)
 
@@ -253,14 +241,14 @@ def makeplot_2(df, FC_P, PV_P, Inhibitor):
                                ('p_value', '@p_value')])
     #tools that are need to explote data
     tools = [hover, WheelZoomTool(), PanTool(), BoxZoomTool(), ResetTool(), SaveTool()]
-    
+
 
 
     #finally making figure with scatter plot
     pp = figure(tools=tools,title=title,plot_width=700,plot_height=600,toolbar_location='right',toolbar_sticky=False,  x_axis_label='Log2 Fold Change', y_axis_label='Log10 p-value')
-   
+
     pp.scatter(x='log_FC',y='log_pvalue',source=source,size=10,color='color')
-    
+
     #displaying the graph
     return(pp)
 
@@ -304,23 +292,3 @@ def make_html(dkinase):
 def make_csv(dkinase):
     Kinasetable_sorted_csv=dkinase.to_csv("./static/relative_kinase_activity.csv", sep=',')  #to get the csv file which the user can download
     return Kinasetable_sorted_csv
-
-
-""""
-def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
-    input_data=open_file(filename)
-    data=filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
-    data=add_sub_gene(data)
-    #print(data)
-    DATAFRAME=database_retriever("final_data.db")
-    data=add_kinase(data,"kinase.csv")
-    #print(data)
-    plot1=makeplot(data, FC_P, PV_P, Inhibitor)
-    #print(data)
-    plot2=makeplot_2(data, FC_P, PV_P, Inhibitor)
-    data=pv_filter(data,PV_P) #C  #filter out data above PV_P, and rows with no kinases
-    print(data)
-    kinase_activity_data=relative_kinase_activity_calculation(data)
-
-    return plot1, plot2, kinase_activity_data
-"""

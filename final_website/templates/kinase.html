@@ -9,6 +9,7 @@
   <header class="w3-center w3-margin-bottom">
     <p>Search for a Protein Kinase based on it's name or family. <p><b>Feature!</b> No search results? Search by Alias names!</p></header>
   {% with messages = get_flashed_messages() %}
+  <!-- if there is an error message then output this message -->
     {% if messages %}
       <l class=flashes>
       {% for message in messages %}
@@ -19,13 +20,17 @@
   {% endif %}
 {% endwith %}
 
+<!-- Search Function -->
 {% from "_formhelpers.html" import render_field %}
 <form method=post>
   <div class="search">
     <div class="wrap">
-      {{ form.select(class_="searchTerm")}}
+
+      <!-- drop down menu -->
+      {{ form.select(class_="searchTerm")}}<!-- 'class_' is based on a style located in the main CSS sheet -->
       <br>
       <br>
+      <!-- search bar -->
       {{ form.search(class_="searchTerm", placeholder="What are you looking for?") }}
       <p>
       <br>

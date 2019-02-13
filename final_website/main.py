@@ -22,67 +22,68 @@ import requests
 ###############################################################################
 
 
-init_db()
+init_db() #initialise the database
 
 ###############################################################################
-@app.route("/")
+@app.route("/") #define homepage route
 def index():
   return render_template("index.html")
 
 ###### Kinase #################################################################
 @app.route('/kinase', methods=['GET', 'POST'])
 def kinase():
-    search = KinaseSearchForm(request.form)
-    if request.method == 'POST':
-        return k_search_results(search)
+    search = KinaseSearchForm(request.form) # import search form and run a request
+    if request.method == 'POST': # if the user is searching for information (ie posting a searchstring to retrieve data)
+        return k_search_results(search) # run the kinase search function
     return render_template('kinase.html', form=search)
 
 @app.route('/k_search_results')
 def k_search_results(search):
     results = []
-    search_string = search.data['search']
+    search_string = search.data['search'] # search string given the user input data
 
     if search_string:
-        if search.data['select'] == 'Protein Kinase Name':
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
+        if search.data['select'] == 'Protein Kinase Name': # check if protein kinase name was selected
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string)) #qry the database for kinase information
+            #use ilike for case sensitive search
 
             iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(search_string))\
-                      .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1)
+                      .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1) # run a join query to find out inhibitors
 
             pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(search_string))\
-                      .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
+                      .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene) # run a join query to find out kinase substrates
             results = qry.all()
             inhibresults = iqry.all()
             phosphresults = pqry.all()
 
 
-        elif search.data['select'] == 'Alias Name':
+        elif search.data['select'] == 'Alias Name': # check if alias name was selected
             search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string))
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string)) # query alias names
             results = qry.all()
 
-        elif search.data['select'] == 'Gene Name':
+        elif search.data['select'] == 'Gene Name': # check if gene name was selected
             search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))# query matching gene name
             results = qry.all()
 
         else:
             qry = db_session.query(Kinase_Information)
             results = qry.all()
 
-    if not results:
-        flash('No results found!')
-        return redirect('/kinase')
+    if not results: # if no results were found..
+        flash('No results found!') #.. flash the error message
+        return redirect('/kinase') # and render back to kinase search
 
-    elif search.data['select'] == 'Alias Name':
-	    return render_template('alias.html', results=results)
+    elif search.data['select'] == 'Alias Name': # if the user selected Alias ..
+	    return render_template('alias.html', results=results) # .. direct them to the alias page
 
     else:
         # display results
-        return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults)
+        return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults) # render the kinase results page
 
 
-@app.route('/kinase/<kinase>')
+@app.route('/kinase/<kinase>') # for the internal hyperlink a kinase profile route is defined, and the <kinase> is queried as before.
 def profile(kinase):
     qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
 
@@ -94,14 +95,14 @@ def profile(kinase):
     results = qry.all()
     inhibresults = iqry.all()
     phosphresults = pqry.all()
-    return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults)
+    return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults)# render the kinase results page
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
 def Inhibitor():
     search = InhibitorSearchForm(request.form)
     if request.method == 'POST':
-        return i_search_results(search)
+        return i_search_results(search)# run the inhibitor search function if the method is POST
     return render_template('Inhibitor.html', form=search)
 
 @app.route('/i_search_results')
@@ -111,7 +112,6 @@ def i_search_results(search):
 
     if search_string:
         if search.data['select'] == ' ChEMBL ID ':
-            #search_string = search_string.upper() use ilike for case sensitive search
             qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
             results = qry.all()
 
@@ -132,18 +132,18 @@ def i_search_results(search):
         # display results
         return render_template('inhib_results.html', results=results)
 
-@app.route('/inhbitor/<chembl>')
+@app.route('/inhbitor/<chembl>') # for the internal hyperlink an inhibitor profile route is defined, and the <chembl> is queried as before.
 def inhibprofile(chembl):
     qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(chembl))
     results = qry.all()
-    return render_template('inhib_results.html', results=results)
+    return render_template('inhib_results.html', results=results) # render the inhibitor results page
 
 ###### Phosphosites ###########################################################
 @app.route('/Phosphosite', methods=['GET', 'POST'])
 def Phosphosite():
     search = PhosphositeSearchForm(request.form)
     if request.method == 'POST':
-        return p_search_results(search)
+        return p_search_results(search)# run the phosphosite search function if the method is POST
     return render_template('Phosphosite.html', form=search)
 
 @app.route('/Phosphosite results')
@@ -152,14 +152,14 @@ def p_search_results(search):
     search_string = search.data['search']
     data_obj = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string)).first()
 
-    if  data_obj:
+    if  data_obj: # if there is a query
         results['substrate'] = data_obj.substrate_protein
         results['gene'] = data_obj.gene
         results['loc'] = data_obj.genomic_location
         results['acc_id'] = data_obj.sub_accession
-	return render_template('phosph_results.html', result=results)
+	return render_template('phosph_results.html', result=results) # render the phosphorylation results page
 
-@app.route('/substrate/<sub>')
+@app.route('/substrate/<sub>') # for the internal hyperlink a substrate profile route is defined, and the <sub> is queried as before.
 def substrateprofile(sub):
     results = {}
     qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(sub)).first()
@@ -168,11 +168,10 @@ def substrateprofile(sub):
         results['gene'] = qry.gene
         results['loc'] = qry.genomic_location
         results['acc_id'] = qry.sub_accession
-    return render_template('phosph_results.html', result=results)
+    return render_template('phosph_results.html', result=results) # render the phosphorylation results page
 
 ###############################################################################
 ###TOOLS ###
-
 
 UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
