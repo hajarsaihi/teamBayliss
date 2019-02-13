@@ -150,10 +150,9 @@ def Phosphosite():
 def p_search_results(search):
     results = {}
     search_string = search.data['search']
-    data_obj = Kinase_Phosphosite.query.filter_by(substrate_protein=search_string).first()
 
     if  data_obj:
-        results['subtract'] = data_obj.substrate_protein
+        results['subtract'] = data_obj.substrate_protein 
         results['gene'] = data_obj.gene
         results['loc'] = data_obj.genomic_location
         results['acc_id'] = data_obj.sub_accession
