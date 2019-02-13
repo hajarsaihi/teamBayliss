@@ -19,7 +19,6 @@ from bokeh.palettes import brewer
 #import datetime
 import re
 import requests
-from app import app
 ###############################################################################
 
 
@@ -52,7 +51,6 @@ def k_search_results(search):
 
             pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(search_string))\
                       .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
-
             results = qry.all()
             inhibresults = iqry.all()
             phosphresults = pqry.all()
@@ -86,10 +84,16 @@ def k_search_results(search):
 
 @app.route('/kinase/<kinase>')
 def profile(kinase):
-    qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
+    qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
+
+    iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(search_string))\
+              .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1)
+
+    pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(search_string))\
+              .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
     results = qry.all()
-    iqry = db_session.query(inhibitor_information).filter(inhibitor_information.target1.ilike(kinase))
     inhibresults = iqry.all()
+    phosphresults = pqry.all()
     return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults)
 
 ###### Inhbitor ###############################################################
@@ -144,21 +148,10 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-    import csv
     results = {}
     search_string = search.data['search']
     data_obj = Kinase_Phosphosite.query.filter_by(substrate_protein=search_string).first()
-    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
-    # csvFile = 'Locations.csv'
-    # reader = csv.reader(open(csvFile, 'r'))
 
-    # for data in reader:
-    #     if data[1].lower() == search_string.lower():
-    #         results['subtract'] = data[1]
-    #         results['gene'] = data[0]
-    #         results['loc'] = data[3]
-    #         results['acc_id'] = data[2]
-    #         break
     if  data_obj:
         results['subtract'] = data_obj.substrate_protein
         results['gene'] = data_obj.gene
