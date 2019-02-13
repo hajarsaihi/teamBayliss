@@ -19,10 +19,10 @@ from bokeh.palettes import brewer
 #import datetime
 import re
 import requests
+from app import app
 ###############################################################################
 
-app = Flask(__name__)
-app.secret_key = 'ca/i4tishfkhaSJSF'
+
 init_db()
 
 ###############################################################################
@@ -144,10 +144,21 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-
+    import csv
     results = {}
     search_string = search.data['search']
     data_obj = Kinase_Phosphosite.query.filter_by(substrate_protein=search_string).first()
+    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
+    # csvFile = 'Locations.csv'
+    # reader = csv.reader(open(csvFile, 'r'))
+
+    # for data in reader:
+    #     if data[1].lower() == search_string.lower():
+    #         results['subtract'] = data[1]
+    #         results['gene'] = data[0]
+    #         results['loc'] = data[3]
+    #         results['acc_id'] = data[2]
+    #         break
     if  data_obj:
         results['subtract'] = data_obj.substrate_protein
         results['gene'] = data_obj.gene
