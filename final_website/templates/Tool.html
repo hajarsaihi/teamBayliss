@@ -12,11 +12,15 @@
         <header class="w3-center w3-margin-bottom">
           <br>
           <center><h3><b> STEP 1/2</b></h3>
-          <b> The PP tool is an efficent and reliable tool that allows you to upload and analyse Phosphoproteomic Data in two easy steps. </b>
-        
+          <b> The PP tool is an efficent and reliable tool that identifies phosphosite kinases and analyses MS data of your inhibitor phosphoproteomics study
+          to produce volcano plots to summarise the provided data and calculates the relative kinase activity in the experiment. </b>
             <br>
+              <br>
+              <p><i>Preparing your tsv file for upload : <i><p>
+                  <p><i>Ensure your tsv file columns are arranged in the following order: Substrate, Control_mean, Inhibitor_mean, Fold_Change, p_value, control_CV, treatment_CV. <i></p>
             <br>
-            <p> Upload your data now! </p></header>
+            <p> Upload and analyse your Phosphoproteomic Data in two easy steps NOW! </p></header>
+            <br>
             <br>
 
             <form style="text-align:center;" class=searchButton id="upload-form" action="{{ url_for('upload')}}" method="POST" enctype="multipart/form-data" >
