@@ -46,6 +46,9 @@
   <!-- Tab 5 -->
   <input type="radio" name="tabset" id="tab5" aria-controls="inhib">
   <label for="tab5">Known {{ x.kinase.upper() }} Inhibitors</label>
+  <!-- Tab 6 -->
+  <input type="radio" name="tabset" id="tab6" aria-controls="subs">
+  <label for="tab6">{{ x.kinase.upper() }} Substrates</label>
 
   <div class="tab-panels">
     <section id="Information" class="tab-panel">
@@ -155,16 +158,22 @@
             <td><b>Synonyms</td>
           </tr>
           <tr>
-             {% for y in inhibresults %}
-             <td><a href="{{ url_for('inhibprofile', chembl = y.chembl_ID) }}">{{ y.chembl_ID }}</a>
-             <td>{{ y.name }}</td>
-             <td>{{ y.syn }}</td>
+             {% for x in inhibresults %}
+
+             <td><a href="{{ url_for('inhibprofile', chembl = x.inhibitor_information.chembl_ID) }}">{{ x.inhibitor_information.chembl_ID }}</a>
+             <td>{{ x.inhibitor_information.name }}</td>
+             <td>{{ x.inhibitor_information.syn }}</td>
           </tr>
           {% endfor %}
           </table>
       {% else %}
         <center> No known GSK kinase inhibitors found </center>
       {% endif %}
+      </section>
+      <section id="subs" class="tab-panel">
+        {% for x in phosphresults %}
+          <li> {{ x.Kinase_Phosphosite.substrate_protein}} {{ x.Kinase_Phosphosite.s1}} {{ x.Kinase_Phosphosite.s2}} {{ x.Kinase_Phosphosite.s3}}  </li>
+        {% endfor %}
       </section>
   </div>
 </div>

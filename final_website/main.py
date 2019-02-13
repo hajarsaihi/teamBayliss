@@ -45,10 +45,20 @@ def k_search_results(search):
 
     if search_string:
         if search.data['select'] == 'Protein Kinase Name':
-            iqry = db_session.query(inhibitor_information).filter(inhibitor_information.target1.ilike(search_string))
-            inhibresults = iqry.all()
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
+
+            iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(search_string))\
+                      .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1)
+
+            pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(search_string))\
+                      .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
+
             results = qry.all()
+            inhibresults = iqry.all()
+            phosphresults = pqry.all()
+
+            #pqry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.pkinase.ilike(search_string))
+            #phosphresults = pqry.all()
 
         elif search.data['select'] == 'Alias Name':
             search_string = search_string.upper()
@@ -73,7 +83,7 @@ def k_search_results(search):
 
     else:
         # display results
-        return render_template('kinase_results.html', results=results, inhibresults=inhibresults)
+        return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults)
 
 
 @app.route('/kinase/<kinase>')
@@ -253,11 +263,13 @@ def plot():
         cdn_js=cdn_js,
         Kinasetable_sorted=Kinasetable_sorted,
         data_html=data_html,
-        data_csv=data_csv)
+        data_csv=data_csv, error=error)
+
     return send_file('static/relative_kinase_activity.csv',
                      mimetype='text/csv',
                      attachment_filename='relative_kinase_activity.csv',
                      as_attachment=True)
+
 
 
 

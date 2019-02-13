@@ -15,7 +15,6 @@ class Kinase_Information(db.Model):
     gene_name = db.Column('gene_name', db.String)
     accID = db.Column('uni_accession', db.String)
 
-
 class inhibitor_information(db.Model):
     """"""
     __tablename__ = "inhibitor_information"
@@ -54,11 +53,20 @@ class Kinase_Phosphosite(db.Model):
     """"""
     __tablename__ = "Kinase_Phosphosite"
 
-    keys_row = db.Column('Keys_row', db.Integer, primary_key = True)
+    keys_row = db.Column('Key_rows', db.Integer, primary_key = True)
     gene = db.Column('GENE', db.Integer)
     pkinase = db.Column('KINASE', db.String)
     kinase_accession = db.Column('KIN_ACC_ID', db.String)
     substrate_protein = db.Column('SUBSTRATE', db.String)
     sub_gene = db.Column('SUB_GENE', db.String)
     sub_accession = db.Column('SUB_ACC_ID', db.String)
-    phosphosite = db.Column('SITE_7_AA', db.String)
+    # the following is a quick last minute solution to retrieving phosphosites (only the first 15) and we recognise another more efficient approach is better but due to time
+    # constraints and finding this problem very late it is the only solution.
+    s1 = db.Column('Z_SITE_1', db.String)
+    s2 = db.Column('Z_SITE_2', db.String)
+    s3 = db.Column('Z_SITE_3', db.String)
+    s4 = db.Column('Z_SITE_4', db.String)
+
+
+#Kinase_Information.kinase = relationship(inhibitor_information,primaryjoin=inhibitor_information.target1==Kinase_Information.kinase)
+db.create_all()
