@@ -139,7 +139,7 @@ def p_search_results(search):
     import csv
     results = {}
     search_string = search.data['search']
-    data_obj = Kinase_Phosphosite.query.filter_by(substrate_protein=search_string).first()
+    data_obj = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string)).first()
     # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
     # csvFile = 'Locations.csv'
     # reader = csv.reader(open(csvFile, 'r'))
@@ -152,7 +152,7 @@ def p_search_results(search):
     #         results['acc_id'] = data[2]
     #         break
     if  data_obj:
-        results['subtract'] = data_obj.substrate_protein
+        results['subtract'] = data_obj.substrate_protein 
         results['gene'] = data_obj.gene
         results['loc'] = data_obj.genomic_location
         results['acc_id'] = data_obj.sub_accession
