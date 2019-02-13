@@ -55,7 +55,6 @@ def filter_data(d, FC_P, PV_P, CV_P, N_P):
     d.Fold_Change_Cal.replace([np.inf, -np.inf], np.nan, inplace=True) #C7
     d.dropna(subset=["Fold_Change_Cal"], inplace=True) #C7
 
-
 ####drop out methonine and none####
     d=(d[~d.Substrate.str.contains("None")] ) #drop rows with "None"
 
