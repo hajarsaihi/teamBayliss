@@ -1,3 +1,4 @@
+### Import required packages!
 import os
 from app import app
 from flask import Flask, Markup, render_template, flash,url_for, render_template, request, redirect,g,send_from_directory, Response, request, send_file
@@ -46,15 +47,18 @@ def k_search_results(search):
         if search.data['select'] == 'Protein Kinase Name': # check if protein kinase name was selected
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string)) #qry the database for kinase information
             #use ilike for case sensitive search
-
-            iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(search_string))\
-                      .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1) # run a join query to find out inhibitors
-
-            pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(search_string))\
-                      .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene) # run a join query to find out kinase substrates
             results = qry.all()
+
+            iqry = db_session.query(Kinase_Information, inhibitor_information)\
+                    .filter(Kinase_Information.kinase.ilike(search_string))\
+                    .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1) # run a join query to find out inhibitors
             inhibresults = iqry.all()
-            phosphresults = pqry.all()
+
+            pqry = db_session.query(Kinase_Information, Kinase_Phosphosite)\
+                    .filter(Kinase_Information.kinase.ilike(search_string))\
+                    .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
+            phosphresults = pqry.all() # run a join query to find out kinase substrates
+            phosphresults.sort()
 
 
         elif search.data['select'] == 'Alias Name': # check if alias name was selected

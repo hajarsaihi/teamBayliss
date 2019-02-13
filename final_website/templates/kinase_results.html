@@ -187,6 +187,7 @@
 
       <!-- Protein substrates -->
       <section id="subs" class="tab-panel">
+      <div class="container">
         <style>
           table {
             font-family: arial, sans-serif;
@@ -203,16 +204,17 @@
           tr:nth-child(even) {
             background-color: #f2f2f2;
           }
-          </style>
-        <table>
+        </style>
 
+        <table>
         <tr>
         {% for x in phosphresults %}
         <!-- Internal hyperlink -->
-          <li><a href="{{ url_for('substrateprofile', sub = x.Kinase_Phosphosite.substrate_protein) }}">{{ x.Kinase_Phosphosite.substrate_protein }}</a></li>
-        {% endfor %}
+          <table>
+             <td><a href="{{ url_for('substrateprofile', sub = x.Kinase_Phosphosite.substrate_protein) }}">{{ x.Kinase_Phosphosite.substrate_protein }}</a>
+          </table>
         </tr>
-        </table>
+        {% endfor %}
       </section>
   </div>
 </div>
