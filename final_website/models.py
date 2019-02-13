@@ -58,15 +58,6 @@ class Kinase_Phosphosite(db.Model):
     pkinase = db.Column('KINASE', db.String)
     kinase_accession = db.Column('KIN_ACC_ID', db.String)
     substrate_protein = db.Column('SUBSTRATE', db.String)
-    sub_gene = db.Column('SUB_GENE', db.String)
     sub_accession = db.Column('SUB_ACC_ID', db.String)
-    # the following is a quick last minute solution to retrieving phosphosites (only the first 15) and we recognise another more efficient approach is better but due to time
-    # constraints and finding this problem very late it is the only solution.
-    s1 = db.Column('Z_SITE_1', db.String)
-    s2 = db.Column('Z_SITE_2', db.String)
-    s3 = db.Column('Z_SITE_3', db.String)
-    s4 = db.Column('Z_SITE_4', db.String)
-
-
-#Kinase_Information.kinase = relationship(inhibitor_information,primaryjoin=inhibitor_information.target1==Kinase_Information.kinase)
-db.create_all()
+    sub_gene = db.Column('SUB_GENE', db.String)
+    genomic_location = db.Column('HU_CHR_LOC', db.String)

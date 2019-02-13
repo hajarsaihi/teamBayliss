@@ -100,6 +100,16 @@ def add_sub_gene(dd):
     return dd
 #dd.to_csv("checkNoH.csv")
 
+def database_retriever(kinase_datafile):
+
+    import sqlite3                   
+    import pandas as pd
+   
+    cnx = sqlite3.connect(kinase_datafile)      #the datbase is connected
+
+    Kinase_Phosphosite_df = pd.read_sql_query("SELECT * FROM Kinase_Phosphosite", cnx)   #the table is opened and put into a dataframe
+    Kinase_Phosphosite_df=Kinase_Phosphosite_df.to_csv("kinase.csv")    #teh df is made into csv
+    return "kinase.csv"
 
 class KinaseSearcher:
     def __init__(self,filename):
@@ -120,8 +130,12 @@ class KinaseSearcher:
         b=a[p]
         return ",".join(b["KINASE"]) 
 
-def add_kinase(dd, kinase_datafile):
-    k=KinaseSearcher(kinase_datafile)    #kinase_substrated_filtered runs up to z_site_48
+
+    
+    
+def add_kinase(dd,kinase_df):
+    kinase_df="kinase.csv"
+    k=KinaseSearcher(kinase_df)    #kinase_substrated_filtered runs up to z_site_48
     #to apply class and populate column for kinase GENE name
     dk=dd.apply(lambda row: k.findkinase(row["Sub_gene"],row["Phosphosite"] ), axis =1)
     dd["Kinase"]= dk
@@ -292,14 +306,14 @@ def make_csv(dkinase):
     return Kinasetable_sorted_csv
 
 
-
-"""
+""""
 def relative_kinase_activity(filename, FC_P, PV_P, CV_P, N_P, Inhibitor ): #C6
     input_data=open_file(filename)
     data=filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
     data=add_sub_gene(data)
     #print(data)
-    data=add_kinase(data, "kinase_substrate_filtered.csv")
+    DATAFRAME=database_retriever("final_data.db")
+    data=add_kinase(data,"kinase.csv")
     #print(data)
     plot1=makeplot(data, FC_P, PV_P, Inhibitor)
     #print(data)
