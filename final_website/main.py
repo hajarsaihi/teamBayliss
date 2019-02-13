@@ -144,27 +144,20 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-	results = []
-	search_string = search.data['search']
 
-	if search_string:
-		if search.data['select'] == 'SUBSTRATE':
-			qry = db.session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
-			results  = qry.limit(1).all()
-			return results
-
-	for data in results:
-		if data[1] == search_string:
-			results['subtract'] = data[1]
-			results['gene'] = data[2]
-			results['loc'] = data[3]
-			results['acc_id'] = data[4]
-
-	return render_template('phosph_results.html', results=results)
+    results = {}
+    search_string = search.data['search']
+    data_obj = Kinase_Phosphosite.query.filter_by(substrate_protein=search_string).first()
+    if  data_obj:
+        results['subtract'] = data_obj.substrate_protein
+        results['gene'] = data_obj.gene
+        results['loc'] = data_obj.genomic_location
+        results['acc_id'] = data_obj.sub_accession
+	return render_template('phosph_results.html', result=results)
 
 @app.route('/substrate/<sub>')
 def substrateprofile(sub):
-    qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(chembl))
+    qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.chembl_ID.ilike(chembl))
     results = qry.all()
     return render_template('inhib_results.html', results=results)
 ###############################################################################
