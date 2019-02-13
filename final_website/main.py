@@ -19,10 +19,10 @@ from bokeh.palettes import brewer
 #import datetime
 import re
 import requests
+from app import app
 ###############################################################################
 
-app = Flask(__name__)
-app.secret_key = 'ca/i4tishfkhaSJSF'
+
 init_db()
 
 ###############################################################################
@@ -136,53 +136,28 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-	results = []
-	search_string = search.data['search']
+    import csv
+    results = {}
+    search_string = search.data['search']
+    data_obj = Kinase_Phosphosite.query.filter_by(substrate_protein=search_string).first()
+    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
+    # csvFile = 'Locations.csv'
+    # reader = csv.reader(open(csvFile, 'r'))
 
-	if search_string:
-		if search.data['select'] == 'SUBSTRATE':
-			qry = db.session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
-			results  = qry.limit(1).all()
-			return results
-	
-	for data in results:
-		if data[1] == search_string:
-			results['subtract'] = data[1]
-			results['gene'] = data[2]
-			results['loc'] = data[3]
-			results['acc_id'] = data[4]
+    # for data in reader:
+    #     if data[1].lower() == search_string.lower():
+    #         results['subtract'] = data[1]
+    #         results['gene'] = data[0]
+    #         results['loc'] = data[3]
+    #         results['acc_id'] = data[2]
+    #         break
+    if  data_obj:
+        results['subtract'] = data_obj.substrate_protein
+        results['gene'] = data_obj.gene
+        results['loc'] = data_obj.genomic_location
+        results['acc_id'] = data_obj.sub_accession
 
-	return render_template('phosph_results.html', results=results)
-
-			#results[1] = 'subtract'
-			#results[2] = 'gene'
-			#results[3] = 'loc'
-			#results[4] = 'acc_id'
-			#return render_template('phosph_results.html', result=results)
-
-
-
-
-
-
-
-#def p_search_results(search):
-#    import csv
-#    results = {}
-#    search_string = search.data['search']
-#    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
-#    csvFile = 'Locations.csv'
-#    reader = csv.reader(open(csvFile, 'r'))
-#
-#    for data in reader:
-#        if data[1].lower() == search_string.lower():
-#            results['subtract'] = data[1]
-#            results['gene'] = data[0]
-#            results['loc'] = data[3]
-#            results['acc_id'] = data[2]
-#            break
-#
-#    return render_template('phosph_results.html', result=results)
+    return render_template('phosph_results.html', result=results)
 ###############################################################################
 ###TOOLS ###
 
