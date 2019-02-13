@@ -15,8 +15,8 @@ from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from bokeh.models import HoverTool, WheelZoomTool, PanTool, BoxZoomTool, ResetTool, TapTool, SaveTool
 from bokeh.palettes import brewer
-import matplotlib.pyplot as plt
-import datetime
+#import matplotlib.pyplot as plt
+#import datetime
 import re
 import requests
 ###############################################################################

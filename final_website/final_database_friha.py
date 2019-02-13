@@ -156,7 +156,7 @@ cur.execute("CREATE TABLE Kinase_Phosphosite(Key_rows PRIMARY KEY, GENE TEXT, KI
 
 with open('kinase_substrate_filtered.csv','rt') as fin: # reads file in text mode,
    # csv.DictReader uses first line in file for column headings by default
-    dr_2 = csv.DictReader(fin) # comma is default delimiter
+    dr_2 = csv.DictReader(fin) # comma is default delimiter  Each row read from the csv file is returned as a list of strings which are added into a dictionary
    	
    	#Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
     to_db_2 = [(i['Key_rows'],i['GENE'], i['KINASE'], i['KIN_ACC_ID'], i['SUBSTRATE'], i['SUB_ACC_ID'], i['SUB_GENE'], \
