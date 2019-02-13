@@ -136,22 +136,53 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-    import csv
-    results = {}
-    search_string = search.data['search']
-    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
-    csvFile = 'Locations.csv'
-    reader = csv.reader(open(csvFile, 'r'))
+	results = []
+	search_string = search.data['search']
 
-    for data in reader:
-        if data[1].lower() == search_string.lower():
-            results['subtract'] = data[1]
-            results['gene'] = data[0]
-            results['loc'] = data[3]
-            results['acc_id'] = data[2]
-            break
+	if search_string:
+		if search.data['select'] == 'SUBSTRATE':
+			qry = db.session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string))
+			results  = qry.limit(1).all()
+			return results
+	
+	for data in results:
+		if data[1] == search_string:
+			results['subtract'] = data[1]
+			results['gene'] = data[2]
+			results['loc'] = data[3]
+			results['acc_id'] = data[4]
 
-    return render_template('phosph_results.html', result=results)
+	return render_template('phosph_results.html', results=results)
+
+			#results[1] = 'subtract'
+			#results[2] = 'gene'
+			#results[3] = 'loc'
+			#results[4] = 'acc_id'
+			#return render_template('phosph_results.html', result=results)
+
+
+
+
+
+
+
+#def p_search_results(search):
+#    import csv
+#    results = {}
+#    search_string = search.data['search']
+#    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
+#    csvFile = 'Locations.csv'
+#    reader = csv.reader(open(csvFile, 'r'))
+#
+#    for data in reader:
+#        if data[1].lower() == search_string.lower():
+#            results['subtract'] = data[1]
+#            results['gene'] = data[0]
+#            results['loc'] = data[3]
+#            results['acc_id'] = data[2]
+#            break
+#
+#    return render_template('phosph_results.html', result=results)
 ###############################################################################
 ###TOOLS ###
 
