@@ -15,7 +15,6 @@ class Kinase_Information(db.Model):
     gene_name = db.Column('gene_name', db.String)
     accID = db.Column('uni_accession', db.String)
 
-
 class inhibitor_information(db.Model):
     """"""
     __tablename__ = "inhibitor_information"
@@ -54,11 +53,11 @@ class Kinase_Phosphosite(db.Model):
     """"""
     __tablename__ = "Kinase_Phosphosite"
 
-    keys_row = db.Column('Keys_row', db.Integer, primary_key = True)
+    keys_row = db.Column('Key_rows', db.Integer, primary_key = True)
     gene = db.Column('GENE', db.Integer)
     pkinase = db.Column('KINASE', db.String)
     kinase_accession = db.Column('KIN_ACC_ID', db.String)
     substrate_protein = db.Column('SUBSTRATE', db.String)
-    sub_gene = db.Column('SUB_GENE', db.String)
     sub_accession = db.Column('SUB_ACC_ID', db.String)
-    phosphosite = db.Column('SITE_7_AA', db.String)
+    sub_gene = db.Column('SUB_GENE', db.String)
+    genomic_location = db.Column('HU_CHR_LOC', db.String)

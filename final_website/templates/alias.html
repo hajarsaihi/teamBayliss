@@ -3,7 +3,7 @@
 <doctype html>
 <title>Search Results - Alias Names</title>
 <head>
-
+<!-- Define table style -->
 <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
       <br>
@@ -28,6 +28,7 @@
         </style>
 
         <table>
+        <!-- Loop through results and allocate them to table -->
         {% for x in results %}
         <tr>
            <td>Kinase: <a href="{{ url_for('profile', kinase = x.kinase) }}">{{ x.kinase }}</a></td>

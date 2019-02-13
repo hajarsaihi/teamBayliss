@@ -5,9 +5,11 @@
 <title>Search Results - Kinase Database</title>
 <head>
     <title> Inhibitor Database</title>
+    <!-- link Stylesheets for the tabs and the main style sheet -->
     <link rel="stylesheet" type="text/css" href="/static/css/main.css?version=1">
     <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=1">
 </head>
+<!-- loop through results -->
 {% for x in results %}
 <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
@@ -17,6 +19,7 @@
 
     </div>
 
+<!-- define tab area -->
 <div class="tabset">
   <!-- Tab 1 -->
   <input type="radio" name="tabset" id="tab1" aria-controls="info" checked>
@@ -28,6 +31,7 @@
   <div class="tab-panels">
     <section id="info" class="tab-panel">
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Information </h4>
+      <!-- figure for chembl structure-->
       <figure style="">
           <img src="{{ x.image }}" style="width:300px;height:300px;border:1px solid grey" alt='missing' />
           <figcaption>{{ x.chembl_ID }}</figcaption>
@@ -53,7 +57,7 @@
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Properties </h4>
       <div class="container">
         <br>
-        <table class="zui-table" align="left">
+        <table class="zui-table" align="left">   <!-- use the zui table style sheet -->
             <thead>
                 <tr>
                     <th>Bioactivities</th>

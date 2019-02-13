@@ -10,6 +10,7 @@
     <p> Phosphosites are sites that are responsible for, or associated with, phosphorylation</p>
     <p> Use the PhosphoKinase search engine to browse phosphosites that are substrates of Kinases</p></header>
   {% with messages = get_flashed_messages() %}
+  <!-- if there is an error message then output this message -->
     {% if messages %}
       <l class=flashes>
       {% for message in messages %}
@@ -20,13 +21,17 @@
   {% endif %}
 {% endwith %}
 
+<!-- Search Function -->
 {% from "_formhelpers.html" import render_field %}
 <form method=post>
   <div class="search">
     <div class="wrap">
+
+      <!-- Drop down menu -->
       {{ form.select(class_="searchTerm")}}
       <br>
       <br>
+      <!-- search bar -->
       {{ form.search(class_="searchTerm", placeholder="What are you looking for?") }}
     <p>
       <br>

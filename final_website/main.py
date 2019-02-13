@@ -1,3 +1,4 @@
+### Import required packages!
 import os
 from app import app
 from flask import Flask, Markup, render_template, flash,url_for, render_template, request, redirect,g,send_from_directory, Response, request, send_file
@@ -21,75 +22,91 @@ import re
 import requests
 ###############################################################################
 
-app = Flask(__name__)
-app.secret_key = 'ca/i4tishfkhaSJSF'
-init_db()
+
+init_db() #initialise the database
 
 ###############################################################################
-@app.route("/")
+@app.route("/") #define homepage route
 def index():
   return render_template("index.html")
 
 ###### Kinase #################################################################
 @app.route('/kinase', methods=['GET', 'POST'])
 def kinase():
-    search = KinaseSearchForm(request.form)
-    if request.method == 'POST':
-        return k_search_results(search)
+    search = KinaseSearchForm(request.form) # import search form and run a request
+    if request.method == 'POST': # if the user is searching for information (ie posting a searchstring to retrieve data)
+        return k_search_results(search) # run the kinase search function
     return render_template('kinase.html', form=search)
 
 @app.route('/k_search_results')
 def k_search_results(search):
     results = []
-    search_string = search.data['search']
+    search_string = search.data['search'] # search string given the user input data
 
     if search_string:
-        if search.data['select'] == 'Protein Kinase Name':
-            iqry = db_session.query(inhibitor_information).filter(inhibitor_information.target1.ilike(search_string))
+        if search.data['select'] == 'Protein Kinase Name': # check if protein kinase name was selected
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string)) #qry the database for kinase information
+            #use ilike for case sensitive search
+            results = qry.all()
+
+            iqry = db_session.query(Kinase_Information, inhibitor_information)\
+                    .filter(Kinase_Information.kinase.ilike(search_string))\
+                    .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1) # run a join query to find out inhibitors
             inhibresults = iqry.all()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
+
+            pqry = db_session.query(Kinase_Information, Kinase_Phosphosite)\
+                    .filter(Kinase_Information.kinase.ilike(search_string))\
+                    .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
+            phosphresults = pqry.all() # run a join query to find out kinase substrates
+            phosphresults.sort()
+
+
+        elif search.data['select'] == 'Alias Name': # check if alias name was selected
+            search_string = search_string.upper()
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string)) # query alias names
             results = qry.all()
 
-        elif search.data['select'] == 'Alias Name':
+        elif search.data['select'] == 'Gene Name': # check if gene name was selected
             search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string))
-            results = qry.all()
-
-        elif search.data['select'] == 'Gene Name':
-            search_string = search_string.upper()
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))
+            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))# query matching gene name
             results = qry.all()
 
         else:
             qry = db_session.query(Kinase_Information)
             results = qry.all()
 
-    if not results:
-        flash('No results found!')
-        return redirect('/kinase')
+    if not results: # if no results were found..
+        flash('No results found!') #.. flash the error message
+        return redirect('/kinase') # and render back to kinase search
 
-    elif search.data['select'] == 'Alias Name':
-	    return render_template('alias.html', results=results)
+    elif search.data['select'] == 'Alias Name': # if the user selected Alias ..
+	    return render_template('alias.html', results=results) # .. direct them to the alias page
 
     else:
         # display results
-        return render_template('kinase_results.html', results=results, inhibresults=inhibresults)
+        return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults) # render the kinase results page
 
 
-@app.route('/kinase/<kinase>')
+@app.route('/kinase/<kinase>') # for the internal hyperlink a kinase profile route is defined, and the <kinase> is queried as before.
 def profile(kinase):
     qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
+
+    iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(kinase))\
+              .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1)
+
+    pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(kinase))\
+              .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
     results = qry.all()
-    iqry = db_session.query(inhibitor_information).filter(inhibitor_information.target1.ilike(kinase))
     inhibresults = iqry.all()
-    return render_template('kinase_results.html', results=results, inhibresults=inhibresults)
+    phosphresults = pqry.all()
+    return render_template('kinase_results.html', results=results, inhibresults=inhibresults, phosphresults=phosphresults)# render the kinase results page
 
 ###### Inhbitor ###############################################################
 @app.route('/Inhibitor', methods=['GET', 'POST'])
 def Inhibitor():
     search = InhibitorSearchForm(request.form)
     if request.method == 'POST':
-        return i_search_results(search)
+        return i_search_results(search)# run the inhibitor search function if the method is POST
     return render_template('Inhibitor.html', form=search)
 
 @app.route('/i_search_results')
@@ -99,7 +116,6 @@ def i_search_results(search):
 
     if search_string:
         if search.data['select'] == ' ChEMBL ID ':
-            #search_string = search_string.upper() use ilike for case sensitive search
             qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
             results = qry.all()
 
@@ -120,38 +136,44 @@ def i_search_results(search):
         # display results
         return render_template('inhib_results.html', results=results)
 
-@app.route('/inhbitor/<chembl>')
+@app.route('/inhbitor/<chembl>') # for the internal hyperlink an inhibitor profile route is defined, and the <chembl> is queried as before.
 def inhibprofile(chembl):
     qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(chembl))
     results = qry.all()
-    return render_template('inhib_results.html', results=results)
+    return render_template('inhib_results.html', results=results) # render the inhibitor results page
 
 ###### Phosphosites ###########################################################
 @app.route('/Phosphosite', methods=['GET', 'POST'])
 def Phosphosite():
     search = PhosphositeSearchForm(request.form)
     if request.method == 'POST':
-        return p_search_results(search)
+        return p_search_results(search)# run the phosphosite search function if the method is POST
     return render_template('Phosphosite.html', form=search)
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-    import csv
     results = {}
     search_string = search.data['search']
-    # csv_file = csv.reader(open('Locations.csv', "rb"), delimiter=",")
-    csvFile = 'Locations.csv'
-    reader = csv.reader(open(csvFile, 'r'))
+    data_obj = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string)).first()
 
-    for data in reader:
-        if data[1].lower() == search_string.lower():
-            results['subtract'] = data[1]
-            results['gene'] = data[0]
-            results['loc'] = data[3]
-            results['acc_id'] = data[2]
-            break
+    if  data_obj: # if there is a query
+        results['substrate'] = data_obj.substrate_protein
+        results['gene'] = data_obj.gene
+        results['loc'] = data_obj.genomic_location
+        results['acc_id'] = data_obj.sub_accession
+	return render_template('phosph_results.html', result=results) # render the phosphorylation results page
 
-    return render_template('phosph_results.html', result=results)
+@app.route('/substrate/<sub>') # for the internal hyperlink a substrate profile route is defined, and the <sub> is queried as before.
+def substrateprofile(sub):
+    results = {}
+    qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(sub)).first()
+    if  qry:
+        results['substrate'] = qry.substrate_protein
+        results['gene'] = qry.gene
+        results['loc'] = qry.genomic_location
+        results['acc_id'] = qry.sub_accession
+    return render_template('phosph_results.html', result=results) # render the phosphorylation results page
+
 ###############################################################################
 ###TOOLS ###
 
@@ -208,13 +230,17 @@ def plot():
 
 
     import relative_kinase6
+
     filename="./static/temp.tsv"
+
 
     input_data=relative_kinase6.open_file(filename)
     data=relative_kinase6.filter_data(input_data, FC_P, PV_P, CV_P, N_P)  #C6
     data=relative_kinase6.add_sub_gene(data)
     #print(data)
-    data=relative_kinase6.add_kinase(data, "kinase_substrate_filtered.csv")
+    DATAFRAME=relative_kinase6.database_retriever("final_data.db")
+
+    data=relative_kinase6.add_kinase(data, "kinase.csv")
     #print(data)
     plot1=relative_kinase6.makeplot(data, FC_P, PV_P, Inhibitor)
     #print(data)
@@ -241,6 +267,7 @@ def plot():
 
 
     return render_template("plot.html",
+
         FC_P =FC_P,
         PV_P=PV_P,
         CV_P=CV_P,
@@ -258,9 +285,6 @@ def plot():
                      mimetype='text/csv',
                      attachment_filename='relative_kinase_activity.csv',
                      as_attachment=True)
-
-
-
 
 ###############################
 

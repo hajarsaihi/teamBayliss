@@ -6,9 +6,11 @@
 <title>Search Results - Kinase Database</title>
 <head>
     <title> Kinase Database</title>
-    <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script>
-    <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=3423">
+    <script src="http://ebi-uniprot.github.io/CDN/protvista/protvista.js"></script> <!-- protvista script source -->
+    <link href="http://ebi-uniprot.github.io/CDN/protvista/css/main.css" rel="stylesheet"/> <!-- protvista CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/tab.css?version=3423"> <!-- main CSS -->
+
+    <!-- protVista Meta Tags -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title></title>
@@ -18,8 +20,10 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
 </head>
+
+<!-- Results -->
 {% if results %}
-{% for x in results %}
+{% for x in results %} <!-- Loop through results -->
 
 <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
@@ -30,6 +34,7 @@
 
     </div>
 
+<!-- Define tabs -->
 <div class="tabset">
   <!-- Tab 1 -->
   <input type="radio" name="tabset" id="tab1" aria-controls="info" checked>
@@ -46,8 +51,13 @@
   <!-- Tab 5 -->
   <input type="radio" name="tabset" id="tab5" aria-controls="inhib">
   <label for="tab5">Known {{ x.kinase.upper() }} Inhibitors</label>
+  <!-- Tab 6 -->
+  <input type="radio" name="tabset" id="tab6" aria-controls="subs">
+  <label for="tab6">{{ x.kinase.upper() }} Substrates</label>
 
+<!-- Define tab area -->
   <div class="tab-panels">
+    <!-- Kinase information -->
     <section id="Information" class="tab-panel">
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Names </h4>
       <h5> Protein Name: <span class="w3-opacity"><td>{{ x.full_name }}</td></span>
@@ -61,7 +71,8 @@
       <h5> SubFamily: <span class="w3-opacity"><td>{{ x.subFamily.upper() }}</td></span></h5>
       <h5> Subcellular Location: <span class="w3-opacity"><td>{{ x.location }}</td></span></h5>
 
-  </section>
+    </section>
+    <!-- Kinase references -->
     <section id="crossref" class="tab-panel">
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-100 w3-light-grey"> Links </h4>
       <h5> Entrez ID: <span class="w3-opacity"><a href= "https://www.ncbi.nlm.nih.gov/gene/{{ (x.entrez)|int }}" >{{ (x.entrez)|int }}</a></span></h5>
@@ -69,8 +80,10 @@
 
       </section>
 
+    <!-- Kinase Annotation -->
     <section id="annot" class="tab-panel">
       <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">{{ x.kinase.upper() }} Protein Annotation </h4>
+      <!-- Provista javascript -->
       <div id="yourDiv" style="width:1024px; margin:auto;"></div>
       <center><script>
           window.onload = function() {
@@ -87,6 +100,7 @@
       </script></center>
     </section>
 
+    <!-- Interaction Viewer -->
     <section id="inter" class="tab-panel">
       <center>
         Uniprot Name: {{ x.uniprot }}
@@ -127,8 +141,10 @@
 
       </section>{% endfor %}
 
+      <!-- Inhibitors -->
       <section id="inhib" class="tab-panel">
         {% if inhibresults %}
+        <!-- Define table CSS -->
         <style>
           table {
             font-family: arial, sans-serif;
@@ -155,16 +171,50 @@
             <td><b>Synonyms</td>
           </tr>
           <tr>
-             {% for y in inhibresults %}
-             <td><a href="{{ url_for('inhibprofile', chembl = y.chembl_ID) }}">{{ y.chembl_ID }}</a>
-             <td>{{ y.name }}</td>
-             <td>{{ y.syn }}</td>
+             {% for x in inhibresults %}
+
+             <td><a href="{{ url_for('inhibprofile', chembl = x.inhibitor_information.chembl_ID) }}">{{ x.inhibitor_information.chembl_ID }}</a>
+             <td>{{ x.inhibitor_information.name }}</td>
+             <td>{{ x.inhibitor_information.syn }}</td>
           </tr>
           {% endfor %}
           </table>
       {% else %}
+      <!-- if there are no results render the following: -->
         <center> No known GSK kinase inhibitors found </center>
       {% endif %}
+      </section>
+
+      <!-- Protein substrates -->
+      <section id="subs" class="tab-panel">
+      <div class="container">
+        <style>
+          table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+        </style>
+
+        <table>
+        <tr>
+        {% for x in phosphresults %}
+        <!-- Internal hyperlink -->
+          <table>
+             <td><a href="{{ url_for('substrateprofile', sub = x.Kinase_Phosphosite.substrate_protein) }}">{{ x.Kinase_Phosphosite.substrate_protein }}</a>
+          </table>
+        </tr>
+        {% endfor %}
       </section>
   </div>
 </div>
