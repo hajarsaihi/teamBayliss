@@ -84,12 +84,12 @@ def k_search_results(search):
 
 @app.route('/kinase/<kinase>')
 def profile(kinase):
-    qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string))
+    qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
 
-    iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(search_string))\
+    iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(kinase))\
               .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1)
 
-    pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(search_string))\
+    pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(kinase))\
               .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
     results = qry.all()
     inhibresults = iqry.all()
@@ -148,7 +148,7 @@ def Phosphosite():
 
 @app.route('/Phosphosite results')
 def p_search_results(search):
-    results = []
+    results = {}
     search_string = search.data['search']
     data_obj = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string)).first()
 
@@ -158,13 +158,12 @@ def p_search_results(search):
         results['loc'] = data_obj.genomic_location
         results['acc_id'] = data_obj.sub_accession
 	return render_template('phosph_results.html', result=results)
-'''
+
 @app.route('/substrate/<sub>')
 def substrateprofile(sub):
-    qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.chembl_ID.ilike(chembl))
-    results = qry.all()
-    return render_template('inhib_results.html', results=results)
-    '''
+    qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(sub)).first()
+    return render_template('phosph_results.html', result=qry)
+
 ###############################################################################
 ###TOOLS ###
 

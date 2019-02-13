@@ -169,12 +169,33 @@
       {% else %}
         <center> No known GSK kinase inhibitors found </center>
       {% endif %}
-      </section> <!--
+      </section>
       <section id="subs" class="tab-panel">
+        <style>
+          table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+          </style>
+        <table>
+
+        <tr>
         {% for x in phosphresults %}
-          <li> {{ x.Kinase_Phosphosite.substrate_protein}}
-          </li>
+          <li><a href="{{ url_for('substrateprofile', sub = x.Kinase_Phosphosite.substrate_protein) }}">{{ x.Kinase_Phosphosite.substrate_protein }}</a></li>
         {% endfor %}
+        </tr>
+        </table>
       </section>
   </div>
 </div>
