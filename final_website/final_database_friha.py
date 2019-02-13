@@ -1,7 +1,7 @@
 import csv, sqlite3
 
 
-# Create a database in RAM
+# Create a database file
 con = sqlite3.connect('final_data.db')
 
 
@@ -146,7 +146,7 @@ con.commit()  #Commit the changes
 
 
 cur.execute("CREATE TABLE Kinase_Phosphosite(Key_rows PRIMARY KEY, GENE TEXT, KINASE VARCHAR(30), KIN_ACC_ID VARCHAR(30),\
-				 SUBSTRATE TEXT, SUB_ACC_ID VARCHAR(30),SUB_GENE VARCHAR(20),SUB_GENE_ID TEXT, Z_SITE_1 TEXT,Z_SITE_2 TEXT,\
+				 SUBSTRATE TEXT, SUB_ACC_ID VARCHAR(30),SUB_GENE VARCHAR(20),SUB_GENE_ID TEXT, HU_CHR_LOC TEXT, Z_SITE_1 TEXT,Z_SITE_2 TEXT,\
 				 Z_SITE_3 TEXT,Z_SITE_4 TEXT,Z_SITE_5 TEXT,Z_SITE_6 TEXT,Z_SITE_7 TEXT,Z_SITE_8 TEXT,Z_SITE_9 TEXT,Z_SITE_10 TEXT,\
 				 Z_SITE_11 TEXT,Z_SITE_12 TEXT,Z_SITE_13 TEXT,Z_SITE_14 TEXT,Z_SITE_15 TEXT,Z_SITE_16 TEXT,Z_SITE_17 TEXT,\
 				Z_SITE_18 TEXT,Z_SITE_19 TEXT,Z_SITE_20 TEXT,Z_SITE_21 TEXT,Z_SITE_22 TEXT,Z_SITE_23 TEXT,Z_SITE_24 TEXT,Z_SITE_25 TEXT,Z_SITE_26 TEXT,\
@@ -154,13 +154,13 @@ cur.execute("CREATE TABLE Kinase_Phosphosite(Key_rows PRIMARY KEY, GENE TEXT, KI
 				Z_SITE_36 TEXT,Z_SITE_37 TEXT,Z_SITE_38 TEXT,Z_SITE_39 TEXT,Z_SITE_40 TEXT,Z_SITE_41 TEXT,Z_SITE_42 TEXT,Z_SITE_43 TEXT,Z_SITE_44 TEXT,\
 				Z_SITE_45 TEXT,Z_SITE_46 TEXT,Z_SITE_47 TEXT,Z_SITE_48 TEXT);") # use your column names here
 
-with open('kinase_substrate_filtered.csv','rt') as fin: # reads file in text mode,
+with open('kinase_substrate_sorted.csv','rt') as fin: # reads file in text mode,
    # csv.DictReader uses first line in file for column headings by default
     dr_2 = csv.DictReader(fin) # comma is default delimiter
    	
    	#Each element in dr_in_1 is i where i is then added into to_in_1 according to the column names. 
     to_db_2 = [(i['Key_rows'],i['GENE'], i['KINASE'], i['KIN_ACC_ID'], i['SUBSTRATE'], i['SUB_ACC_ID'], i['SUB_GENE'], \
-    			i['SUB_GENE_ID'],i['Z_SITE_1'], i['Z_SITE_2'],i['Z_SITE_3'], i['Z_SITE_4'],i['Z_SITE_5'],
+    			i['SUB_GENE_ID'],i['HU_CHR_LOC'],i['Z_SITE_1'], i['Z_SITE_2'],i['Z_SITE_3'], i['Z_SITE_4'],i['Z_SITE_5'],
     			i['Z_SITE_6'],i['Z_SITE_7'], i['Z_SITE_8'],i['Z_SITE_9'], i['Z_SITE_10'],
     			i['Z_SITE_11'], i['Z_SITE_12'],i['Z_SITE_13'], i['Z_SITE_14'],i['Z_SITE_15'], i['Z_SITE_16'],
     			i['Z_SITE_17'], i['Z_SITE_18'],i['Z_SITE_19'], i['Z_SITE_20'],i['Z_SITE_21'], i['Z_SITE_22'],i['Z_SITE_23'],
@@ -170,13 +170,13 @@ with open('kinase_substrate_filtered.csv','rt') as fin: # reads file in text mod
     			i['Z_SITE_43'], i['Z_SITE_44'],i['Z_SITE_45'], i['Z_SITE_46'],i['Z_SITE_47'], i['Z_SITE_48'],) for i in dr_2]
 
 cur.executemany("INSERT INTO Kinase_Phosphosite(Key_rows,GENE,KINASE,KIN_ACC_ID,SUBSTRATE,SUB_ACC_ID,\
-	SUB_GENE,SUB_GENE_ID,Z_SITE_1,Z_SITE_2,Z_SITE_3,Z_SITE_4,Z_SITE_5,Z_SITE_6,Z_SITE_7,Z_SITE_8,\
+	SUB_GENE,SUB_GENE_ID,HU_CHR_LOC,Z_SITE_1,Z_SITE_2,Z_SITE_3,Z_SITE_4,Z_SITE_5,Z_SITE_6,Z_SITE_7,Z_SITE_8,\
 	Z_SITE_9,Z_SITE_10,Z_SITE_11,Z_SITE_12,Z_SITE_13,Z_SITE_14,Z_SITE_15,Z_SITE_16,Z_SITE_17,\
 	Z_SITE_18,Z_SITE_19,Z_SITE_20,Z_SITE_21,Z_SITE_22,Z_SITE_23,Z_SITE_24,Z_SITE_25,Z_SITE_26,\
 	Z_SITE_27,Z_SITE_28,Z_SITE_29,Z_SITE_30,Z_SITE_31,Z_SITE_32,Z_SITE_33,Z_SITE_34,Z_SITE_35,\
 	Z_SITE_36,Z_SITE_37,Z_SITE_38,Z_SITE_39,Z_SITE_40,Z_SITE_41,Z_SITE_42,Z_SITE_43,Z_SITE_44,\
 	Z_SITE_45,Z_SITE_46,Z_SITE_47,Z_SITE_48) \
-	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",to_db_2)
+	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",to_db_2)
 
 con.commit()
 
