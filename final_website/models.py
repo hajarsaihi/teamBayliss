@@ -61,5 +61,3 @@ class Kinase_Phosphosite(db.Model):
     sub_accession = db.Column('SUB_ACC_ID', db.String)
     sub_gene = db.Column('SUB_GENE', db.String)
     genomic_location = db.Column('HU_CHR_LOC', db.String)
-    s1 = db.Column('Z_SITE_1', db.String)
-    s2 = db.Column('Z_SITE_2', db.String)

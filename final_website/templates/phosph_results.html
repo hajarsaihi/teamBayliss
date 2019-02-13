@@ -15,7 +15,7 @@
       <br>
       {% if result %}
       <center> <h3><b>Profile</b></h3> <center>
-      <h5> Protein: <span class="w3-teal"><td>{{ result.subtract.upper() }}</td></span></h5>
+      <h5> Protein: <span class="w3-teal"><td>{{ result.substrate.upper() }}</td></span></h5>
       {% else %}
       {% endif %}
     </div>
@@ -35,14 +35,14 @@
       {% if result %}
       <div>
         <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey"> Information </h4>
-        <h5> Substrate: <span class="w3-opacity">{{ result.subtract.upper() }}</span></h5>
+        <h5> Substrate: <span class="w3-opacity">{{ result.substrate.upper() }}</span></h5>
         <h5> Gene: <span class="w3-opacity">{{ result.gene }}</span></h5>
         <h5> Chromosome: <span class="w3-opacity">{{ result.loc }}</span></h5>
       </div>
     </section>
 
     <section id="annot" class="tab-panel">
-      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">{{ result.subtract.upper() }} Protein Annotation </h4>
+      <h4 class="w3-border-bottom w3-border-light-grey w3-padding-12 w3-light-grey">{{ result.substrate.upper() }} Protein Annotation </h4>
           <center>
               <div id="my_graph"></div>
           </center>

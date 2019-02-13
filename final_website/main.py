@@ -150,13 +150,10 @@ def Phosphosite():
 def p_search_results(search):
     results = {}
     search_string = search.data['search']
-<<<<<<< HEAD
     data_obj = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(search_string)).first()
-=======
->>>>>>> 6e3b9097b08e8f527d38657f0758124915366ffc
 
     if  data_obj:
-        results['subtract'] = data_obj.substrate_protein 
+        results['substrate'] = data_obj.substrate_protein
         results['gene'] = data_obj.gene
         results['loc'] = data_obj.genomic_location
         results['acc_id'] = data_obj.sub_accession
@@ -164,8 +161,14 @@ def p_search_results(search):
 
 @app.route('/substrate/<sub>')
 def substrateprofile(sub):
+    results = {}
     qry = db_session.query(Kinase_Phosphosite).filter(Kinase_Phosphosite.substrate_protein.ilike(sub)).first()
-    return render_template('phosph_results.html', result=qry)
+    if  qry:
+        results['substrate'] = qry.substrate_protein
+        results['gene'] = qry.gene
+        results['loc'] = qry.genomic_location
+        results['acc_id'] = qry.sub_accession
+    return render_template('phosph_results.html', result=results)
 
 ###############################################################################
 ###TOOLS ###
