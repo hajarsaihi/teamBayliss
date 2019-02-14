@@ -1,6 +1,6 @@
 
 # Team Bayliss - QMUL MSc Bioinformatics
-# Phospho Kinase: Software Group Development Project
+# PhosphoKinase: Software Group Development Project
 
 Phospho Kinase was developed by Bayliss – a group of 4 students that are part of the MSc Bioinformatics Programme at Queen Mary University of London, under the supervision of Professor Conrad Bessant and Dr Fabrizio Smeraldi.
 
