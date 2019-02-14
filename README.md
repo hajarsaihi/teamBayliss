@@ -20,19 +20,19 @@ Once downloaded please open and run the 'final_database_friha.py' to create and 
 
 ### The softwares required
 
-Python 3.6.0
-requests==2.21.0
-bokeh==1.0.4
-Flask==1.0.2
-flask_sqlalchemy==2.3.2
-flask_table==0.5.0
-matplotlib==3.0.2
-numpy==1.16.1
-pandas==0.24.1
-SQLAlchemy==1.2.17
-Werkzeug==0.14.1
-WTForms==2.2.1
-ipython==7.2.0
+Python 3.6.0 <br/>
+requests==2.21.0 <br/>
+bokeh==1.0.4 <br/>
+Flask==1.0.2 <br/>
+flask_sqlalchemy==2.3.2 <br/>
+flask_table==0.5.0 <br/>
+matplotlib==3.0.2 <br/>
+numpy==1.16.1 <br/>
+pandas==0.24.1 <br/>
+SQLAlchemy==1.2.17 <br/>
+Werkzeug==0.14.1 <br/>
+WTForms==2.2.1 <br/>
+ipython==7.2.0 <br/>
 
 To install these:
 ```
