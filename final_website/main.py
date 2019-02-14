@@ -157,7 +157,7 @@ def p_search_results(search):
         results['gene'] = data_obj.gene
         results['loc'] = data_obj.genomic_location
         results['acc_id'] = data_obj.sub_accession
-	return render_template('phosph_results.html', result=results) # render the phosphorylation results page
+    return render_template('phosph_results.html', result=results) # render the phosphorylation results page
 
 @app.route('/substrate/<sub>') # for the internal hyperlink a substrate profile route is defined, and the <sub> is queried as before.
 def substrateprofile(sub):

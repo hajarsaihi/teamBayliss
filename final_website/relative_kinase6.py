@@ -273,14 +273,14 @@ def relative_kinase_activity_calculation(de):
     total_inhibitor_mean=de.Inhibitor_mean.sum()
     dkinase["relative_inhibitor_activity"]=dkinase["Inhibitor_mean"]/total_inhibitor_mean
     #Mean Fold Change
-    dkinase["mean_FC_kinase"]= dkinase["Inhibitor_mean"]/dkinase["Control_mean"]
+    dkinase["FC_kinase"]= dkinase["Inhibitor_mean"]/dkinase["Control_mean"]
     dkinase.rename(columns={dkinase.columns[0]: "total_control_mean"}, inplace=True) #C  rename to more accurate description
     dkinase.rename(columns={dkinase.columns[2]: "total_inhibitor_mean"}, inplace=True) #C  rename to more accurate description
 
     #----------------
     #dkinase["relative_FC_kinase"]= dkinase["relative_inhibitor_activity"]/dkinase["relative_control_activity"]
-    dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C
-    dkinase= dkinase.sort_values(by='mean_FC_kinase', ascending=True) #C #dkinase
+    dkinase.sort_values(by='FC_kinase', ascending=True) #C
+    dkinase= dkinase.sort_values(by='FC_kinase', ascending=True) #C #dkinase
     return dkinase
 
 def make_html(dkinase):
