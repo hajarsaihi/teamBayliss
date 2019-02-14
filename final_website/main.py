@@ -47,7 +47,7 @@ def k_search_results(search):
         if search.data['select'] == 'Protein Kinase Name': # check if protein kinase name was selected
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(search_string)) #qry the database for kinase information
             #use ilike for case sensitive search
-            results = qry.all()
+            results = qry.all() # output all the query results
 
             iqry = db_session.query(Kinase_Information, inhibitor_information)\
                     .filter(Kinase_Information.kinase.ilike(search_string))\
@@ -62,22 +62,17 @@ def k_search_results(search):
 
 
         elif search.data['select'] == 'Alias Name': # check if alias name was selected
-            search_string = search_string.upper()
+            #search_string = search_string.upper()
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string)) # query alias names
             results = qry.all()
 
         elif search.data['select'] == 'Gene Name': # check if gene name was selected
-            search_string = search_string.upper()
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))# query matching gene name
-            results = qry.all()
-
-        else:
-            qry = db_session.query(Kinase_Information)
             results = qry.all()
 
     if not results: # if no results were found..
         flash('No results found!') #.. flash the error message
-        return redirect('/kinase') # and render back to kinase search
+        return redirect('/kinase') # and return back to kinase search
 
     elif search.data['select'] == 'Alias Name': # if the user selected Alias ..
 	    return render_template('alias.html', results=results) # .. direct them to the alias page
@@ -92,10 +87,10 @@ def profile(kinase):
     qry = db_session.query(Kinase_Information).filter(Kinase_Information.kinase.ilike(kinase))
 
     iqry = db_session.query(Kinase_Information, inhibitor_information).filter(Kinase_Information.kinase.ilike(kinase))\
-              .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1)
+              .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1) # use join query to find information about inhibitors
 
     pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(kinase))\
-              .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
+              .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene) # use join query to find information on protein substrate
     results = qry.all()
     inhibresults = iqry.all()
     phosphresults = pqry.all()
@@ -116,11 +111,12 @@ def i_search_results(search):
 
     if search_string:
         if search.data['select'] == ' ChEMBL ID ':
-            qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string))
+            qry = db_session.query(inhibitor_information).filter(inhibitor_information.chembl_ID.ilike(search_string)) # search for chembl ID that is
+            # same as the search string - use ilike for case sensitive search
             results = qry.all()
 
         elif search.data['select'] == 'GSK Name':
-            #search_string = search_string.upper() use ilike for case sensitive search
+
             qry = db_session.query(inhibitor_information).filter(inhibitor_information.name.ilike(search_string))
             results = qry.all()
 

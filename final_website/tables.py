@@ -1,5 +1,6 @@
 from flask_table import Table, Col
 
+# Define tables for result output (for kinases, inhibitors, and phosphosites)
 class KResults(Table):
     kinase = Col('Name')
     family = Col('Family')
