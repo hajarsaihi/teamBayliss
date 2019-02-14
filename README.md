@@ -4,7 +4,7 @@
 
 Phospho Kinase was developed by Bayliss – a group of 4 students that are part of the MSc Bioinformatics Programme at Queen Mary University of London, under the supervision of Professor Conrad Bessant and Dr Fabrizio Smeraldi.
 
-Phospho Kinase explores the functional annotation, phosphosites and functional description of protein kinases, the key controllers of cell behavior. We focus the full complement of protein kinases in any sequenced genome through a functional Kinase search engine. The kinase search engine is connected to an extensive database of Kinases including classification and kinase information. In addition, phospho kinase provides information about all phosphosites phosphorylated by all kinases across a platform of proteins. 
+Phospho Kinase explores the functional annotation of phosphosites and functional description of protein kinases, the key controllers of cell behavior. We focus the full complement of protein kinases in any sequenced genome through a functional Kinase search engine. The kinase search engine is connected to an extensive database of Kinases including classification and kinase information. In addition, phospho kinase provides information about all phosphosites phosphorylated by all kinases across a platform of proteins. 
 
 
 ## Website Link
@@ -18,7 +18,7 @@ To run on your localhost please download the directory 'final_website'.
 Once downloaded please open and run the 'final_database_friha.py' to create and populate the database called 'final_data.db'.
 
 
-### The softwares required
+### The packages required
 
 Python 3.6.0 <br/>
 requests==2.21.0 <br/>
