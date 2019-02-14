@@ -61,7 +61,7 @@ python main.py
 
 Copy the localhost URL and paste it into your browser (for best user experience please use Mozilla Firefox or Google Chrome).
 
-This would lead you to the homepage of 'Phospho Kinase'.
+This would lead you to the homepage of 'Phospho Kinase', where you can browse 'Kinase', 'Inhibitors', 'Phosphosites' and 'PP Tool'. 
 
 
 ## Authors
