@@ -57,8 +57,6 @@ def k_search_results(search):
                     .filter(Kinase_Information.kinase.ilike(search_string))\
                     .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene)
             phosphresults = pqry.all() # run a join query to find out kinase substrates
-            phosphresults.sort()
-
 
         elif search.data['select'] == 'Alias Name': # check if alias name was selected
             #search_string = search_string.upper()

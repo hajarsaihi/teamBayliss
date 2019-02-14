@@ -1,4 +1,4 @@
-Kinase,total_control_mean,relative_control_activity,total_inhibitor_mean,relative_inhibitor_activity,mean_FC_kinase
+Kinase,total_control_mean,relative_control_activity,total_inhibitor_mean,relative_inhibitor_activity,FC_kinase
 GSK3B iso2,975705954.0,0.0020538246485432544,21147320.59,5.9840305159283906e-05,0.021673866499742605
 MEK1,975705954.0,0.0020538246485432544,21147320.59,5.9840305159283906e-05,0.021673866499742605
 Chk1,5380014721.0,0.011324730363913882,1309717619.0,0.0037060913537439654,0.2434412705020552

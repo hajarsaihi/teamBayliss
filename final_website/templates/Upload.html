@@ -14,12 +14,12 @@
           <center><h3><b> STEP 2/2</b></h3></center>
             <br>
           <center><h3><b>User-Defined Parameters </b></h3>
-          
+
           <p> Please select desired thresholds and variables for Phosphoproteomics Data Analaysis.</p></center>
               <br>
-              
+
               <form id="upload-form" action="/Tool/upload/compute/" method="POST" enctype="multipart/form-data" class="w3-container" >
-                
+
                 <p><b>Required Parameters: '*'</b></p>
                 <label class="w3-text-teal center-block" for= "FC_P"><b>*Fold Change: <i>(e.g: 1) </i></b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter value" type="number" id="FC_P" name="FC_P"  pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required/>
@@ -36,8 +36,8 @@
                 <label class="w3-text-teal center-block" for= "Inhibitor"><b>*Inhibitor used: <i>(e.g: AZ20) </i></b></label>
                 <input class="w3-input w3-border w3-light-grey center-block" placeholder="Enter name" type="text" id="Inhibitor" name="Inhibitor" required minlength="1" maxlength="30" size="10" required>
                 <br>
-                <p><b>Please note:</b> If your file does not contain <b>Coefficient of Variance (CV)</b> data, leave the Coefficient of Variance Threshold field blank. </p></center>
-                
+                <center><p><b>Please note:</b> If your file does not contain <b>Coefficient of Variance</b> data, leave this field blank. </p></center>
+
                 <center><input class="w3-btn w3-padding w3-teal" type=submit value=Run id="run" style="width:200px;" disabled="disabled" onClick="$('#loading').show();">
                 <br>
                 <br>
@@ -74,8 +74,8 @@
 
 
               </form>
-              <br> 
-              <br> 
+              <br>
+              <br>
                 <div class= loading id="loading" style="display:none;"><img src="{{ url_for('static', filename='loading2.gif') }}" alt="Image Placeholder"  height="130" lowsrc="/static/loading2.gif"> <br> LOADING!<br> PLEASE WAIT!</div>
               </body>
 
@@ -83,7 +83,3 @@
     </div>
 
 {% endblock %}
-
-
-
- 
