@@ -1,6 +1,6 @@
 
-# Phospho Kinase: Software Group Development Project
 # Team Bayliss - QMUL MSc Bioinformatics
+# Phospho Kinase: Software Group Development Project
 
 Phospho Kinase was developed by Bayliss – a group of 4 students that are part of the MSc Bioinformatics Programme at Queen Mary University of London, under the supervision of Professor Conrad Bessant and Dr Fabrizio Smeraldi.
 
@@ -13,8 +13,9 @@ http://bayliss.eu-west-2.elasticbeanstalk.com/
 
 ## Getting Started
 
-To run the code on your localhost please download the file 'final_website'. 
-Once downloaded please run the 'final_database_friha.py' to create and populate the database called 'final_data.db'.
+To run on your localhost please download the directory 'final_website'. 
+
+Once downloaded please open and run the 'final_database_friha.py' to create and populate the database called 'final_data.db'.
 
 
 ### The softwares required
