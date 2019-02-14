@@ -63,8 +63,6 @@ Copy the localhost URL and paste it into your browser (for best user experience 
 
 This would lead you to the homepage of 'Phospho Kinase'.
 
-End with an example of getting some data out of the system or using it for a little demo
-
 
 ## Authors
 
