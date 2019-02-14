@@ -67,7 +67,7 @@ This would lead you to the homepage of 'Phospho Kinase', where you can browse 'K
 ## Authors
 
 * **Friha Zafar** - [FrihaZ](https://github.com/FrihaZ) & [FrihaZa](https://github.com/FrihaZa) 
-* **Hajar Saihai** - [startswithH](https://github.com/startswithH)
+* **Hajar Saihi** - [startswithH](https://github.com/startswithH)
 * **Gabriel Lim** - [W K G Lim](https://github.com/gabelim)
 * **Omer Baskan** - [Omer Baskan](https://github.com/omerbaskan)
 
