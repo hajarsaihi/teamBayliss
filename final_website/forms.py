@@ -5,8 +5,7 @@ from wtforms import validators
 
 # Create search forms for the three searches on the site
 class KinaseSearchForm(Form):
-    choices = [('Protein Kinase Name', 'Protein Kinase Name'), ('Alias Name', 'Alias Name'),
-                ('Gene Name', 'Gene Name')] # Define choices for the kinase search
+    choices = [('Protein Kinase Name', 'Protein Kinase Name'), ('Alias Name', 'Alias Name')] # Define choices for the kinase search
     select = SelectField('Search for Kinase:', choices=choices) # the select field will include the choices defined
     search = StringField('',[validators.DataRequired()]) # this is a field that is empty that allows the user to search - a data required validator is added.
 

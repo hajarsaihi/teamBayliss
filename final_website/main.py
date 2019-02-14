@@ -63,10 +63,6 @@ def k_search_results(search):
             qry = db_session.query(Kinase_Information).filter(Kinase_Information.Alias.contains(search_string)) # query alias names
             results = qry.all()
 
-        elif search.data['select'] == 'Gene Name': # check if gene name was selected
-            qry = db_session.query(Kinase_Information).filter(Kinase_Information.gene_name.ilike(search_string))# query matching gene name
-            results = qry.all()
-
     if not results: # if no results were found..
         flash('No results found!') #.. flash the error message
         return redirect('/kinase') # and return back to kinase search
