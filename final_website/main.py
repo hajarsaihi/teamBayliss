@@ -5,7 +5,6 @@ from flask import Flask, Markup, render_template, flash,url_for, render_template
 from forms import KinaseSearchForm, PhosphositeSearchForm, InhibitorSearchForm
 from models import Kinase_Information, Kinase_Phosphosite, inhibitor_information
 from db_setup import init_db, db_session
-from tables import KResults, IResults, PResults
 import pandas as pd
 import numpy as np
 import csv
