@@ -83,7 +83,7 @@ def profile(kinase):
               .join(inhibitor_information, Kinase_Information.kinase == inhibitor_information.target1) # use join query to find information about inhibitors
 
     pqry = db_session.query(Kinase_Information, Kinase_Phosphosite).filter(Kinase_Information.kinase.ilike(kinase))\
-              .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.gene) # use join query to find information on protein substrate
+              .join(Kinase_Phosphosite, Kinase_Information.kinase == Kinase_Phosphosite.pkinase) # use join query to find information on protein substrate
     results = qry.all()
     inhibresults = iqry.all()
     phosphresults = pqry.all()
